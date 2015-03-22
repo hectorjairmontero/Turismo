@@ -26,8 +26,32 @@ class ModelReserva
         if(!is_null($R->id_reserva))
         {
             $R->Pago='S';
+            $R->estado='Confirmado';
             $R->Save();
         }
         return $R->id_reserva;
+    }
+    public function ReservaPaga($Id_reserva)
+    {
+        $con = App::$base;
+        $sql='SELECT 
+            `reserva`.`Id_reserva`,
+            `reserva`.`Fk_paquete` AS "Paquete",
+            `reserva`.`valor` as "valor_reserva",
+            `reserva`.`Fecha_pedido`,
+            `reserva`.`Fecha_reserva`,
+            `reserva`.`Estado`,
+            `reserva`.`Pago`,
+            `paquete`.`Nombre`,
+            `paquete`.`Valor`,
+            `paquete`.`Fecha_inicio`,
+            `paquete`.`Fecha_fin`
+          FROM
+            `reserva`
+            INNER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+            where `reserva`.`Id_reserva`=?
+            and `reserva`.`Pago`=?';
+        $Res=$con->Records($sql,array($Id_reserva,'S'));
+        return $Res;
     }
 }

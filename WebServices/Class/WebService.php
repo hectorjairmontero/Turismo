@@ -1,6 +1,6 @@
 <?php
 
-include_once '../../../Controller/Nusoap/nusoap.php';
+include_once '../Controller/Nusoap/nusoap.php';
 
 class WebService
 {
@@ -53,39 +53,9 @@ class WebService
         }
         return $Datos;
     }
-
-    public function VerMunicipios()
+    public function Datos($Funcion, $Parametros=array())
     {
-        $Param    = array();
-        $Function = 'Municipios';
-        $Res      = $this->Call($Function, $Param);
-        $Res      = $this->Values($Res);
-        return $Res;
-    }
-
-    public function VerIndicadores()
-    {
-        $Param    = array();
-        $Function = 'Indicadores';
-        $Res      = $this->Call($Function, $Param);
-        $Res      = $this->Values($Res);
-        return $Res;
-    }
-
-    public function DatosHtml($id_indicador, $Municipio)
-    {
-        $Param    = array('id_indicador' => $id_indicador, 'Municipio' => $Municipio);
-        $Function = 'DatosTangaraHTML';
-        $Res      = $this->Call($Function, $Param);
-        return json_decode($Res);
-    }
-
-    public function DatosTangara($id_indicador, $Municipio)
-    {
-        $Param    = array('id_indicador' => $id_indicador, 'Municipio' => $Municipio);
-        $Function = 'DatosTangara';
-        $Res      = $this->Call($Function, $Param);
-        return $Res;
+        return $this->Call($Funcion, $Parametros);
     }
 
 }
