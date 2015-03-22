@@ -4,7 +4,7 @@
 		public static $host = '127.0.0.1'; 
 		public static $user = 'root';         
 	 	public static $pass = '';					
-	 	public static $base = 'gobernacion';
+	 	public static $base = 'siit';
                 public static $home = '';
 	 	public static $home_lib = '';
 	 	public static $home_bin = '';

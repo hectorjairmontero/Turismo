@@ -1,30 +1,73 @@
 <?php
-include_once './Proveedor.php';
+
+include_once '../Model/ModelServicios.php';
+
 class Servicios
 {
 
-    private $Proveedor;
-
-    public function __construct($id_Proveedor)
+    public function VerServicio($id_servicio)
     {
-       $DatosProveedor=new Proveedor();
-       $this->Proveedor=  $DatosProveedor->BuscarProveedor($id_Proveedor);
+        $Servicio = new ModelServicios();
     }
 
-    public function VerServicioDisponible($id_servicio)
+    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado)
+    {
+        $Ofertar = new ModelServicios();
+        $id      = $Ofertar->OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado);
+        return $id;
+    }
+
+    public function OfertarServicio($FK_paquete, $Nombre, $ValorServicio)
+    {
+        $Ofertar = new ModelServicios();
+        $id      = $Ofertar->OfertarServicio($FK_paquete, $Nombre, $ValorServicio);
+        return $Ofertar->$id;
+    }
+
+    public function EditarDisponibilidadPaquete($id_paquete, $Disponibilidad)
+    {
+        $Disponible = new ModelServicios();
+        $Disponible->EditarDisponibilidadPaquete($id_paquete, $Disponibilidad);
+    }
+
+    public function EditarDisponibilidadServicios($id_servicios, $Disponibilidad)
+    {
+        $Disponible = new ModelServicios();
+        $Disponible->EditarDisponibilidadServicios($id_servicios, $Disponibilidad);
+    }
+
+    public function SiValidaPaquete($id_paquete)
     {
         
     }
-    public function NuevoPaquete($Nombre,$Valor,$Fecha_inicio,$Fecha_fin,$Disponible,$Estado)
+
+    public function SiValidaServicio($id_servicio)
     {
         
     }
-    public function NuevoServicio($FK_paquete,$Nombre,$ValorServicio,$cantidad,$Fk_paquete)
+
+    public function ConsultarDisponibilidadPaquete($id_paquete)
     {
         
     }
-    public function ConfirmarDisponibilidad($id_paquete)
+
+    public function ConsultarDisponibilidadServicio($id_servicio)
     {
-        
+        $Servicio = new ModelServicios();
+        $Datos=$Servicio->ConsultarDisponibilidadServicio($id_servicio);
+        return $Datos;
     }
+
+    public function ArmarPaquetes($id_paquete, $id_servicio, $cantidad_servicios)
+    {
+        $Armar = new ModelServicios();
+        $Armar->ArmarPaquetes($fk_paquete, $fk_servicio, $cantidad_servicios);
+    }
+
+    public function AutorizarPaquetes($id_Paquete, $Estado)
+    {
+        $auto = new ModelServicios();
+        $auto->AutorizarPaquetes($id_Paquete, $Estado);
+    }
+
 }
