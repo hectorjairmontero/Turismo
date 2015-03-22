@@ -5,11 +5,48 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 
 class ModelServicios
 {
+
+    public function VerPaquetes()
+    {
+        $con = App::$base;
+        $sql='SELECT 
+            `paquete`.`id_paquete`,
+            `paquete`.`Nombre`,
+            `paquete`.`Valor`,
+            `paquete`.`Fecha_inicio`,
+            `paquete`.`Fecha_fin`,
+            `paquete`.`Disponible`,
+            `paquete`.`Estado`
+          FROM
+            `paquete`
+            where `paquete`.`Estado`=?';
+        $Res=$con->Records($sql,array('S'));
+        return $Res;
+    }
+    public function ServiciosXPaquete($Fk_Paquete)
+    {
+        $con = App::$base;
+        $sql='SELECT 
+        `servicios`.`Nombre`,
+        `servicios`.`Valor`,
+        `servicios`.`Disponibilidad`,
+        `proveedor`.`Nombre` AS `Nombre_Proveedor`,
+        `proveedor`.`Telefono`,
+        `proveedor`.`Email`
+      FROM
+        `proveedor`
+        INNER JOIN `servicios` ON (`proveedor`.`id_proveedor` = `servicios`.`fk_Proveedor`)
+        INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
+        where
+          `servicios_paquete`.`fk_paquete`=';
+        $Res=$con->Records($sql,array($Fk_Paquete));
+        return $Res;
+    }
     public function ConsultarDisponibilidadServicio($id_servicio)
     {
         $S = atable::Make('servicios');
-        
     }
+
     public function AutorizarPaquetes($id_Paquete, $Estado)
     {
         $S = atable::Make('paquete');
@@ -79,6 +116,7 @@ class ModelServicios
         if (!is_null($S->id_servicios))
         {
             $S->Disponibilidad = $Disponibilidad;
+            $S->Save();
         }
         return $S->id_servicios;
     }

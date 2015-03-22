@@ -5,9 +5,28 @@ include_once '../Model/ModelServicios.php';
 class Servicios
 {
 
-    public function VerServicio($id_servicio)
+    public function VerPaquetes()
+    {
+        $Paquete = new ModelServicios();
+        $Datos=$Paquete->VerPaquetes();
+        return $Datos;
+    }
+    public function ServiciosXPaquete($id_paquete)
     {
         $Servicio = new ModelServicios();
+        $Datos = $Servicio->ServiciosXPaquete($id_paquete);
+        return $Datos;
+    }
+    public function VerPaquetesConServicios()
+    {
+        $Paquetes=  $this->VerPaquetes();
+        $Res=array();
+        foreach ($Paquetes as $Temp)
+        {
+            $Res=$Temp;
+            $Res['Servicios']=  $this->ServiciosXPaquete($Temp['id_paquete']);
+        }
+        return $Res;
     }
 
     public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado)
@@ -69,5 +88,5 @@ class Servicios
         $auto = new ModelServicios();
         $auto->AutorizarPaquetes($id_Paquete, $Estado);
     }
-
+    
 }
