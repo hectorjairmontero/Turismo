@@ -8,23 +8,31 @@ class Servicios
     public function VerPaquetes()
     {
         $Paquete = new ModelServicios();
-        $Datos=$Paquete->VerPaquetes();
+        $Datos   = $Paquete->VerPaquetes();
         return $Datos;
     }
+    
+    public function VerServiciosProveedor($id_proveedor)
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->VerServiciosProveedor($id_proveedor);
+        return $Datos;
+    }
+    
     public function ServiciosXPaquete($id_paquete)
     {
         $Servicio = new ModelServicios();
-        $Datos = $Servicio->ServiciosXPaquete($id_paquete);
+        $Datos    = $Servicio->ServiciosXPaquete($id_paquete);
         return $Datos;
     }
+
     public function VerPaquetesConServicios()
     {
-        $Paquetes=  $this->VerPaquetes();
-        $Res=array();
+        $Paquetes = $this->VerPaquetes();
+        $Res      = array();
         foreach ($Paquetes as $Temp)
         {
-            $Res=$Temp;
-            $Res['Servicios']=  $this->ServiciosXPaquete($Temp['id_paquete']);
+            $Res[] = array('Paquete' => $Temp, 'Servicios' => $this->ServiciosXPaquete($Temp['id_paquete']));
         }
         return $Res;
     }
@@ -55,38 +63,36 @@ class Servicios
         $Disponible->EditarDisponibilidadServicios($id_servicios, $Disponibilidad);
     }
 
-    public function SiValidaPaquete($id_paquete)
-    {
-        
-    }
-
-    public function SiValidaServicio($id_servicio)
-    {
-        
-    }
-
-    public function ConsultarDisponibilidadPaquete($id_paquete)
-    {
-        
-    }
-
     public function ConsultarDisponibilidadServicio($id_servicio)
     {
         $Servicio = new ModelServicios();
-        $Datos=$Servicio->ConsultarDisponibilidadServicio($id_servicio);
+        $Datos    = $Servicio->ConsultarDisponibilidadServicio($id_servicio);
         return $Datos;
     }
 
-    public function ArmarPaquetes($id_paquete, $id_servicio, $cantidad_servicios)
+    public function ArmarPaquetes($id_paquete, $id_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
     {
         $Armar = new ModelServicios();
-        $Armar->ArmarPaquetes($fk_paquete, $fk_servicio, $cantidad_servicios);
+        $id    = $Armar->ArmarPaquetes($id_paquete, $id_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin);
+        return $id;
     }
 
     public function AutorizarPaquetes($id_Paquete, $Estado)
     {
         $auto = new ModelServicios();
-        $auto->AutorizarPaquetes($id_Paquete, $Estado);
+        return $auto->AutorizarPaquetes($id_Paquete, $Estado);
     }
-    
-}
+
+    public function QuitarServiciosPaquete($id_paquete, $id_servicio)
+    {
+        $auto = new ModelServicios();
+        return $auto->QuitarServiciosPaquete($id_paquete, $id_servicio);
+    }
+
+    public function EditarServiciosPaquete($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
+    {
+        $auto = new ModelServicios();
+        return $auto->QuitarServiciosPaquete($id_paquete, $id_servicio);
+    }
+
+}   

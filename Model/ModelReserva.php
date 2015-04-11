@@ -54,4 +54,27 @@ class ModelReserva
         $Res=$con->Records($sql,array($Id_reserva,'S'));
         return $Res;
     }
+    public function VerCotizacion($id_cotizacion)
+    {
+        $con = App::$base;
+        $sql='SELECT `reserva`.`Id_reserva`,
+                  `reserva`.`valor` AS `valor_reserva`,
+                  `reserva`.`Fk_paquete` AS "Paquete",
+                  `reserva`.`Fecha_pedido`,
+                  `reserva`.`Fecha_reserva`,
+                  `reserva`.`Pago`,
+                  `paquete`.`Nombre`,
+                  `paquete`.`Valor`,
+                  `paquete`.`Fecha_inicio`,
+                  `paquete`.`Fecha_fin`
+                FROM
+                  `reserva`
+                  INNER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+                WHERE
+                  `reserva`.`Id_reserva`=? AND 
+                  `reserva`.`Estado` = ?';
+        $Res=$con->Records($sql,array($id_cotizacion,'cotizacion'));
+        return $Res;
+        
+    }
 }

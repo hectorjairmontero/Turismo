@@ -29,7 +29,6 @@ class Proveedor
 
         return $codigo;
     }
-
     public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit)
     {
         $Registrar    = new ModelProveedor();
@@ -43,6 +42,18 @@ class Proveedor
     {
         $Ver = new ModelProveedor();
         $Datos=$Ver->VerProveedor($id_proveedor);
+        return $Datos;
+    }
+    public function EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal)
+    {
+        $Ver = new ModelProveedor();
+        $Datos=$Ver->EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal);
+        return $Datos;
+    }
+    public function EstadoCuentaPaquete($Cod_proveedor,$FechaIncial,$FechaFinal,$id_paquete)
+    {
+        $Ver = new ModelProveedor();
+        $Datos=$Ver->EstadoCuentaPaquete($Cod_proveedor,$FechaIncial,$FechaFinal,$id_paquete);
         return $Datos;
     }
 

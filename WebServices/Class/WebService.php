@@ -10,7 +10,7 @@ class WebService
 
     public function __construct()
     {
-        $URL       = 'http://localhost/turismo/Soap/index.php?WSDL';
+        $URL       = 'http://localhost/Turismo/Soap/index.php?WSDL';
         $this->Con = new nusoap_client($URL); //conexion
         $err       = $this->Con->getError(); //valida
         if ($err)
@@ -18,7 +18,6 @@ class WebService
             $this->Con = FALSE;
         }
     }
-
     private function Call($Funtion, $Param)
     {
         $this->GetError = TRUE;

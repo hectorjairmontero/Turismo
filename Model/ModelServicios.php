@@ -6,10 +6,26 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelServicios
 {
 
+    public function VerServiciosProveedor($id_proveedor)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                `servicios`.`id_servicios`,
+                `servicios`.`Nombre`,
+                `servicios`.`Valor`,
+                `servicios`.`Estado`,
+                `servicios`.`Disponibilidad`
+              FROM
+                `servicios`
+                where 
+                `servicios`.`fk_Proveedor`=?';
+        $Res = $con->TablaDatos($sql, array($id_proveedor));
+        return $Res;
+    }
     public function VerPaquetes()
     {
         $con = App::$base;
-        $sql='SELECT 
+        $sql = 'SELECT 
             `paquete`.`id_paquete`,
             `paquete`.`Nombre`,
             `paquete`.`Valor`,
@@ -20,28 +36,34 @@ class ModelServicios
           FROM
             `paquete`
             where `paquete`.`Estado`=?';
-        $Res=$con->Records($sql,array('S'));
+        $Res = $con->Records($sql, array('S'));
         return $Res;
     }
+
     public function ServiciosXPaquete($Fk_Paquete)
     {
         $con = App::$base;
-        $sql='SELECT 
+        $sql = 'SELECT 
         `servicios`.`Nombre`,
-        `servicios`.`Valor`,
+        `servicios`.`Valor` as "Valor unitario",
         `servicios`.`Disponibilidad`,
         `proveedor`.`Nombre` AS `Nombre_Proveedor`,
+        `proveedor`.`Direccion`,
         `proveedor`.`Telefono`,
-        `proveedor`.`Email`
+        `proveedor`.`Email`,
+        `servicios_paquete`.`cantidad_servicios`,
+        (`servicios_paquete`.`cantidad_servicios` *
+        `servicios_paquete`.`valor_unitario_servicio`) as "ValorPaquete"
       FROM
         `proveedor`
         INNER JOIN `servicios` ON (`proveedor`.`id_proveedor` = `servicios`.`fk_Proveedor`)
         INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
         where
-          `servicios_paquete`.`fk_paquete`=';
-        $Res=$con->Records($sql,array($Fk_Paquete));
+          `servicios_paquete`.`fk_paquete`=?';
+        $Res = $con->Records($sql, array($Fk_Paquete));
         return $Res;
     }
+
     public function ConsultarDisponibilidadServicio($id_servicio)
     {
         $S = atable::Make('servicios');
@@ -59,12 +81,14 @@ class ModelServicios
         return $S->id_paquete;
     }
 
-    public function ArmarPaquetes($fk_paquete, $fk_servicio, $cantidad_servicios)
+    public function ArmarPaquetes($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio,$porcentaje_admin)
     {
-        $S                     = atable::Make('servicios_paquete');
-        $S->fk_paquete         = $fk_paquete;
-        $S->fk_servicio        = $fk_servicio;
-        $S->cantidad_servicios = $cantidad_servicios;
+        $S                          = atable::Make('servicios_paquete');
+        $S->fk_paquete              = $fk_paquete;
+        $S->fk_servicio             = $fk_servicio;
+        $S->valor_unitario_servicio = $valor_unitario_servicio;
+        $S->porcentaje_admin        = $porcentaje_admin;
+        $S->cantidad_servicios      = $cantidad_servicios;
         $S->Save();
         return $S->id_servicios_paquete;
     }
@@ -78,12 +102,6 @@ class ModelServicios
         $S->Save();
         return $S->id_servicios;
     }
-
-    public function VerServicioDisponible($id_servicio, $proveedor)
-    {
-        
-    }
-
     public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado)
     {
         $S               = atable::Make('paquete');
@@ -120,5 +138,28 @@ class ModelServicios
         }
         return $S->id_servicios;
     }
-
+    public function QuitarServiciosPaquete($fk_paquete,$fk_servicio)
+    {
+        $S = atable::Make('servicios');
+        $S->Load("fk_paquete =$fk_paquete and fk_servicio=$fk_servicio");
+        if (!is_null($S->id_servicios))
+        {
+            $S->disponible = 'N';
+            $S->Save();
+        }
+        return $S->id_servicios;
+    }
+    public function EditarServiciosPaquete($fk_paquete,$fk_servicio,$cantidad_servicios,$valor_unitario_servicio,$porcentaje_admin)
+    {
+        $S = atable::Make('servicios');
+        $S->Load("fk_paquete =$fk_paquete and fk_servicio=$fk_servicio");
+        if (!is_null($S->id_servicios))
+        {
+            $S->cantidad_servicios = $cantidad_servicios;
+            $S->valor_unitario_servicio = $valor_unitario_servicio;
+            $S->porcentaje_admin = $porcentaje_admin;
+            $S->Save();
+        }
+        return $S->id_servicios;
+    }
 }

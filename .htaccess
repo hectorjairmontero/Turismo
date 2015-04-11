@@ -1,0 +1,6 @@
+Options +FollowSymLinks
+RewriteEngine on
+
+
+
+Rewriterule ^ArmarPaquetes.html$ modules/armar_paquetes/ArmarPaquetes.html
