@@ -2,20 +2,34 @@
 
 class Visual
 {
+
+    public function FormatoNumerico($ArrayDatos, $indice,$Signo='', $Precicion=2,$Miles='.',$Decimal=',')//Primero debe ser pasado a formatoselect
+    {
+        $Res=array();
+        foreach ($ArrayDatos as $Datos)
+        {
+            $Number=$Datos[$indice];
+            $Datos[$indice] = $Signo.number_format($Number, $Precicion,$Miles,$Decimal);
+            $Res[]=$Datos;
+        }
+        return $Res;
+    }
+
     public function FormatoSelect($Datos)
     {
         $Res = array();
         foreach ($Datos as $Temp)
         {
-            $Temp2=array();
+            $Temp2 = array();
             foreach ($Temp as $Temp1)
             {
-                $Temp2[]=$Temp1;
+                $Temp2[] = $Temp1;
             }
-            $Res[]=$Temp2;
+            $Res[] = $Temp2;
         }
         return $Res;
     }
+
     public function Paginar($Tabla, $PaginaActual = '1', $NumeroPaginas = '0', $function = '', $Clase = 'pagination')
     {
         $Datos = '<nav align="center"><ul class="' . $Clase . '"><li>';
@@ -56,10 +70,10 @@ class Visual
         return $Script;
     }
 
-    public function Panel($datos,$class='')
+    public function Panel($datos, $class = '')
     {
 
-        $Res = '<ul class="'.$class.'">';
+        $Res = '<ul class="' . $class . '">';
         foreach ($datos as $Temp)
         {
             $Res.='<li><a href="' . $Temp['url'] . '">' . $Temp['Text'] . '</a></li>';
@@ -163,7 +177,7 @@ class Visual
         return $tabla;
     }
 
-    public function Tabla($Datos, $Border = '', $Encabezado = '', $Class = '', $Id = '', $Contar = FALSE, $ColumnasCombinar = '', $Paginas = '', $NumPag = '',$color = '')
+    public function Tabla($Datos, $Border = '', $Encabezado = '', $Class = '', $Id = '', $Contar = FALSE, $ColumnasCombinar = '', $Paginas = '', $NumPag = '', $color = '')
     {
 
         if ((count($Datos) > 0 && $Datos[0] !== '' && $Datos !== NULL))
@@ -199,7 +213,7 @@ class Visual
                     $colores = ' style="background-color: ' . $Temp1[$color] . ';" ';
                 }
                 $tabla.='<tr valign="top"' . $colores . '>';
-                
+
                 if ($Contar)
                 {
                     $count++;
@@ -211,7 +225,7 @@ class Visual
                     if ($color !== $i)
                     {
                         $tabla.="<td valign=top align=\"center\">$Temp1[$i]</td>";
-                    }                    
+                    }
                 }
                 $tabla.='</tr>';
             }
@@ -236,7 +250,7 @@ class Visual
         return $Datos;
     }
 
-    public function Select($Datos, $Nombre='', $Value='', $id = '', $onchange = '', $Valueid = '', $Style = '',$class='')
+    public function Select($Datos, $Nombre = '', $Value = '', $id = '', $onchange = '', $Valueid = '', $Style = '', $class = '')
     {
         error_reporting(0);
         $Nombre = "name=\"$Nombre\"";

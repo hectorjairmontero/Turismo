@@ -96,10 +96,10 @@ class Servicios
         return $auto->QuitarServiciosPaquete($id_servicio_paquete);
     }
 
-    public function EditarServiciosPaquete($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
+    public function EditarServiciosPaquete($id_servicios_paquete, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
     {
         $auto = new ModelServicios();
-        return $auto->QuitarServiciosPaquete($id_paquete, $id_servicio);
+        return $auto->EditarServiciosPaquete($id_servicios_paquete, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin);
     }
 
     public function VerServiciosEditDelete($id_Paquete)//Administrador
@@ -115,6 +115,12 @@ class Servicios
             $Res[]          = $Temp;
         }
         return ($Res);
+    }
+
+    public function Servicio_Paquete($id_servicio_paquete)
+    {
+        $auto = new ModelServicios();
+        return $auto->Servicios_Paquete($id_servicio_paquete);
     }
 
 }

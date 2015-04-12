@@ -1,15 +1,15 @@
+
 function Editar(id_servicio)
 {
     $.ajax({
         type: 'POST',
-        url: "../Ajax/AjaxEditarServicio.php",
+        url: "../Ajax/AjaxEditarInfoServicio.php",
         data: {
-            estado: 'Editar',
             id_servicio: id_servicio
         },
-        success: function ()
+        success: function (Resultado)
         {
-            CargarLista();
+            $('#Lista').html(Resultado);
         }
     });
 }
@@ -19,17 +19,14 @@ function Eliminar(id_servicio)
         type: 'POST',
         url: "../Ajax/AjaxEditarServicio.php",
         data: {
-            estado: 'Eliminar',
-            id_servicio: id_servicio,
-            Paquetes : $('#idPaquetes').val()
+            id_servicio: id_servicio
         },
-        success: function (Resultado)
+        success: function ()
         {
-            $('#Log').html(Resultado);
             CargarLista();
         }
     });
- }
+}
 function Guardar()
 {
     var Paquetes = $('#idPaquetes').val();
@@ -50,6 +47,28 @@ function Guardar()
         success: function (Resultado)
         {
             $('#Resultado').html(Resultado);
+            CargarLista();
+        }
+    });
+}
+function GuardarEdicion()
+{
+    var id_servicio_paquete = $('#id_servicio_paquete').val();
+    var edit_ganancia = $('#edit_ganancia').val();
+    var edit_cantidad = $('#edit_cantidad').val();
+    var edit_porcentaje = $('#edit_porcentaje').val();
+    $.ajax({
+        type: 'POST',
+        url: "../Ajax/AjaxEditadoServicioPaquete.php",
+        data: {
+            id_servicio_paquete: id_servicio_paquete,
+            edit_ganancia: edit_ganancia,
+            edit_cantidad: edit_cantidad,
+            edit_porcentaje: edit_porcentaje
+        },
+        success: function (Resultado)
+        {
+            $('#Log').html(Resultado);
             CargarLista();
         }
     });

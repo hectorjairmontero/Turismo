@@ -67,7 +67,6 @@ class ModelServicios
         $sql = 'SELECT 
         `servicios`.`Nombre`,
         `servicios`.`Valor` as "Valor unitario",
-        `servicios`.`Disponibilidad`,
         `proveedor`.`Nombre` AS `Nombre_Proveedor`,
         `proveedor`.`Direccion`,
         `proveedor`.`Telefono`,
@@ -83,6 +82,26 @@ class ModelServicios
           `servicios_paquete`.`fk_paquete`=?
         ORDER BY `servicios_paquete`.`id_servicios_paquete`';
         $Res = $con->Records($sql, array($Fk_Paquete));
+        return $Res;
+    }
+    public function Servicios_Paquete($id_servicio_paquete)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            `paquete`.`Nombre` AS `Paquete`,
+            `proveedor`.`Nombre` AS `Proveedor`,
+            `servicios`.`Nombre` AS `Servicio`,
+            `servicios_paquete`.`valor_unitario_servicio`,
+            `servicios_paquete`.`cantidad_servicios`,
+            `servicios_paquete`.`porcentaje_admin`
+          FROM
+            `proveedor`
+            INNER JOIN `servicios` ON (`proveedor`.`id_proveedor` = `servicios`.`fk_Proveedor`)
+            INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
+            INNER JOIN `paquete` ON (`servicios_paquete`.`fk_paquete` = `paquete`.`id_paquete`)
+          WHERE
+            `servicios_paquete`.`id_servicios_paquete` = ?';
+        $Res = $con->Record($sql, array($id_servicio_paquete));
         return $Res;
     }
 
@@ -202,18 +221,18 @@ class ModelServicios
         return $S->id_servicios_paquete;
     }
 
-    public function EditarServiciosPaquete($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
+    public function EditarServiciosPaquete($id_servicios_paquete, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
     {
-        $S = atable::Make('servicios');
-        $S->Load("fk_paquete =$fk_paquete and fk_servicio=$fk_servicio");
-        if (!is_null($S->id_servicios))
+        $S = atable::Make('servicios_paquete');
+        $S->Load("id_servicios_paquete =$id_servicios_paquete");
+        if (!is_null($S->id_servicios_paquete))
         {
             $S->cantidad_servicios      = $cantidad_servicios;
             $S->valor_unitario_servicio = $valor_unitario_servicio;
             $S->porcentaje_admin        = $porcentaje_admin;
             $S->Save();
         }
-        return $S->id_servicios;
+        return $S->id_servicios_paquete;
     }
 
 }

@@ -29,7 +29,7 @@ function CargarLista()
     var NombrePaquete = $('#idPaquetes:selected').text();
     $.ajax({
         type: 'POST',
-        url: "../Ajax/AjaxCargarListaPaquetes.php",
+        url: "../Ajax/AjaxCargarListadoPaquetes.php",
         data: {
             Paquetes: Paquetes
         },
