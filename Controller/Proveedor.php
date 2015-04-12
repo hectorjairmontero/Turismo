@@ -44,6 +44,12 @@ class Proveedor
         $Datos=$Ver->VerProveedor($id_proveedor);
         return $Datos;
     }
+    public function InfoProveedor($Cod_proveedor)
+    {
+        $Ver = new ModelProveedor();
+        $Datos=$Ver->VerProveedorCod($Cod_proveedor);
+        return $Datos; 
+    }
     public function EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal)
     {
         $Ver = new ModelProveedor();

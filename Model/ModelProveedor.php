@@ -12,26 +12,29 @@ class ModelProveedor
     {
         $this->con = App::$base;
     }
+
     public function Retirar_Proveedor($id_Proveedor)
     {
-        $P = atable::Make('proveedor');
+        $P         = atable::Make('proveedor');
         $P->load("id_proveedor = '$id_Proveedor'");
-        $P->estado='N';
+        $P->estado = 'N';
         $P->Save();
-    } 
+    }
+
     public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit)
     {
-        $P = atable::Make('proveedor');
-        $P->nombre=$Nombre;
-        $P->telefono=$Telefono;
-        $P->email=$Email;
-        $P->nit=$Nit;
+        $P           = atable::Make('proveedor');
+        $P->nombre   = $Nombre;
+        $P->telefono = $Telefono;
+        $P->email    = $Email;
+        $P->nit      = $Nit;
         $P->Save();
         return $P->id_proveedor;
     }
-    public function EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal)
+
+    public function EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal)
     {
-        $sql='SELECT 
+        $sql = 'SELECT 
                 (`servicios_paquete`.`cantidad_servicios` * `servicios_paquete`.`valor_unitario_servicio` * (100 - `servicios_paquete`.`porcentaje_admin`) / 100) AS `ganancia`,
                 `servicios_paquete`.`valor_unitario_servicio`,
                 (`servicios_paquete`.`valor_unitario_servicio` * (100 - `servicios_paquete`.`porcentaje_admin`) / 100) AS `valor_neto`,
@@ -48,12 +51,13 @@ class ModelProveedor
               WHERE
                 `reserva`.`Fecha_reserva` BETWEEN ? AND ? AND 
                 `proveedor`.`Codigo`=?';
-        $Res=$this->con->Records($sql,array($FechaIncial,$FechaFinal,$Cod_proveedor));
+        $Res = $this->con->Records($sql, array($FechaIncial, $FechaFinal, $Cod_proveedor));
         return $Res;
     }
-    public function EstadoCuentaPaquete($Cod_proveedor,$FechaIncial,$FechaFinal,$id_paquete)
+
+    public function EstadoCuentaPaquete($Cod_proveedor, $FechaIncial, $FechaFinal, $id_paquete)
     {
-        $sql='SELECT 
+        $sql = 'SELECT 
                 (`servicios_paquete`.`cantidad_servicios` * `servicios_paquete`.`valor_unitario_servicio` * (100 - `servicios_paquete`.`porcentaje_admin`) / 100) AS `ganancia`,
                 `servicios_paquete`.`valor_unitario_servicio`,
                 (`servicios_paquete`.`valor_unitario_servicio` * (100 - `servicios_paquete`.`porcentaje_admin`) / 100) AS `valor_neto`,
@@ -70,15 +74,15 @@ class ModelProveedor
                 `reserva`.`Fecha_reserva` BETWEEN ? AND ? AND 
                 `proveedor`.`Codigo`=? and  
                 `paquete`.`id_paquete`=?';
-        $Res=$this->con->Records($sql,array($FechaIncial,$FechaFinal,$Cod_proveedor,$id_paquete));
+        $Res = $this->con->Records($sql, array($FechaIncial, $FechaFinal, $Cod_proveedor, $id_paquete));
         return $Res;
     }
- 
+
     public function RegistrarCodigoProveedor($id_proveedor, $Codigo)
     {
-        $P = atable::Make('proveedor');
+        $P         = atable::Make('proveedor');
         $P->load("id_proveedor = '$id_proveedor'");
-        $P->codigo=$Codigo;
+        $P->codigo = $Codigo;
         $P->Save();
     }
 
@@ -95,9 +99,25 @@ class ModelProveedor
         $Datos['Codigo']   = $P->codigo;
         return $Datos;
     }
+
+    public function VerProveedorCod($codigo)
+    {
+        $P                     = atable::Make('proveedor');
+        $P->load("codigo = '$codigo'");
+        $Datos                 = array();
+        $Datos['id_proveedor'] = $P->id_proveedor;
+        $Datos['Nombre']       = $P->nombre;
+        $Datos['Telefono']     = $P->telefono;
+        $Datos['Email']        = $P->email;
+        $Datos['Nit']          = $P->nit;
+        $Datos['Estado']       = $P->estado;
+        $Datos['Codigo']       = $P->codigo;
+        return $Datos;
+    }
+
     public function VerProveedores()
     {
-        $sql='SELECT 
+        $sql = 'SELECT 
             `proveedor`.`id_proveedor`,
             `proveedor`.`Nombre`,
             `proveedor`.`Telefono`,
@@ -107,11 +127,11 @@ class ModelProveedor
             `proveedor`.`Codigo`
           FROM
             `proveedor`';
-        $Res=$this->con->Records($sql,array());
+        $Res = $this->con->Records($sql, array());
         return $Res;
-        
     }
-        public function RegistrosVentasServicios($FechaInicio, $FechaFin,$Cod_proveedor)
+
+    public function RegistrosVentasServicios($FechaInicio, $FechaFin, $Cod_proveedor)
     {
         $sql = 'SELECT 
                 count(`servicios`.`id_servicios`) AS `cantidad`,
@@ -131,7 +151,7 @@ class ModelProveedor
               GROUP BY
             `servicios`.`Nombre`,
             `proveedor`.`Nit`';
-        $Res = $this->con->Records($sql, array($FechaInicio, $FechaFin,$Cod_proveedor));
+        $Res = $this->con->Records($sql, array($FechaInicio, $FechaFin, $Cod_proveedor));
         return $Res;
     }
 

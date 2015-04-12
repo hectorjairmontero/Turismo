@@ -14,7 +14,6 @@ class Visual
         }
         return $Res;
     }
-
     public function FormatoSelect($Datos)
     {
         $Res = array();

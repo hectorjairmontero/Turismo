@@ -19,10 +19,16 @@ class Servicios
         return $Datos;
     }
 
-    public function VerServiciosProveedor($id_proveedor)
+    public function VerServiciosProveedor($id_proveedor, $Cod_proveedor = '')
     {
         $Paquete = new ModelServicios();
-        $Datos   = $Paquete->VerServiciosProveedor($id_proveedor);
+        if ($Cod_proveedor != '')
+        {
+            $Proveedor = new Proveedor();
+            $Res       = $Proveedor->InfoProveedor($Cod_proveedor);
+            $id_proveedor = $Res['id_proveedor'];
+        }
+        $Datos = $Paquete->VerServiciosProveedor($id_proveedor);
         return $Datos;
     }
 
@@ -121,6 +127,15 @@ class Servicios
     {
         $auto = new ModelServicios();
         return $auto->Servicios_Paquete($id_servicio_paquete);
+    }
+
+    public function NuevoServicio($Cod_proveedor, $Nombre_Servicio, $Valor)
+    {
+        $Proveedor = new Proveedor();
+        $Servicios = new ModelServicios();
+        $Datos     = $Proveedor->InfoProveedor($Cod_proveedor);
+        $id        = $Servicios->NuevoServicio($Nombre_Servicio, $Datos['id_proveedor'], $Valor);
+        return $id;
     }
 
 }

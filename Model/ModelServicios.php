@@ -18,8 +18,9 @@ class ModelServicios
               FROM
                 `servicios`
                 where 
-                `servicios`.`fk_Proveedor`=?';
-        $Res = $con->TablaDatos($sql, array($id_proveedor));
+                `servicios`.`fk_Proveedor`=?
+                order by `servicios`.`id_servicios` DESC';
+        $Res = $con->Records($sql, array($id_proveedor));
         return $Res;
     }
 
@@ -84,6 +85,7 @@ class ModelServicios
         $Res = $con->Records($sql, array($Fk_Paquete));
         return $Res;
     }
+
     public function Servicios_Paquete($id_servicio_paquete)
     {
         $con = App::$base;
@@ -233,6 +235,18 @@ class ModelServicios
             $S->Save();
         }
         return $S->id_servicios_paquete;
+    }
+
+    public function NuevoServicio($Nombre, $fk_Proveedor, $Valor, $Estado = 'S', $Disponibilidad = 'N')
+    {
+        $S                 = atable::Make('servicios');
+        $S->nombre         = $Nombre;
+        $S->fk_proveedor   = $fk_Proveedor;
+        $S->valor          = $Valor;
+        $S->estado         = $Estado;
+        $S->disponibilidad = $Disponibilidad;
+        $S->Save();
+        return $S->id_servicios;
     }
 
 }
