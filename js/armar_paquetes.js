@@ -1,3 +1,35 @@
+function Editar(id_servicio)
+{
+    $.ajax({
+        type: 'POST',
+        url: "../Ajax/AjaxEditarServicio.php",
+        data: {
+            estado: 'Editar',
+            id_servicio: id_servicio
+        },
+        success: function ()
+        {
+            CargarLista();
+        }
+    });
+}
+function Eliminar(id_servicio)
+{
+    $.ajax({
+        type: 'POST',
+        url: "../Ajax/AjaxEditarServicio.php",
+        data: {
+            estado: 'Eliminar',
+            id_servicio: id_servicio,
+            Paquetes : $('#idPaquetes').val()
+        },
+        success: function (Resultado)
+        {
+            $('#Log').html(Resultado);
+            CargarLista();
+        }
+    });
+ }
 function Guardar()
 {
     var Paquetes = $('#idPaquetes').val();
@@ -17,7 +49,7 @@ function Guardar()
         },
         success: function (Resultado)
         {
-            $('#Log').html(Resultado);
+            $('#Resultado').html(Resultado);
             CargarLista();
         }
     });
@@ -39,6 +71,8 @@ function CargarLista()
         }
     });
 }
+
+
 function CargarServicios()
 {
     var proveedor = $('#idProveedores').val();
@@ -73,4 +107,7 @@ function CargarDatos()
 $(function ()
 {
     CargarDatos();
+    $('#ganancia').numeric('.');
+    $('#Cantidad').numeric();
+    $('#Porcentaje').numeric('.');
 });

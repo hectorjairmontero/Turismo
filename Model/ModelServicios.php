@@ -22,6 +22,7 @@ class ModelServicios
         $Res = $con->TablaDatos($sql, array($id_proveedor));
         return $Res;
     }
+
     public function VerPaquetes()
     {
         $con = App::$base;
@@ -40,6 +41,7 @@ class ModelServicios
         $Res = $con->Records($sql, array('S'));
         return $Res;
     }
+
     public function VerPaqueteDescripcion($id_paquete)
     {
         $con = App::$base;
@@ -84,6 +86,33 @@ class ModelServicios
         return $Res;
     }
 
+    public function ServiciosXPaqueteEdit($Fk_Paquete)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+        `servicios_paquete`.`id_servicios_paquete` AS `Edit`,
+        `servicios_paquete`.`id_servicios_paquete` AS `Delete`,
+        `servicios`.`Nombre`,
+        `servicios`.`Valor` as "Valor unitario",
+        `proveedor`.`Nombre` AS `Nombre_Proveedor`,
+        `proveedor`.`Direccion`,
+        `proveedor`.`Telefono`,
+        `proveedor`.`Email`,
+        `servicios_paquete`.`cantidad_servicios`,
+        (`servicios_paquete`.`cantidad_servicios` *
+        `servicios_paquete`.`valor_unitario_servicio`) as "ValorPaquete"
+      FROM
+        `proveedor`
+        INNER JOIN `servicios` ON (`proveedor`.`id_proveedor` = `servicios`.`fk_Proveedor`)
+        INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
+        where
+          `servicios_paquete`.`fk_paquete`=? AND
+          `servicios_paquete`.`Disponible`=?
+        ORDER BY `servicios_paquete`.`id_servicios_paquete` DESC';
+        $Res = $con->Records($sql, array($Fk_Paquete, 'S'));
+        return $Res;
+    }
+
     public function ConsultarDisponibilidadServicio($id_servicio)
     {
         $S = atable::Make('servicios');
@@ -101,7 +130,7 @@ class ModelServicios
         return $S->id_paquete;
     }
 
-    public function ArmarPaquetes($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio,$porcentaje_admin)
+    public function ArmarPaquetes($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
     {
         $S                          = atable::Make('servicios_paquete');
         $S->fk_paquete              = $fk_paquete;
@@ -109,6 +138,7 @@ class ModelServicios
         $S->valor_unitario_servicio = $valor_unitario_servicio;
         $S->porcentaje_admin        = $porcentaje_admin;
         $S->cantidad_servicios      = $cantidad_servicios;
+        $S->disponible              = 'S';
         $S->Save();
         return $S->id_servicios_paquete;
     }
@@ -122,6 +152,7 @@ class ModelServicios
         $S->Save();
         return $S->id_servicios;
     }
+
     public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado)
     {
         $S               = atable::Make('paquete');
@@ -158,28 +189,31 @@ class ModelServicios
         }
         return $S->id_servicios;
     }
-    public function QuitarServiciosPaquete($fk_paquete,$fk_servicio)
+
+    public function QuitarServiciosPaquete($id_servicio_paquete)
     {
-        $S = atable::Make('servicios');
-        $S->Load("fk_paquete =$fk_paquete and fk_servicio=$fk_servicio");
-        if (!is_null($S->id_servicios))
+        $S = atable::Make('servicios_paquete');
+        $S->Load("id_servicios_paquete = $id_servicio_paquete");
+        if (!is_null($S->id_servicios_paquete))
         {
             $S->disponible = 'N';
             $S->Save();
         }
-        return $S->id_servicios;
+        return $S->id_servicios_paquete;
     }
-    public function EditarServiciosPaquete($fk_paquete,$fk_servicio,$cantidad_servicios,$valor_unitario_servicio,$porcentaje_admin)
+
+    public function EditarServiciosPaquete($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
     {
         $S = atable::Make('servicios');
         $S->Load("fk_paquete =$fk_paquete and fk_servicio=$fk_servicio");
         if (!is_null($S->id_servicios))
         {
-            $S->cantidad_servicios = $cantidad_servicios;
+            $S->cantidad_servicios      = $cantidad_servicios;
             $S->valor_unitario_servicio = $valor_unitario_servicio;
-            $S->porcentaje_admin = $porcentaje_admin;
+            $S->porcentaje_admin        = $porcentaje_admin;
             $S->Save();
         }
         return $S->id_servicios;
     }
+
 }

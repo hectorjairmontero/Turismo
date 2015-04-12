@@ -11,20 +11,21 @@ class Servicios
         $Datos   = $Paquete->VerPaquetes();
         return $Datos;
     }
+
     public function VerDescripcionPaquete($id_paquete)
     {
         $Paquete = new ModelServicios();
         $Datos   = $Paquete->VerPaqueteDescripcion($id_paquete);
         return $Datos;
     }
-    
+
     public function VerServiciosProveedor($id_proveedor)
     {
         $Paquete = new ModelServicios();
         $Datos   = $Paquete->VerServiciosProveedor($id_proveedor);
         return $Datos;
     }
-    
+
     public function ServiciosXPaquete($id_paquete)
     {
         $Servicio = new ModelServicios();
@@ -89,10 +90,10 @@ class Servicios
         return $auto->AutorizarPaquetes($id_Paquete, $Estado);
     }
 
-    public function QuitarServiciosPaquete($id_paquete, $id_servicio)
+    public function QuitarServiciosPaquete($id_servicio_paquete)
     {
         $auto = new ModelServicios();
-        return $auto->QuitarServiciosPaquete($id_paquete, $id_servicio);
+        return $auto->QuitarServiciosPaquete($id_servicio_paquete);
     }
 
     public function EditarServiciosPaquete($fk_paquete, $fk_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
@@ -101,4 +102,19 @@ class Servicios
         return $auto->QuitarServiciosPaquete($id_paquete, $id_servicio);
     }
 
-}   
+    public function VerServiciosEditDelete($id_Paquete)//Administrador
+    {
+        $Render = new Visual();
+        $edit   = new ModelServicios();
+        $Datos  = $edit->ServiciosXPaqueteEdit($id_Paquete);
+        $Res    = array();
+        foreach ($Datos as $Temp)
+        {
+            $Temp['Edit']   = $Render->GenerardorLink('', 'Editar(' . $Temp['Edit'] . ')', '../images/lapiz.png');
+            $Temp['Delete'] = $Render->GenerardorLink('', 'Eliminar(' . $Temp['Delete'] . ')', '../images/recycle.png');
+            $Res[]          = $Temp;
+        }
+        return ($Res);
+    }
+
+}
