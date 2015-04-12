@@ -1,4 +1,27 @@
-
+function Guardar()
+{
+    var Paquetes = $('#idPaquetes').val();
+    var Servicio = $('#idServicios').val();
+    var Precio = $('#ganancia').val();
+    var Cantidad = $('#Cantidad').val();
+    var Porcentaje = $('#Porcentaje').val();
+    $.ajax({
+        type: 'POST',
+        url: "../Ajax/AjaxGuardarServicioPaquete.php",
+        data: {
+            Paquetes: Paquetes,
+            Servicio: Servicio,
+            Precio: Precio,
+            Cantidad: Cantidad,
+            Porcentaje: Porcentaje
+        },
+        success: function (Resultado)
+        {
+            $('#Log').html(Resultado);
+            CargarLista();
+        }
+    });
+}
 function CargarLista()
 {
     var Paquetes = $('#idPaquetes').val();
@@ -12,7 +35,7 @@ function CargarLista()
         success: function (Resultado)
         {
             $('#Lista').html(Resultado);
-            $('#Texto_lista').html('Servicios del paquete '+NombrePaquete);
+            $('#Texto_lista').html('Servicios del paquete ' + NombrePaquete);
         }
     });
 }

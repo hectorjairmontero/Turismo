@@ -11,6 +11,12 @@ class Servicios
         $Datos   = $Paquete->VerPaquetes();
         return $Datos;
     }
+    public function VerDescripcionPaquete($id_paquete)
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->VerPaqueteDescripcion($id_paquete);
+        return $Datos;
+    }
     
     public function VerServiciosProveedor($id_proveedor)
     {

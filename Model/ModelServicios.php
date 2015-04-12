@@ -31,12 +31,31 @@ class ModelServicios
             `paquete`.`Valor`,
             `paquete`.`Fecha_inicio`,
             `paquete`.`Fecha_fin`,
+            `paquete`.`Descripcion`,
             `paquete`.`Disponible`,
             `paquete`.`Estado`
           FROM
             `paquete`
             where `paquete`.`Estado`=?';
         $Res = $con->Records($sql, array('S'));
+        return $Res;
+    }
+    public function VerPaqueteDescripcion($id_paquete)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            `paquete`.`id_paquete`,
+            `paquete`.`Nombre`,
+            `paquete`.`Valor`,
+            `paquete`.`Fecha_inicio`,
+            `paquete`.`Fecha_fin`,
+            `paquete`.`Descripcion`,
+            `paquete`.`Disponible`,
+            `paquete`.`Estado`
+          FROM
+            `paquete`
+            where `paquete`.`id_paquete`=?';
+        $Res = $con->Record($sql, array($id_paquete));
         return $Res;
     }
 
@@ -59,7 +78,8 @@ class ModelServicios
         INNER JOIN `servicios` ON (`proveedor`.`id_proveedor` = `servicios`.`fk_Proveedor`)
         INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
         where
-          `servicios_paquete`.`fk_paquete`=?';
+          `servicios_paquete`.`fk_paquete`=?
+        ORDER BY `servicios_paquete`.`id_servicios_paquete`';
         $Res = $con->Records($sql, array($Fk_Paquete));
         return $Res;
     }

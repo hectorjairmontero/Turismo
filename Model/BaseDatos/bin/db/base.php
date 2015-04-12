@@ -66,6 +66,16 @@ include_once Config::$home_lib.'adodb5'.Config::$ds.'adodb-exceptions.inc.php';
                     }
                     return $Datos;
                 }
+                public function Record($sql_instruction, $params)
+                {
+                    $Res=$this->dosql($sql_instruction, $params);
+                    $Datos=array();
+                    if(!$Res->EOF)
+                    {
+                        $Datos=$Res->fields;
+                    }
+                    return $Datos;
+                }
                 private function DataTable($Array)
                 {
                     $Datos=NULL;
