@@ -50,11 +50,21 @@ class Proveedor
         $Datos=$Ver->VerProveedorCod($Cod_proveedor);
         return $Datos; 
     }
+    private function Total($Datos)
+    {
+        $Total=0;
+        foreach ($Datos as $Temp)
+        {
+            $Total=$Total+$Temp['valor_neto'];
+        }
+        return $Total;
+    }
     public function EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal)
     {
         $Ver = new ModelProveedor();
         $Datos=$Ver->EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal);
-        return $Datos;
+        $Res=array('Datos'=>$Datos,'Total'=>  $this->Total($Datos));
+        return $Res;
     }
     public function EstadoCuentaPaquete($Cod_proveedor,$FechaIncial,$FechaFinal,$id_paquete)
     {

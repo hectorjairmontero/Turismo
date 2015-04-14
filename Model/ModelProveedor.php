@@ -71,10 +71,10 @@ class ModelProveedor
                 INNER JOIN `reserva` ON (`paquete`.`id_paquete` = `reserva`.`Fk_paquete`)
                 INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
               WHERE
-                `reserva`.`Fecha_reserva` BETWEEN ? AND ? AND 
                 `proveedor`.`Codigo`=? and  
-                `paquete`.`id_paquete`=?';
-        $Res = $this->con->Records($sql, array($FechaIncial, $FechaFinal, $Cod_proveedor, $id_paquete));
+                `reserva`.`Fecha_reserva` BETWEEN ? AND ? 
+                AND `paquete`.`id_paquete`=?';
+        $Res = $this->con->Records($sql, array($Cod_proveedor, $FechaIncial, $FechaFinal, $id_paquete));
         return $Res;
     }
 

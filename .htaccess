@@ -1,6 +1,5 @@
 Options +FollowSymLinks
 RewriteEngine on
 
-
-
-Rewriterule ^ArmarPaquetes.html$ modules/armar_paquetes/ArmarPaquetes.html
+DirectoryIndex index/siit.html
+Rewriterule ^index.html$ index/siit.html
