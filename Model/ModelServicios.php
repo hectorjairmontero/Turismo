@@ -34,6 +34,7 @@ class ModelServicios
             `paquete`.`Fecha_inicio`,
             `paquete`.`Fecha_fin`,
             `paquete`.`Descripcion`,
+            `paquete`.`urlFoto`,
             `paquete`.`Disponible`,
             `paquete`.`Estado`
           FROM
