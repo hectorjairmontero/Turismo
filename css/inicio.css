@@ -1,6 +1,41 @@
 body{
     background: #ece7d4 url("../images/d8bb9e84e5170600e38a9b796e6922cf.jpg") no-repeat scroll center top;
 }
+.panel {
+    margin-bottom: 0px;
+}
+.titulo{
+    font: normal normal 45px 'Roboto Slab',sans-serif;
+    text-align: left;
+    text-decoration: none;
+    color: #ffffff;
+    line-height: 40px;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    text-transform: none;
+}
+
+
+
+.btn {
+    background: #962900;
+    border-radius: 0px;
+    font-family: Arial;
+    color: #FFF;
+    font-size: 13px;
+    padding: 10px 20px 10px 20px;
+    border: solid #ffffff 2px;
+    text-decoration: none;
+    position: absolute;
+    left: 73%;
+    top: 71%;
+}
+
+.btn:hover {
+    background: #E85B27;
+    text-decoration: none;
+    color:#FFF;
+}
 #Logo_front{
     max-width: 380px;
     min-width: 190px;
@@ -11,13 +46,13 @@ body{
     top: 49%;
 }
 #img_logo{
- max-width: 380px;
-  min-width: 1px;
-  width: 20%;
-  height: auto;
-  position: absolute;
-  left: 68%;
-  top: 18%;
+    max-width: 380px;
+    min-width: 1px;
+    width: 20%;
+    height: auto;
+    position: absolute;
+    left: 68%;
+    top: 18%;
 }
 .img-thumbnail{
     max-width: 190px;
@@ -74,6 +109,10 @@ a.ReadMore{
 .nav>li>a 
 {font: normal bold 14px Arial,Helvetica,sans-serif;
  color: #FFF;
+}
+#contenido{
+    padding-left: 0px;
+    padding-right: 0px;
 }
 @media (min-width: 999px)
 {
