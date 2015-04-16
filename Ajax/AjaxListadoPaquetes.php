@@ -15,9 +15,9 @@ foreach ($Res as $Temp)
                                 <div class="caption">
                                     <h2>' . $Temp['Nombre'] . '</h2>
                                 </div>
-                                <img src="' . $Temp['urlFoto'] . '" alt="...">
+                                <a href="#"><img src="' . $Temp['urlFoto'] . '" alt="..."></a>
                                 <div class="caption">
-                                    <h4>' . substr($Temp['Descripcion'], 0, 300) . '...</h4>
+                                    <h4 align="justify">' . substr($Temp['Descripcion'], 0, 300) . '...</h4>
                                     <p><a href="#" class="ReadMore" role="button">Ver mas</a></p>
                                 </div>
                             </div>
