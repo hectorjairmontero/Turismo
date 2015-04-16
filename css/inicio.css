@@ -38,8 +38,13 @@ body{
     padding-top:2% ;
     color: #FFF;   
 }
+.logo_footer{
+    height: 107px;
+    //width: auto;
+}
 #footer{
     background-color: #09683D;
+    text-align: center;
 }
 .page-header{
     color: #FFF;
