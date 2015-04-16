@@ -1,10 +1,27 @@
 body{
     background: #ece7d4 url("../images/d8bb9e84e5170600e38a9b796e6922cf.jpg") no-repeat scroll center top;
 }
+#Logo_front{
+    max-width: 380px;
+    min-width: 190px;
+    width: 37%;
+    height: auto;
+    position: absolute;
+    left: 3%;
+    top: 49%;
+}
+#img_logo{
+    max-width: 380px;
+    min-width: 190px;
+    width: 25%;
+    height: auto;
+    position: absolute;
+    left: 70%;
+    top: 9%;
+}
 .img-thumbnail{
     max-width: 190px;
     min-width: 190px;
-    width: 30%; height: auto;
 }
 #panel2{
     background: linear-gradient(#EBEDF0, #F9FAFB);
@@ -54,7 +71,7 @@ a.ReadMore{
  color: #FFF;
 }
 @media (min-width: 999px)
-{ 
+{
 
     #contenido{
         padding-left: 12%;
@@ -96,4 +113,10 @@ a.ReadMore{
         width: 100%; height: auto;
     }
 
+}
+@media (max-width: 645px)
+{
+    #Logo_front{
+        display: none;
+    }
 }
