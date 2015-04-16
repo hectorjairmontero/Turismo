@@ -39,7 +39,8 @@ class ModelServicios
             `paquete`.`Estado`
           FROM
             `paquete`
-            where `paquete`.`Estado`=?';
+            where `paquete`.`Estado`=?
+			order by `paquete`.`id_paquete` DESC';
         $Res = $con->Records($sql, array('S'));
         return $Res;
     }
