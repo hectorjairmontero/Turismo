@@ -3,17 +3,69 @@
 class Visual
 {
 
-    public function FormatoNumerico($ArrayDatos, $indice,$Signo='', $Precicion=2,$Miles='.',$Decimal=',')//Primero debe ser pasado a formatoselect
+    public function FormatoNumerico($ArrayDatos, $indice, $Signo = '', $Precicion = 2, $Miles = '.', $Decimal = ',')//Primero debe ser pasado a formatoselect
     {
-        $Res=array();
+        $Res = array();
         foreach ($ArrayDatos as $Datos)
         {
-            $Number=$Datos[$indice];
-            $Datos[$indice] = $Signo.number_format($Number, $Precicion,$Miles,$Decimal);
-            $Res[]=$Datos;
+            $Number         = $Datos[$indice];
+            $Datos[$indice] = $Signo . number_format($Number, $Precicion, $Miles, $Decimal);
+            $Res[]          = $Datos;
         }
         return $Res;
     }
+
+    public function FunctionTable($Datos, $id, $function, $image)
+    {
+        for ($i = 0; $i < count($Datos); $i++)
+        {
+            foreach ($Datos[$i] as $key => $Temp)
+            {
+                if ($key == $id)
+                {
+                    $html            = '<a href="javascript:' . $function . '(' . $Temp[$key] . ')"><img src="' . $image . '"></a>';
+                    $Datos[$i][$key] = $html;
+                }
+            }
+        }
+        return $Datos;
+    }
+
+    public function FunctionRecortarTexto($Datos, $id, $Cantidad,$Relleno='...')
+    {
+        error_reporting(0);
+        for ($i = 0; $i < count($Datos); $i++)
+        {
+            for ($j = 0; $j < count($Datos[$i]); $j++)
+            {
+                if ($j == $id)
+                {
+                    if (strlen($Datos[$i][$j]) > $Cantidad)
+                    {
+                        $Text            = substr($Datos[$i][$j], 0, $Cantidad).$Relleno;
+                        $Datos[$i][$j] = $Text;
+                    }
+                }
+            }
+        }
+        return $Datos;
+    }
+
+    public function FormatoTable($Datos)
+    {
+        $Res = array();
+        for ($i = 0; $i < count($Datos); $i++)
+        {
+            $Temp2 = array();
+            foreach ($Datos[$i] as $Temp)
+            {
+                $Temp2[] = $Temp;
+            }
+            $Res[] = $Temp2;
+        }
+        return $Res;
+    }
+
     public function FormatoSelect($Datos)
     {
         $Res = array();

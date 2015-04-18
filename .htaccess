@@ -3,3 +3,10 @@ RewriteEngine on
 
 DirectoryIndex index/siit.html
 Rewriterule ^index.html$ index/siit.html
+Rewriterule ^login.html$ login/login.html
+Rewriterule ^paquetes.html$ paquetes/paquetes.html
+Rewriterule ^registros.html$ registrarproveedores/Registro_Proveedor.html
+Rewriterule ^registrado.html$ registrarproveedores/RegistrarPaquetes.php
+Rewriterule ^admin.html$ plantillas/admin.html
+Rewriterule ^cliente.html$ plantillas/cliente.html
+Rewriterule ^ver_proveedores.html$ info_proveedores/ver_proveedores.html

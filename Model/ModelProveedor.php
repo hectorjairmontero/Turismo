@@ -21,13 +21,30 @@ class ModelProveedor
         $P->Save();
     }
 
-    public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit)
+    public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit, $Direccion, $Descripcion)
     {
-        $P           = atable::Make('proveedor');
-        $P->nombre   = $Nombre;
-        $P->telefono = $Telefono;
-        $P->email    = $Email;
-        $P->nit      = $Nit;
+        $P              = atable::Make('proveedor');
+        $P->nombre      = $Nombre;
+        $P->telefono    = $Telefono;
+        $P->email       = $Email;
+        $P->nit         = $Nit;
+        $P->direccion   = $Direccion;
+        $P->descripcion = $Descripcion;
+        $P->estado      = 'A';
+        $P->Save();
+        return $P->id_proveedor;
+    }
+
+    public function ActualizarProveedor($id_Proveedor, $Nombre, $Telefono, $Email, $Nit, $Direccion, $Descripcion)
+    {
+        $P              = atable::Make('proveedor');
+        $P->load("id_proveedor = '$id_Proveedor'");
+        $P->nombre      = $Nombre;
+        $P->telefono    = $Telefono;
+        $P->email       = $Email;
+        $P->nit         = $Nit;
+        $P->direccion   = $Direccion;
+        $P->descripcion = $Descripcion;
         $P->Save();
         return $P->id_proveedor;
     }
@@ -88,15 +105,17 @@ class ModelProveedor
 
     public function VerProveedor($id_proveedor)
     {
-        $P                 = atable::Make('proveedor');
+        $P                    = atable::Make('proveedor');
         $P->load("id_proveedor = '$id_proveedor'");
-        $Datos             = array();
-        $Datos['Nombre']   = $P->nombre;
-        $Datos['Telefono'] = $P->telefono;
-        $Datos['Email']    = $P->email;
-        $Datos['Nit']      = $P->nit;
-        $Datos['Estado']   = $P->estado;
-        $Datos['Codigo']   = $P->codigo;
+        $Datos                = array();
+        $Datos['Nombre']      = $P->nombre;
+        $Datos['Telefono']    = $P->telefono;
+        $Datos['Direccion']   = $P->direccion;
+        $Datos['Email']       = $P->email;
+        $Datos['Nit']         = $P->nit;
+        $Datos['Estado']      = $P->estado;
+        $Datos['Codigo']      = $P->codigo;
+        $Datos['Descripcion'] = $P->descripcion;
         return $Datos;
     }
 
@@ -124,7 +143,8 @@ class ModelProveedor
             `proveedor`.`Email`,
             `proveedor`.`Nit`,
             `proveedor`.`Estado`,
-            `proveedor`.`Codigo`
+            `proveedor`.`Codigo`,
+            `proveedor`.`Descripcion`
           FROM
             `proveedor`';
         $Res = $this->con->Records($sql, array());

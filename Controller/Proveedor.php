@@ -7,10 +7,11 @@ class Proveedor
 
     public function VerProveedores()
     {
-        $Res = new ModelProveedor();
+        $Res   = new ModelProveedor();
         $Datos = $Res->VerProveedores();
         return $Datos;
     }
+
     private function CodigoProveedor($id_proveedor)
     {
         $letra     = 'PSIIT';
@@ -29,47 +30,59 @@ class Proveedor
 
         return $codigo;
     }
-    public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit)
+
+    public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit, $Direccion = '', $Descripcion = '')
     {
         $Registrar    = new ModelProveedor();
-        $id_proveedor = $Registrar->RegistrarProveedor($Nombre, $Telefono, $Email, $Nit);
+        $id_proveedor = $Registrar->RegistrarProveedor($Nombre, $Telefono, $Email, $Nit, $Direccion, $Descripcion);
         $Codigo       = $this->CodigoProveedor($id_proveedor);
         $Registrar->RegistrarCodigoProveedor($id_proveedor, $Codigo);
         return $Codigo;
     }
 
+    public function ActualizarProveedor($id, $Nombre, $Telefono, $Email, $Nit, $Direccion, $Descripcion)
+    {
+        $Registrar    = new ModelProveedor();
+        $id_proveedor = $Registrar->ActualizarProveedor($id, $Nombre, $Telefono, $Email, $Nit, $Direccion, $Descripcion);
+        return $id_proveedor;
+    }
+
     public function BuscarProveedor($id_proveedor)
     {
-        $Ver = new ModelProveedor();
-        $Datos=$Ver->VerProveedor($id_proveedor);
+        $Ver   = new ModelProveedor();
+        $Datos = $Ver->VerProveedor($id_proveedor);
         return $Datos;
     }
+
     public function InfoProveedor($Cod_proveedor)
     {
-        $Ver = new ModelProveedor();
-        $Datos=$Ver->VerProveedorCod($Cod_proveedor);
-        return $Datos; 
+        $Ver   = new ModelProveedor();
+        $Datos = $Ver->VerProveedorCod($Cod_proveedor);
+        return $Datos;
     }
+
     private function Total($Datos)
     {
-        $Total=0;
+        $Total = 0;
         foreach ($Datos as $Temp)
         {
-            $Total=$Total+$Temp['valor_neto'];
+            $Total = $Total + $Temp['valor_neto'];
         }
         return $Total;
     }
-    public function EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal)
+
+    public function EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal)
     {
-        $Ver = new ModelProveedor();
-        $Datos=$Ver->EstadoCuentaTotal($Cod_proveedor,$FechaIncial,$FechaFinal);
-        $Res=array('Datos'=>$Datos,'Total'=>  $this->Total($Datos));
+        $Ver   = new ModelProveedor();
+        $Datos = $Ver->EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal);
+        $Res   = array('Datos' => $Datos, 'Total' => $this->Total($Datos));
         return $Res;
     }
-    public function EstadoCuentaPaquete($Cod_proveedor,$FechaIncial,$FechaFinal,$id_paquete)
+
+    public function EstadoCuentaPaquete($Cod_proveedor, $FechaIncial, $FechaFinal, $id_paquete)
     {
-        $Ver = new ModelProveedor();
-        $Datos=$Ver->EstadoCuentaPaquete($Cod_proveedor,$FechaIncial,$FechaFinal,$id_paquete);
+        $Ver   = new ModelProveedor();
+        $Datos = $Ver->EstadoCuentaPaquete($Cod_proveedor, $FechaIncial, $FechaFinal, $id_paquete);
         return $Datos;
     }
 

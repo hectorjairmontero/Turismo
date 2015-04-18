@@ -1,4 +1,4 @@
-# SQL Manager 2011 for MySQL 5.1.0.2
+﻿# SQL Manager 2011 for MySQL 5.1.0.2
 # ---------------------------------------
 # Host     : localhost
 # Port     : 3306
@@ -62,17 +62,19 @@ COMMENT=''
 CREATE TABLE `proveedor` (
   `id_proveedor` INTEGER(11) NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(200) COLLATE latin1_swedish_ci NOT NULL,
+  `Direccion` VARCHAR(200) COLLATE utf8_general_ci DEFAULT NULL,
   `Telefono` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL,
   `Email` VARCHAR(200) COLLATE latin1_swedish_ci NOT NULL,
   `Nit` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL,
+  `Descripcion` TEXT COLLATE utf8_general_ci,
   `Estado` CHAR(20) COLLATE latin1_swedish_ci DEFAULT 'A' COMMENT 'A=activo\r\nN=No activo',
   `Codigo` VARCHAR(20) COLLATE utf8_general_ci DEFAULT NULL,
-  `Direccion` VARCHAR(200) COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id_proveedor`),
+  UNIQUE KEY `Nit` (`Nit`),
   UNIQUE KEY `Codigo` (`Codigo`),
   UNIQUE KEY `Codigo_2` (`Codigo`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=4 AVG_ROW_LENGTH=5461 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=7 AVG_ROW_LENGTH=5461 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -100,6 +102,35 @@ COMMENT=''
 ;
 
 #
+# Structure for the `sitio_tipo` table : 
+#
+
+CREATE TABLE `sitio_tipo` (
+  `id_sitio_tipo` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` VARCHAR(200) COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id_sitio_tipo`)
+)ENGINE=InnoDB
+AUTO_INCREMENT=4 AVG_ROW_LENGTH=8192 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+COMMENT=''
+;
+
+#
+# Structure for the `sitios` table : 
+#
+
+CREATE TABLE `sitios` (
+  `id_sitios` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` VARCHAR(200) COLLATE utf8_general_ci DEFAULT NULL,
+  `id_sitio_tipo` INTEGER(11) DEFAULT NULL,
+  PRIMARY KEY (`id_sitios`),
+  KEY `id_sitio_tipo` (`id_sitio_tipo`),
+  CONSTRAINT `sitios_fk1` FOREIGN KEY (`id_sitio_tipo`) REFERENCES sitio_tipo (`id_sitio_tipo`)
+)ENGINE=InnoDB
+AUTO_INCREMENT=2 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+COMMENT=''
+;
+
+#
 # Structure for the `servicios` table : 
 #
 
@@ -110,9 +141,12 @@ CREATE TABLE `servicios` (
   `Valor` DOUBLE(15,3) NOT NULL,
   `Estado` CHAR(20) COLLATE latin1_swedish_ci DEFAULT 'S' COMMENT 'S= si esta vigente\r\nN= no esta vigente',
   `Disponibilidad` CHAR(20) COLLATE latin1_swedish_ci DEFAULT 'N' COMMENT 'S= si esta disponible el servicio\r\nN= No esta disponible el servicio',
+  `fk_sitio` INTEGER(11) DEFAULT NULL,
   PRIMARY KEY (`id_servicios`),
   KEY `fk_Proveedor` (`fk_Proveedor`),
-  CONSTRAINT `servicios_fk1` FOREIGN KEY (`fk_Proveedor`) REFERENCES proveedor (`id_proveedor`)
+  KEY `fk_sitio` (`fk_sitio`),
+  CONSTRAINT `servicios_fk1` FOREIGN KEY (`fk_Proveedor`) REFERENCES proveedor (`id_proveedor`),
+  CONSTRAINT `servicios_fk2` FOREIGN KEY (`fk_sitio`) REFERENCES sitios (`id_sitios`)
 )ENGINE=InnoDB
 AUTO_INCREMENT=10 AVG_ROW_LENGTH=8192 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
@@ -160,13 +194,15 @@ INSERT INTO `paquete` (`id_paquete`, `Nombre`, `Valor`, `Fecha_inicio`, `Fecha_f
 COMMIT;
 
 #
-# Data for the `proveedor` table  (LIMIT -496,500)
+# Data for the `proveedor` table  (LIMIT -494,500)
 #
 
-INSERT INTO `proveedor` (`id_proveedor`, `Nombre`, `Telefono`, `Email`, `Nit`, `Estado`, `Codigo`, `Direccion`) VALUES 
-  (1,'restaurante','8333333','restaurante@hotmail.com','123456','A','PSIIT0001','abc'),
-  (2,'hotel1','82222222','hotel@hotmail.com','1234567','A','PSIIT0002','acb'),
-  (3,'finca1','82111111','finca@hotmail.com','123456789','A','PSIIT0003','cba');
+INSERT INTO `proveedor` (`id_proveedor`, `Nombre`, `Direccion`, `Telefono`, `Email`, `Nit`, `Descripcion`, `Estado`, `Codigo`) VALUES 
+  (1,'restaurante','abc','8333333','restaurante@hotmail.com','123456','Descripcion de prueba 12312345678901234567890','A','PSIIT0001'),
+  (2,'hotel1','acb','82222222','hotel@hotmail.com','1234567','','A','PSIIT0002'),
+  (3,'finca1','cba','82111111','finca@hotmail.com','123456789','','A','PSIIT0003'),
+  (4,'milo','milo','9292','milo@hotmmail','n22','','A','PSIIT0005'),
+  (5,'milo','milo','9292','milo@hotmmail','n23','','A','PSIIT0006');
 COMMIT;
 
 #
@@ -195,19 +231,37 @@ INSERT INTO `reserva` (`Id_reserva`, `Fk_paquete`, `fk_cliente`, `valor`, `Fecha
 COMMIT;
 
 #
+# Data for the `sitio_tipo` table  (LIMIT -496,500)
+#
+
+INSERT INTO `sitio_tipo` (`id_sitio_tipo`, `descripcion`) VALUES 
+  (1,'Municipio'),
+  (2,'Vereda'),
+  (3,'Corregimiento');
+COMMIT;
+
+#
+# Data for the `sitios` table  (LIMIT -498,500)
+#
+
+INSERT INTO `sitios` (`id_sitios`, `descripcion`, `id_sitio_tipo`) VALUES 
+  (1,'Popayán',1);
+COMMIT;
+
+#
 # Data for the `servicios` table  (LIMIT -490,500)
 #
 
-INSERT INTO `servicios` (`id_servicios`, `Nombre`, `fk_Proveedor`, `Valor`, `Estado`, `Disponibilidad`) VALUES 
-  (1,'Empanadas de pipiam',1,200.000,'S','S'),
-  (2,'Suite por noche',2,50000.000,'S','S'),
-  (3,'sda',1,22.000,'S','N'),
-  (4,'sda',1,22.000,'S','N'),
-  (5,'prueba de servicio',1,2012.000,'S','N'),
-  (6,'prueba orden',1,29.000,'S','N'),
-  (7,'prueba orden2',1,29.000,'S','N'),
-  (8,'prueba orden24',1,29.000,'S','N'),
-  (9,'29mil',1,29000.000,'S','N');
+INSERT INTO `servicios` (`id_servicios`, `Nombre`, `fk_Proveedor`, `Valor`, `Estado`, `Disponibilidad`, `fk_sitio`) VALUES 
+  (1,'Empanadas de pipiam',1,200.000,'S','S',1),
+  (2,'Suite por noche',2,50000.000,'S','S',1),
+  (3,'sda',1,22.000,'S','N',1),
+  (4,'sda',1,22.000,'S','N',1),
+  (5,'prueba de servicio',1,2012.000,'S','N',1),
+  (6,'prueba orden',1,29.000,'S','N',1),
+  (7,'prueba orden2',1,29.000,'S','N',1),
+  (8,'prueba orden24',1,29.000,'S','N',1),
+  (9,'29mil',1,29000.000,'S','N',1);
 COMMIT;
 
 #
