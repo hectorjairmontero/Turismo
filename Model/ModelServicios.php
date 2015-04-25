@@ -5,7 +5,19 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 
 class ModelServicios
 {
-
+    public function VerMunicipios()
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            `municipio`.`idmunicipio`,
+            `municipio`.`nombreMunicipio`
+          FROM
+            `municipio`
+          ORDER BY
+            `municipio`.`nombreMunicipio`';
+        $Res = $con->Records($sql, array());
+        return $Res;
+    }
     public function VerServiciosProveedor($id_proveedor)
     {
         $con = App::$base;
@@ -44,7 +56,42 @@ class ModelServicios
         $Res = $con->Records($sql, array('S'));
         return $Res;
     }
-
+    public function BuscarPaquetes($municipio, $FechaInicion,$FechaFin, $n_pagina, $cantidad_registros_pagina)
+    {
+        $con = App::$base;
+        $OFFSET = ($cantidad_registros_pagina * $n_pagina) - $cantidad_registros_pagina;
+        
+        if($FechaFin=='')
+        {
+        $sql='SELECT 
+                `paquete`.`Nombre`,
+                `paquete`.`Valor`,
+                `paquete`.`Fecha_inicio`,
+                concat("<img class=\'img-control\' src=\'",`paquete`.`urlFoto`,"\'/>")as "foto"
+              FROM
+                `paquete`
+            LIMIT ? OFFSET ?';
+        $Res = $con->TablaDatos($sql, array($cantidad_registros_pagina,$OFFSET));
+        }
+        else
+        {
+        $sql='SELECT 
+                `paquete`.`Nombre`,
+                `paquete`.`Valor`,
+                `paquete`.`Fecha_inicio`,
+                `paquete`.`Fecha_fin`,
+                `paquete`.`urlFoto`
+              FROM
+                `paquete`
+              WHERE
+                `paquete`.`Fecha_inicio` BETWEEN ? AND ? AND 
+                `paquete`.`Fecha_fin` BETWEEN ? AND ?
+            LIMIT ? OFFSET ?';
+        $Res = $con->TablaDatos($sql, array($FechaInicion,$FechaFin,$FechaInicion,$FechaFin,$cantidad_registros_pagina,$OFFSET));
+            
+        }
+        return $Res;
+    }
     public function VerPaqueteDescripcion($id_paquete)
     {
         $con = App::$base;

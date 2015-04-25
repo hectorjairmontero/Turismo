@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/jquery-ui.css"/>
         <link rel="stylesheet" href="css/inicio.css"/>
+        <link rel="stylesheet" href="css/buscar.css"/>
 
         <!-- !css-->
 
@@ -16,7 +17,7 @@
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/VerPaquetes.js"></script>
         <!-- !js-->
 
     </head>
@@ -53,33 +54,38 @@
                             <div >
                                 <img id="img_logo" src="images/logo-front.png" alt="...">
                             </div>
-                            <button class="btn">Ver mas>></button></div>
+                            <button class="btns">Ver mas>></button></div>
                     </div>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-body">
 
-                <div class="row">
-                    <div id="Buscar paquetes">
-                        <div class="col-lg-4">
-                            <div class="panel-body">
-                                Ver sitios
-                            </div>
+                    <div class="row">
+                        <div class="col-lg-1"><label>Municipio</label></div>
+                        <div class="col-lg-3"><div id="selectMunicipios"></div></div>
+                            
+                        <div class="col-lg-1"><label>Fechas Inicio</label></div>
+                        <div class="col-lg-3"><input type="text" id="FechaIncio" class="form-control"/></div>
+                        
+                        <div class="col-lg-1"><label>Fechas Fin</label></div>
+                        <div class="col-lg-3"><input type="text" id="FechaFin" class="form-control"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button onclick="Buscar()" class="btn btn-primary">Buscar</button>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="panel-body" >
-                                Ver servicios
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="panel-body" >
-                                Ver paquetes
-                            </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <hr>
+                        <div id="listado">
+                            
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <div id="footer">

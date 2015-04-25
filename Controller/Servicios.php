@@ -4,7 +4,12 @@ include_once '../Model/ModelServicios.php';
 
 class Servicios
 {
-
+    public function VerMunicipios()
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->VerMunicipios();
+        return $Datos;
+    }
     public function VerPaquetes()
     {
         $Paquete = new ModelServicios();
@@ -80,6 +85,13 @@ class Servicios
     {
         $Servicio = new ModelServicios();
         $Datos    = $Servicio->ConsultarDisponibilidadServicio($id_servicio);
+        return $Datos;
+    }
+    public function BuscarPaquetes($municipio, $FechaInicion,$FechaFin, $n_pagina, $cantidad_registros_pagina)
+    {
+        $cantidad_registros_pagina=(int)$cantidad_registros_pagina;
+        $Servicio = new ModelServicios();
+        $Datos    = $Servicio->BuscarPaquetes($municipio, $FechaInicion,$FechaFin, $n_pagina, $cantidad_registros_pagina);
         return $Datos;
     }
 

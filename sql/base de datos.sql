@@ -1,17 +1,4 @@
-﻿# SQL Manager 2011 for MySQL 5.1.0.2
-# ---------------------------------------
-# Host     : localhost
-# Port     : 3306
-# Database : siit
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
-SET FOREIGN_KEY_CHECKS=0;
-
+﻿
 CREATE DATABASE `siit`
     CHARACTER SET 'utf8'
     COLLATE 'utf8_general_ci';

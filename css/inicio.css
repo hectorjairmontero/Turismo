@@ -17,7 +17,7 @@ body{
 
 
 
-.btn {
+.btns {
     background: #962900;
     border-radius: 0px;
     font-family: Arial;
@@ -31,7 +31,7 @@ body{
     top: 71%;
 }
 
-.btn:hover {
+.btns:hover {
     background: #E85B27;
     text-decoration: none;
     color:#FFF;
