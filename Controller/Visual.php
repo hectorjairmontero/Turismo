@@ -81,7 +81,7 @@ class Visual
         return $Res;
     }
 
-    public function Paginar($Tabla, $PaginaActual = '1', $NumeroPaginas = '0', $function = '', $Clase = 'pagination')
+    public function Paginar($Tabla='', $PaginaActual = '1', $NumeroPaginas = '0', $function = '', $Clase = 'pagination')
     {
         $Datos = '<nav align="center"><ul class="' . $Clase . '"><li>';
         if ($PaginaActual > 1)

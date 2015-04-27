@@ -5,6 +5,7 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 
 class ModelServicios
 {
+
     public function VerMunicipios()
     {
         $con = App::$base;
@@ -18,6 +19,7 @@ class ModelServicios
         $Res = $con->Records($sql, array());
         return $Res;
     }
+
     public function VerServiciosProveedor($id_proveedor)
     {
         $con = App::$base;
@@ -56,42 +58,51 @@ class ModelServicios
         $Res = $con->Records($sql, array('S'));
         return $Res;
     }
-    public function BuscarPaquetes($municipio, $FechaInicion,$FechaFin, $n_pagina, $cantidad_registros_pagina)
+
+    public function BuscarPaquetes($municipio, $FechaInicion, $FechaFin, $n_pagina, $cantidad_registros_pagina)
     {
-        $con = App::$base;
+        $con    = App::$base;
         $OFFSET = ($cantidad_registros_pagina * $n_pagina) - $cantidad_registros_pagina;
-        
-        if($FechaFin=='')
+
+        if ($FechaFin == '')
         {
-        $sql='SELECT 
+            $sql = 'SELECT 
+                `paquete`.`id_paquete`,
                 `paquete`.`Nombre`,
                 `paquete`.`Valor`,
                 `paquete`.`Fecha_inicio`,
-                concat("<img class=\'img-control\' src=\'",`paquete`.`urlFoto`,"\'/>")as "foto"
+                concat("<img class=\'img-responsive\' src=\'",`paquete`.`urlFoto`,"\'/>")as "foto",
+                `paquete`.`Descripcion`
               FROM
                 `paquete`
             LIMIT ? OFFSET ?';
-        $Res = $con->TablaDatos($sql, array($cantidad_registros_pagina,$OFFSET));
+            $datos =array($cantidad_registros_pagina, $OFFSET);
+            $Res = $con->TablaDatos($sql, $datos);
         }
         else
         {
-        $sql='SELECT 
+            $sql = 'SELECT 
+                `paquete`.`id_paquete`,
                 `paquete`.`Nombre`,
                 `paquete`.`Valor`,
                 `paquete`.`Fecha_inicio`,
-                `paquete`.`Fecha_fin`,
-                `paquete`.`urlFoto`
+                concat("<img class=\'img-responsive\' src=\'",`paquete`.`urlFoto`,"\'/>")as "foto",
+                `paquete`.`Descripcion`
               FROM
                 `paquete`
               WHERE
                 `paquete`.`Fecha_inicio` BETWEEN ? AND ? AND 
-                `paquete`.`Fecha_fin` BETWEEN ? AND ?
-            LIMIT ? OFFSET ?';
-        $Res = $con->TablaDatos($sql, array($FechaInicion,$FechaFin,$FechaInicion,$FechaFin,$cantidad_registros_pagina,$OFFSET));
-            
+                `paquete`.`Fecha_fin` BETWEEN ? AND ?';
+            $datos = array($FechaInicion, $FechaFin, $FechaInicion, $FechaFin, $cantidad_registros_pagina, $OFFSET);
+            $Res = $con->TablaDatos($sql, $datos);
         }
-        return $Res;
+        $count = count($con->Records('SELECT 
+                `paquete`.`id_paquete`
+              FROM
+                `paquete`',array()));
+        return array('Datos' => $Res, 'Cantidad' => $count);
     }
+
     public function VerPaqueteDescripcion($id_paquete)
     {
         $con = App::$base;

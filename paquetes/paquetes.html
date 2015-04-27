@@ -17,6 +17,7 @@
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
         <script type="text/javascript" src="js/VerPaquetes.js"></script>
         <!-- !js-->
 
@@ -64,10 +65,10 @@
                     <div class="row">
                         <div class="col-lg-1"><label>Municipio</label></div>
                         <div class="col-lg-3"><div id="selectMunicipios"></div></div>
-                            
+
                         <div class="col-lg-1"><label>Fechas Inicio</label></div>
                         <div class="col-lg-3"><input type="text" id="FechaIncio" class="form-control"/></div>
-                        
+
                         <div class="col-lg-1"><label>Fechas Fin</label></div>
                         <div class="col-lg-3"><input type="text" id="FechaFin" class="form-control"/></div>
                     </div>
@@ -80,8 +81,35 @@
                 <div class="panel-body">
                     <div class="row">
                         <hr>
-                        <div id="listado">
-                            
+                        <center>
+                            <div id="listado" >
+
+                            </div>
+                        </center>
+                        <div id="Modal_1">
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">
+                                                <div id="titulo_modal">
+                                                    El titulo va aqui
+                                                </div>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="Contenido">
+                                                Contenido va aqui
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
