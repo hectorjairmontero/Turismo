@@ -1,26 +1,38 @@
 <!DOCTYPE html>
-
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>SIIT</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!--  css-->
-        <link rel="stylesheet" href="../css/bootstrap.css"/>
-        <link rel="stylesheet" href="../css/jquery-ui.css"/>
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/jquery-ui.css"/>
+        <link rel="stylesheet" href="css/admin.css"/>
 
         <!-- !css-->
 
         <!--  js-->
-        <script type="text/javascript" src="../js/jquery.js"></script>
-        <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="../js/jquery-ui.js"></script>
-        <script type="text/javascript" src="../js/Ver_paquetes.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/MenuAdmin.js"></script>
+        <script type="text/javascript" src="js/Ver_paquetes.js"></script>
         <!-- !js-->
 
     </head>
     <body>
+
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="navbar navbar-default">
+                    <div id="MenuAdmin">
+
+                    </div>
+                </nav>
+            </div>
+        </div>
         <div class="container-fluid">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -34,29 +46,61 @@
                         <hr/>
                     </div>
                     <div class="row">
-                        <div class="col-lg-2">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Proveedor
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="Listaproveedor" class="row">
+
+                                        </div>
+                                        <div id="ServiciosProveedor" class="row">
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-2"><label>Cantidad de servicios</label></div>
+                                            <div class="col-lg-10"><input type="number" id="cantidad" placeholder="Ingrese la cantidad del servicio" class="form-control"/></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-2"><label>Precio de servicios</label></div>
+                                            <div class="col-lg-10"><input type="number" id="Precio" placeholder="Ingrese el precio unitario del servicio" class="form-control"/></div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Servicios
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="Lista">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     PAQUETE
                                 </div>
                                 <div class="panel-body">
-                                    <div id="Panel"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-10">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    Servicios
-                                </div>
-                                <div class="panel-body">
-                                    <div id="Lista"></div>
+                                    <div id="Panel">
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>  
                 </div>  
             </div>  
-        </div>  
+        </div> 
     </body>
 </html>

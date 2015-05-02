@@ -4,4 +4,4 @@ include_once '../Controller/Visual.php';
 $render = new Visual();
 $Mun = new Servicios();
 $Datos =$render->FormatoSelect($Mun->VerMunicipios());
-echo $render->Select($Datos,'','','id_municipios','','','','form-control');
+echo $render->Select($Datos,'id_municipios','','id_municipios','','','','form-control');

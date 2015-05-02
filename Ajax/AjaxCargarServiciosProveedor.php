@@ -5,4 +5,5 @@ include_once '../Controller/Servicios.php';
 $Render    = new Visual();
 $Servicios = new Servicios();
 $id_proveedor=$_POST['proveedor'];
-echo $Render->Select($Servicios->VerServiciosProveedor($id_proveedor), '', '','idServicios','','','','form-control');
+$Servicio=$Render->FormatoSelect($Servicios->VerServiciosProveedor($id_proveedor));
+echo $Render->Select($Servicio, '', '','idServicios','','','','form-control');

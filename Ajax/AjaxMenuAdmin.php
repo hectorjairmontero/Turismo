@@ -5,7 +5,6 @@ $Menu='<ul class="nav nav-pills">
             <ul class="dropdown-menu">
                 <li><a href="ver_proveedores.html">Ver proveedores</a></li>
                 <li><a href="registros.html">Registrar proveedores</a></li>
-                <li><a href="#">Editar proveedores</a></li>
             </ul>
         </li>
         
@@ -13,8 +12,8 @@ $Menu='<ul class="nav nav-pills">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Paquetes<b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="#">Ver paquetes</a></li>
-                <li><a href="#">Registrar paquetes</a></li>
-                <li><a href="#">Editar paquetes</a></li>
+                <li><a href="NuevoPaquete.html">Registrar paquetes</a></li>
+                <li><a href="ver_paquetes.html">Editar paquetes</a></li>
             </ul>
         </li>
         <li class="dropdown">
@@ -24,6 +23,14 @@ $Menu='<ul class="nav nav-pills">
                 <li><a href="#">Editar servicios</a></li>
                 <li><a href="#">Ver estados</a></li>
                 <li><a href="#">Editar estados</a></li>
+            </ul>
+        </li>
+        
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cliente<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Autorizar cotizacion</a></li>
+                <li><a href="#">Verificar pagos</a></li>
             </ul>
         </li>
         

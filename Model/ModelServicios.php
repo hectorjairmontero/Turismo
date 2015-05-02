@@ -6,6 +6,56 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelServicios
 {
 
+    public function ActualizarPrecioTotalPaquete($id_paquete, $Total)
+    {
+        $S = atable::Make('paquete');
+        $S->Load('id_paquete =' . $id_paquete);
+        if (!is_null($S->id_paquete))
+        {
+            echo 'Si:' . $Total;
+            $S->valor = $Total;
+            $S->Save();
+        }
+        else
+        {
+            echo 'No';
+        }
+        return $S->id_paquete;
+    }
+
+    public function PrecioTotalPaquete($id_paquete)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                SUM(`servicios_paquete`.`valor_unitario_servicio`*`servicios_paquete`.`cantidad_servicios`) as "Total"
+              FROM
+                `servicios_paquete`
+              WHERE
+                `servicios_paquete`.`fk_paquete` = ?';
+        $Res = $con->Record($sql, array($id_paquete));
+        return $Res;
+    }
+
+    public function VerProveedores()
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            `proveedor`.`id_proveedor`,
+            `proveedor`.`Nombre`,
+            `proveedor`.`Direccion`,
+            `proveedor`.`Telefono`,
+            `proveedor`.`Email`,
+            `proveedor`.`Nit`,
+            `proveedor`.`Descripcion`,
+            `proveedor`.`Estado`,
+            `proveedor`.`Codigo`
+          FROM
+            `proveedor`
+            Order By Nombre';
+        $Res = $con->TablaDatos($sql, array());
+        return $Res;
+    }
+
     public function VerMunicipios()
     {
         $con = App::$base;
@@ -25,8 +75,8 @@ class ModelServicios
         $con = App::$base;
         $sql = 'SELECT 
                 `servicios`.`id_servicios`,
-                `servicios`.`Nombre`,
-                `servicios`.`Valor`,
+                concat(`servicios`.`Nombre`," - $",
+                `servicios`.`Valor`) as "nombre - precio",
                 `servicios`.`Estado`,
                 `servicios`.`Disponibilidad`
               FROM
@@ -63,10 +113,9 @@ class ModelServicios
     {
         $con    = App::$base;
         $OFFSET = ($cantidad_registros_pagina * $n_pagina) - $cantidad_registros_pagina;
-
         if ($FechaFin == '')
         {
-            $sql = 'SELECT 
+            $sql   = 'SELECT 
                 `paquete`.`id_paquete`,
                 `paquete`.`Nombre`,
                 `paquete`.`Valor`,
@@ -76,12 +125,12 @@ class ModelServicios
               FROM
                 `paquete`
             LIMIT ? OFFSET ?';
-            $datos =array($cantidad_registros_pagina, $OFFSET);
-            $Res = $con->TablaDatos($sql, $datos);
+            $datos = array($cantidad_registros_pagina, $OFFSET);
+            $Res   = $con->TablaDatos($sql, $datos);
         }
         else
         {
-            $sql = 'SELECT 
+            $sql   = 'SELECT 
                 `paquete`.`id_paquete`,
                 `paquete`.`Nombre`,
                 `paquete`.`Valor`,
@@ -92,14 +141,16 @@ class ModelServicios
                 `paquete`
               WHERE
                 `paquete`.`Fecha_inicio` BETWEEN ? AND ? AND 
-                `paquete`.`Fecha_fin` BETWEEN ? AND ?';
-            $datos = array($FechaInicion, $FechaFin, $FechaInicion, $FechaFin, $cantidad_registros_pagina, $OFFSET);
-            $Res = $con->TablaDatos($sql, $datos);
+                `paquete`.`Fecha_fin` BETWEEN ? AND ? AND
+                `paquete`.`id_Muncipio`=?
+                LIMIT ? OFFSET ?';
+            $datos = array($FechaInicion, $FechaFin, $FechaInicion, $FechaFin, $municipio, $cantidad_registros_pagina, $OFFSET);
+            $Res   = $con->TablaDatos($sql, $datos);
         }
         $count = count($con->Records('SELECT 
                 `paquete`.`id_paquete`
               FROM
-                `paquete`',array()));
+                `paquete`', array()));
         return array('Datos' => $Res, 'Cantidad' => $count);
     }
 
@@ -141,7 +192,7 @@ class ModelServicios
         INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
         where
           `servicios_paquete`.`fk_paquete`=?
-        ORDER BY `servicios_paquete`.`id_servicios_paquete`';
+        ORDER BY `servicios_paquete`.`id_servicios_paquete` DESC';
         $Res = $con->Records($sql, array($Fk_Paquete));
         return $Res;
     }
@@ -234,15 +285,20 @@ class ModelServicios
         return $S->id_servicios;
     }
 
-    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado)
+    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion, $urlFoto = '',$id_Muncipio='')
     {
+
         $S               = atable::Make('paquete');
         $S->nombre       = $Nombre;
         $S->valor        = $Valor;
-        $S->fecha_fin    = $Fecha_fin;
         $S->fecha_inicio = $Fecha_inicio;
+        $S->fecha_fin    = $Fecha_fin;
         $S->disponible   = $Disponible;
         $S->estado       = $Estado;
+        $S->descripcion  = $Descripcion;
+        $S->urlfoto      = $urlFoto;
+        $S->id_muncipio  = $id_Muncipio;
+
         $S->Save();
         return $S->id_paquete;
     }

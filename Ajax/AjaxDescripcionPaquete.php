@@ -13,9 +13,10 @@ if (isset($_POST['Paquetes'])&&$_POST['Paquetes']!='0')
     $Fecha_inicio = $Datos['Fecha_inicio'];
     $Fecha_fin    = $Datos['Fecha_fin'];
     $Descripcion  = $Datos['Descripcion'];
-    echo '<h3>'.$Nombre.'</h3>';
-    echo "<h5>Valor: $".number_format($Valor, 0, ',', '.')."</h5>";
-    echo "<h5>Descripcion:$Descripcion</h5>";
+    echo '<div class="row"><div class="col-lg-12"><input type="text" value="'.$Nombre.'" name="Nombre" class="form-control"></div></div>';
+    echo '<div class="row"><div class="col-lg-12"><h5>Valor: $'.number_format($Valor, 0, ',', '.').'</h5>';
+    echo '<div class="row"><div class="col-lg-12"><label from="Descripcion" class="form-control">Descripcion:</label><textarea rows="5" name="Descripcion" value="s" class="form-control">'.$Descripcion.'</textarea></div></div>';
+    
 }
 else
 {

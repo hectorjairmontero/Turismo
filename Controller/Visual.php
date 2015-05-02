@@ -2,7 +2,23 @@
 
 class Visual
 {
-
+    public function EliminarRegistro($Datos,$id)
+    {
+        $Res=array();
+        for($i=0;$i<count($Datos);$i++)
+        {
+            $Temp2=array();
+            foreach ($Datos[$i] as $key => $Temp)
+            {
+                if($key!=$id)
+                {
+                    $Temp2=$Datos[$i][$key];
+                }
+            }
+            $Res[]=$Temp2;
+        }
+        return $Res;
+    }
     public function FormatoNumerico($ArrayDatos, $indice, $Signo = '', $Precicion = 2, $Miles = '.', $Decimal = ',')//Primero debe ser pasado a formatoselect
     {
         $Res = array();
@@ -31,7 +47,7 @@ class Visual
         return $Datos;
     }
 
-    public function FunctionRecortarTexto($Datos, $id, $Cantidad,$Relleno='...')
+    public function FunctionRecortarTexto($Datos, $id, $Cantidad, $Relleno = '...')
     {
         error_reporting(0);
         for ($i = 0; $i < count($Datos); $i++)
@@ -42,7 +58,7 @@ class Visual
                 {
                     if (strlen($Datos[$i][$j]) > $Cantidad)
                     {
-                        $Text            = substr($Datos[$i][$j], 0, $Cantidad).$Relleno;
+                        $Text          = substr($Datos[$i][$j], 0, $Cantidad) . $Relleno;
                         $Datos[$i][$j] = $Text;
                     }
                 }
@@ -66,6 +82,26 @@ class Visual
         return $Res;
     }
 
+    public function img($ArrayDatos, $indice, $Class = '', $href = '')
+    {
+        $Res = array();
+        if ($Class != '')
+        {
+            $Class = " class='{$Class}' ";
+        }
+        foreach ($ArrayDatos as $Datos)
+        {
+            $Temp           = $Datos[$indice];
+            $Datos[$indice] = '<img src="' . $Temp . '"' . $Class . '/>';
+            if ($href != '')
+            {
+                $Datos[$indice]='<a href="'.$href.'">'.$Datos[$indice].'</a>';
+            }
+            $Res[] = $Datos;
+        }
+        return $Res;
+    }
+
     public function FormatoSelect($Datos)
     {
         $Res = array();
@@ -81,7 +117,7 @@ class Visual
         return $Res;
     }
 
-    public function Paginar($Tabla='', $PaginaActual = '1', $NumeroPaginas = '0', $function = '', $Clase = 'pagination')
+    public function Paginar($Tabla = '', $PaginaActual = '1', $NumeroPaginas = '0', $function = '', $Clase = 'pagination')
     {
         $Datos = '<nav align="center"><ul class="' . $Clase . '"><li>';
         if ($PaginaActual > 1)
@@ -230,7 +266,6 @@ class Visual
 
     public function Tabla($Datos, $Border = '', $Encabezado = '', $Class = '', $Id = '', $Contar = FALSE, $ColumnasCombinar = '', $Paginas = '', $NumPag = '', $color = '')
     {
-
         if ((count($Datos) > 0 && $Datos[0] !== '' && $Datos !== NULL))
         {
 
@@ -269,6 +304,13 @@ class Visual
                 {
                     $count++;
                     $tabla.="<td valign=top align=\"center\">$count</td>";
+                }
+                foreach ($Temp1 as $key => $Temp2)
+                {
+                    if(is_null($Temp2))
+                    {
+                        $Temp1[$key]='';
+                    }
                 }
                 for ($i = 0; isset($Temp1[$i]); $i++)
                 {

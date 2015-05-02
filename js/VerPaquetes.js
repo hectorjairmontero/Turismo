@@ -2,14 +2,16 @@ function VerModal(id)
 {
     $.ajax({
         type: "POST",
-        url: "./Ajax/AjaxVerListadoPaquetes.php",
+        url: "./Ajax/AjaxVerPaquete.php",
         data: {
-            id:id
+            id: id
         },
         success: function (Datos)
         {
-            //Datos = JSON.parse(Datos);
-            $('#titulo_modal').html(id);
+            Datos = JSON.parse(Datos);
+            $('#titulo_modal').html(Datos.Titulo);
+            $('#Contenido').html(Datos.Contenido);
+            $('#Botones').html(Datos.Botones);
             $('#myModal').modal('show');
         }
     });
@@ -44,8 +46,8 @@ function Buscar()
 }
 function Iniciar()
 {
-    $('#FechaIncio').datepicker();
-    $('#FechaFin').datepicker();
+    $('#FechaIncio').datepicker({dateFormat: 'yy-mm-dd'});
+    $('#FechaFin').datepicker({dateFormat: 'yy-mm-dd'});
     $('#selectMunicipios').load('Ajax/AjaxSelectMunicipios.php');
 }
 $(function ()

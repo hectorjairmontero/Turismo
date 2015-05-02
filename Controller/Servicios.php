@@ -4,12 +4,30 @@ include_once '../Model/ModelServicios.php';
 
 class Servicios
 {
+
+    private function ActualiarPaquete($id_paquete)
+    {
+        $Paquete     = new ModelServicios();
+        $PrecioTotal = $Paquete->PrecioTotalPaquete($id_paquete);
+        $PrecioTotal = $PrecioTotal['Total'];
+        $Paquete->ActualizarPrecioTotalPaquete($id_paquete, $PrecioTotal);
+        return $PrecioTotal;
+    }
+
+    public function VerProveedores()
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->VerProveedores();
+        return $Datos;
+    }
+
     public function VerMunicipios()
     {
         $Paquete = new ModelServicios();
         $Datos   = $Paquete->VerMunicipios();
         return $Datos;
     }
+
     public function VerPaquetes()
     {
         $Paquete = new ModelServicios();
@@ -29,8 +47,8 @@ class Servicios
         $Paquete = new ModelServicios();
         if ($Cod_proveedor != '')
         {
-            $Proveedor = new Proveedor();
-            $Res       = $Proveedor->InfoProveedor($Cod_proveedor);
+            $Proveedor    = new Proveedor();
+            $Res          = $Proveedor->InfoProveedor($Cod_proveedor);
             $id_proveedor = $Res['id_proveedor'];
         }
         $Datos = $Paquete->VerServiciosProveedor($id_proveedor);
@@ -55,10 +73,14 @@ class Servicios
         return $Res;
     }
 
-    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado)
+    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion = '', $imagen = '',$municipio=1)
     {
+        if ($imagen == '')
+        {
+            $imagen = 'images/other/default.jpg';
+        }
         $Ofertar = new ModelServicios();
-        $id      = $Ofertar->OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado);
+        $id      = $Ofertar->OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion, $imagen,$municipio);
         return $id;
     }
 
@@ -87,18 +109,20 @@ class Servicios
         $Datos    = $Servicio->ConsultarDisponibilidadServicio($id_servicio);
         return $Datos;
     }
-    public function BuscarPaquetes($municipio, $FechaInicion,$FechaFin, $n_pagina, $cantidad_registros_pagina)
+
+    public function BuscarPaquetes($municipio, $FechaInicion, $FechaFin, $n_pagina, $cantidad_registros_pagina)
     {
-        $cantidad_registros_pagina=(int)$cantidad_registros_pagina;
-        $Servicio = new ModelServicios();
-        $Datos    = $Servicio->BuscarPaquetes($municipio, $FechaInicion,$FechaFin, $n_pagina, $cantidad_registros_pagina);
+        $cantidad_registros_pagina = (int) $cantidad_registros_pagina;
+        $Servicio                  = new ModelServicios();
+        $Datos                     = $Servicio->BuscarPaquetes($municipio, $FechaInicion, $FechaFin, $n_pagina, $cantidad_registros_pagina);
         return $Datos;
     }
 
-    public function ArmarPaquetes($id_paquete, $id_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin)
+    public function ArmarPaquetes($id_paquete, $id_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin = 0)
     {
         $Armar = new ModelServicios();
         $id    = $Armar->ArmarPaquetes($id_paquete, $id_servicio, $cantidad_servicios, $valor_unitario_servicio, $porcentaje_admin);
+        $this->ActualiarPaquete($id_paquete);
         return $id;
     }
 
@@ -128,8 +152,8 @@ class Servicios
         $Res    = array();
         foreach ($Datos as $Temp)
         {
-            $Temp['Edit']   = $Render->GenerardorLink('', 'Editar(' . $Temp['Edit'] . ')', '../images/lapiz.png');
-            $Temp['Delete'] = $Render->GenerardorLink('', 'Eliminar(' . $Temp['Delete'] . ')', '../images/recycle.png');
+            $Temp['Edit']   = $Render->GenerardorLink('', 'Editar(' . $Temp['Edit'] . ')', 'images/lapiz.png');
+            $Temp['Delete'] = $Render->GenerardorLink('', 'Eliminar(' . $Temp['Delete'] . ')', 'images/recycle.png');
             $Res[]          = $Temp;
         }
         return ($Res);
