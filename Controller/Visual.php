@@ -2,23 +2,50 @@
 
 class Visual
 {
-    public function EliminarRegistro($Datos,$id)
+
+    public function GenerarLinkRegistro($Datos, $id, $img,$url)
     {
-        $Res=array();
-        for($i=0;$i<count($Datos);$i++)
+        $Res = array();
+        for ($i = 0; $i < count($Datos); $i++)
         {
-            $Temp2=array();
-            foreach ($Datos[$i] as $key => $Temp)
+            $Dato  = $Datos[$i];
+            $Temp2 = array();
+            foreach ($Dato as $key => $Temp)
             {
-                if($key!=$id)
+                if ($key == $id)
                 {
-                    $Temp2=$Datos[$i][$key];
+                    $Temp2[$key] = '<a href="'.$url.'='.$Temp.'"><img src="'.$img.'"></a>';
+                }
+                else
+                {
+                    $Temp2[$key] =$Temp;
                 }
             }
-            $Res[]=$Temp2;
+            $Res[] = $Temp2;
         }
         return $Res;
     }
+
+    public function EliminarRegistro($Datos, $id)
+    {
+        $Res = array();
+
+        for ($i = 0; $i < count($Datos); $i++)
+        {
+            $Dato  = $Datos[$i];
+            $Temp2 = array();
+            foreach ($Dato as $key => $Temp)
+            {
+                if ($key != $id)
+                {
+                    $Temp2[] = $Dato[$key];
+                }
+            }
+            $Res[] = $Temp2;
+        }
+        return $Res;
+    }
+
     public function FormatoNumerico($ArrayDatos, $indice, $Signo = '', $Precicion = 2, $Miles = '.', $Decimal = ',')//Primero debe ser pasado a formatoselect
     {
         $Res = array();
@@ -95,7 +122,7 @@ class Visual
             $Datos[$indice] = '<img src="' . $Temp . '"' . $Class . '/>';
             if ($href != '')
             {
-                $Datos[$indice]='<a href="'.$href.'">'.$Datos[$indice].'</a>';
+                $Datos[$indice] = '<a href="' . $href . '">' . $Datos[$indice] . '</a>';
             }
             $Res[] = $Datos;
         }
@@ -307,9 +334,9 @@ class Visual
                 }
                 foreach ($Temp1 as $key => $Temp2)
                 {
-                    if(is_null($Temp2))
+                    if (is_null($Temp2))
                     {
-                        $Temp1[$key]='';
+                        $Temp1[$key] = '';
                     }
                 }
                 for ($i = 0; isset($Temp1[$i]); $i++)

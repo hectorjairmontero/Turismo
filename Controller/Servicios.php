@@ -5,11 +5,37 @@ include_once '../Model/ModelServicios.php';
 class Servicios
 {
 
-    private function ActualiarPaquete($id_paquete)
+    public function Eliminar($id_servicio_paquete)
+    {
+        $Paquete = new ModelServicios();
+        $Paquete->Eliminar($id_servicio_paquete);
+    }
+
+    public function VerServicioPaquete($id_servicio_paquete)
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->VerServicioPaquete($id_servicio_paquete);
+        return $Datos;
+    }
+
+    public function EditarPaquete($Paquetes, $Nombre, $Descripcion, $Municipios, $Fecha_inicio, $Fecha_fin)
+    {
+        $Paquete = new ModelServicios();
+        $Paquete->EditarPaquete($Paquetes, $Nombre, $Descripcion, $Municipios, $Fecha_inicio, $Fecha_fin);
+    }
+
+    public function ActualiarPaquete($id_paquete)
     {
         $Paquete     = new ModelServicios();
         $PrecioTotal = $Paquete->PrecioTotalPaquete($id_paquete);
-        $PrecioTotal = $PrecioTotal['Total'];
+        if (is_null($PrecioTotal['Total']))
+        {
+            $PrecioTotal = 0;
+        }
+        else
+        {
+            $PrecioTotal = $PrecioTotal['Total'];
+        }
         $Paquete->ActualizarPrecioTotalPaquete($id_paquete, $PrecioTotal);
         return $PrecioTotal;
     }
@@ -73,14 +99,14 @@ class Servicios
         return $Res;
     }
 
-    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion = '', $imagen = '',$municipio=1)
+    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion = '', $imagen = '', $municipio = 1)
     {
         if ($imagen == '')
         {
             $imagen = 'images/other/default.jpg';
         }
         $Ofertar = new ModelServicios();
-        $id      = $Ofertar->OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion, $imagen,$municipio);
+        $id      = $Ofertar->OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion, $imagen, $municipio);
         return $id;
     }
 

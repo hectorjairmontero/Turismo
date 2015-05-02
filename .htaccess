@@ -11,4 +11,6 @@ Rewriterule ^admin.html$ plantillas/admin.html
 Rewriterule ^cliente.html$ plantillas/cliente.html
 Rewriterule ^ver_proveedores.html$ info_proveedores/ver_proveedores.html
 Rewriterule ^ver_paquetes.html$ ver_paquetes/Ver_paquetes.html
+Rewriterule ^Ver_paquetesProveedor.html$ ver_paquetes/Listado.html
 Rewriterule ^NuevoPaquete.html$ armar_paquetes/NuevoPaquete.html
+Rewriterule ^AutorizarCliente.html$ AutorizarCotizacion/AutorizarCliente.html

@@ -6,13 +6,52 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelServicios
 {
 
+    public function Eliminar($id_servicio_paquete)
+    {
+        $S = atable::Make('servicios_paquete');
+        $S->Load('id_servicios_paquete =' . $id_servicio_paquete);
+        $S->Delete();
+    }
+
+    public function VerServicioPaquete($id_servicio_paquete)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                `servicios`.`Nombre` as "servicio",
+                `proveedor`.`Nombre` as "proveedor",
+                `servicios_paquete`.`cantidad_servicios`
+              FROM
+                `servicios_paquete`
+                INNER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
+                INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+              WHERE
+                `servicios_paquete`.`id_servicios_paquete` = ?';
+        $Res = $con->Record($sql, array($id_servicio_paquete));
+        return $Res;
+    }
+
+    public function EditarPaquete($id_paquete, $Nombre, $Descripcion, $id_muncipio, $Fecha_inicio, $Fecha_fin)
+    {
+        $S = atable::Make('paquete');
+        $S->Load('id_paquete =' . $id_paquete);
+        if (!is_null($S->id_paquete))
+        {
+            $S->nombre       = $Nombre;
+            $S->descripcion  = $Descripcion;
+            $S->id_muncipio  = $id_muncipio;
+            $S->fecha_inicio = $Fecha_inicio;
+            $S->fecha_fin    = $Fecha_fin;
+            $S->Save();
+        }
+        return $S->id_paquete;
+    }
+
     public function ActualizarPrecioTotalPaquete($id_paquete, $Total)
     {
         $S = atable::Make('paquete');
         $S->Load('id_paquete =' . $id_paquete);
         if (!is_null($S->id_paquete))
         {
-            echo 'Si:' . $Total;
             $S->valor = $Total;
             $S->Save();
         }
@@ -165,7 +204,8 @@ class ModelServicios
             `paquete`.`Fecha_fin`,
             `paquete`.`Descripcion`,
             `paquete`.`Disponible`,
-            `paquete`.`Estado`
+            `paquete`.`Estado`,
+            `paquete`.`id_Muncipio`
           FROM
             `paquete`
             where `paquete`.`id_paquete`=?';
@@ -285,7 +325,7 @@ class ModelServicios
         return $S->id_servicios;
     }
 
-    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion, $urlFoto = '',$id_Muncipio='')
+    public function OfertarPaquete($Nombre, $Valor, $Fecha_inicio, $Fecha_fin, $Disponible, $Estado, $Descripcion, $urlFoto = '', $id_Muncipio = '')
     {
 
         $S               = atable::Make('paquete');

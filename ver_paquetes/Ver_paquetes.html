@@ -18,6 +18,7 @@
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/MenuAdmin.js"></script>
+        <script type="text/javascript" src="js/Function.js"></script>
         <script type="text/javascript" src="js/Ver_paquetes.js"></script>
         <!-- !js-->
 
@@ -39,22 +40,24 @@
                     Seleccione un paquete
                 </div>
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div id="Paquetes"></div>
+                    <form id="id_paqueteform">
+                        <div class="row">
+                            <div class="col-lg-1">
+                                <label from="paquetes">Paquetes</label></div>
+                            <div class="col-lg-11">
+                                <div id="Paquetes"></div>
+                            </div>
+                            <hr/>
                         </div>
-                        <hr/>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="row">
+
+                        <div class="row">
+                            <div class="col-lg-6">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
                                         Proveedor
                                     </div>
                                     <div class="panel-body">
                                         <div id="Listaproveedor" class="row">
-
                                         </div>
                                         <div id="ServiciosProveedor" class="row">
 
@@ -73,7 +76,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="col-lg-6">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        PAQUETE
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="Panel">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-lg-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
                                         Servicios
@@ -86,21 +103,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    PAQUETE
-                                </div>
-                                <div class="panel-body">
-                                    <div id="Panel">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
+                    </form>
                 </div>  
+
+
             </div>  
-        </div> 
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Se ha realizado el cambio</h4>
+                    </div>
+                    <div class="modal-body" id="cont_delete">
+
+                    </div>
+                    <div class="modal-footer">
+                        <center>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

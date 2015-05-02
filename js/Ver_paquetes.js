@@ -45,9 +45,24 @@ function CargarDatos()
         }
     });
 }
+function CargarDatosid(id)
+{
+    $.ajax({
+        url: "Ajax/AjaxVerArmarPaquetes.php",
+        type:'POST',
+        data:{id:id},
+        success: function (Resultado)
+        {
+            Resultado = JSON.parse(Resultado);
+            $('#Paquetes').html(Resultado.Paquetes);
+            CargarLista();
+        }
+    });
+}
 function CargarLista()
 {
     var Paquetes = $('#idPaquetes').val();
+    $('#paquetehiden').val(Paquetes);
     var NombrePaquete = $('#idPaquetes:selected').text();
     $.ajax({
         type: 'POST',
@@ -63,6 +78,37 @@ function CargarLista()
         }
     });
 }
+function GuardarPaquetes()
+{
+    var data = $('#id_paqueteform').serialize();
+    $.ajax({
+        type: 'POST',
+        url: "Ajax/AjaxEditarInfoPaquete.php",
+        data: data,
+        success: function (Resultado)
+        {
+            $('#cont_delete').html(Resultado);
+            $('#myModal').modal('show');
+        }
+    });
+}
+function Eliminar(cod)
+{
+    $.ajax({
+        type: 'POST',
+        url: "Ajax/AjaxEliminarServicioPaquete.php",
+        data: {
+            id: cod,
+            Paquetes: $('#idPaquetes').val()
+        },
+        success: function (Resultado)
+        {
+            $('#cont_delete').html(Resultado);
+            $('#myModal').modal('show');
+            CargarLista();
+        }
+    });
+}
 function buscarservicios()
 {
     var proveedor = $('#id_proveedores').val();
@@ -74,17 +120,26 @@ function buscarservicios()
         },
         success: function (Resultado)
         {
-            $('#ServiciosProveedor').html('<div class="col-lg-1"><label>Servicios</div></label><div class="col-lg-11">' + Resultado + '</div>');
+            $('#ServiciosProveedor').html('<div class="col-lg-2"><label>Servicios</div></label><div class="col-lg-10">' + Resultado + '</div>');
         }
     });
 }
+
 function VerProveedores()
 {
     $('#Listaproveedor').load('Ajax/AjaxVerServiciosProveedor.php');
 }
 $(function ()
 {
-    CargarDatos();
+    if (typeof (getUrlVars()['id']) != "undefined")
+    {
+        CargarDatosid(getUrlVars()['id']);
+    }
+    else
+    {
+        CargarDatos();
+    }
     CargarLista();
     VerProveedores();
+    $('#id_paqueteform').submit(false);
 });
