@@ -24,8 +24,7 @@ function ValuesId(Name)//Funcion para llamar a todos los id que se encuentran en
     var Funtion = 'input[name^="' + Name + '"]';
     $(Funtion).each(function ()
     {
-        temp = document.getElementsByName(Name + '[]')[i];
-        console.log(Funtion);
+        temp = document.getElementsByName(Name + '[]');
         value.push(temp);
         i = i + 1;
     });

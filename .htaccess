@@ -3,6 +3,7 @@ RewriteEngine on
 
 DirectoryIndex index/siit.html
 Rewriterule ^index.html$ index/siit.html
+Rewriterule ^Cotice.html$ index/Cotice.html
 Rewriterule ^login.html$ login/login.html
 Rewriterule ^paquetes.html$ paquetes/paquetes.html
 Rewriterule ^registros.html$ registrarproveedores/Registro_Proveedor.html

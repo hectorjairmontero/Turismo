@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SIIT</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--  css-->
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/jquery-ui.css"/>
+        <link rel="stylesheet" href="css/inicio.css"/>
+
+        <!-- !css-->
+
+        <!--  js-->
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/Cotizar.js"></script>
+        <!-- !js-->
+
+    </head>
+    <body>
+        <div class="container-fluid" id="contenido">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <img class="img-thumbnail" src="images/Logo.jpg" />
+                    </div>
+                    <div class="col-lg-9">
+                        <h1 class="titulo">Sistema Integrado de Información Turisca</h1>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar navbar-default">
+                <div class="navbar-default" >
+                    <ul class="nav navbar-default" id="menu_header">
+                        <li class="active"><a href="#">SIIT</a></li>
+                        <li><a href="paquetes.html">PAQUETES</a></li>
+                        <li><a href="#">QUIENES SOMOS</a></li>
+                        <li><a href="login.html">FUNCIONARIOS</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="panel panel-default">
+                <div class="panel-body" id="panel1">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="thumbnail">
+                                <img id="Logo_front" src="images/text-front.png">
+                                <img src="images/header.png" alt="...">
+                            </div>
+                            <div >
+                                <img id="img_logo" src="images/logo-front.png" alt="...">
+                            </div>
+                            <button class="btn">Ver mas>></button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" id="panel2">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Registrese
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <form id="RegistroUsuario">
+                                        <div class="col-lg-4">
+                                            <label from="Nombre">Nombre</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="Nombre" id="Nombre"/>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label from="Apellidos">Apellidos</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="Apellidos" id="Apellidos"/>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label from="tipoid">Tipo de documento</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <select class="form-control" name="tipoid" id="tipoid">
+                                                <option value="Tarjeta de indentidad">Tarjeta de indentidad</option>
+                                                <option value="Cedula de ciudadania">Cedula de ciudadania</option>
+                                                <option value="Cedula de extranjeria">Cedula de extranjeria</option>
+                                                <option value="Pasaporte">Pasaporte</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label from="Numeroid">Numero de identificación</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input type="number" class="form-control"  name="Numeroid" id="Numeroid"/>
+                                        </div>
+
+
+                                        <div class="col-lg-4">
+                                            <label from="Email">Correo electronico</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="email" id="email"/>
+                                        </div>
+
+
+                                        <div class="col-lg-4">
+                                            <label from="Telefono">Telefono</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input type="tel" class="form-control" name="Telefono" id="Telefono"/>
+                                        </div>
+                                        <center>
+                                            <div class="row">
+                                                <button class="btn btn-success" onclick="registrarse()">Registrarse</button>
+                                            </div>
+                                        </center>
+
+
+                                    </form>
+                                    <form id="LogUsuario" >
+                                        <h1 align="center">Si ya estas registrado</h1>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <label from="Telefono">Numero de documento</label>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <input type="text" value="1061716139" placeholder="Ingrese su numero de documento para confirmar" class="form-control" name="Numero_cedula" id="Numero_cedula"/>
+                                            </div>
+                                            <center>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <button class="btn btn-primary" onclick="validarusuario()">Iniciar sesión</button>
+                                                    </div>
+                                                </div>
+                                            </center>
+                                        </div>
+                                    </form>
+                                    <div id="DescripcionCotizacion">
+                                        <form id="FormDescripcionCotizacion">
+                                            <div class="col-lg-2">
+                                                <label>Servicio</label>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" type="date" name="FechaInicio" id="FechaInicio" placeholder="Ingrese la fecha en la que desea realziar su viaje"/>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <label>Descripcion</label>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" placeholder="Ingrese una breve descripcion de su cotización"></textarea>
+                                            </div>
+                                            <input type="hidden" id="codusuario" name="codusuario">
+                                            <button class="btn btn-primary" onclick="GuardarCotizacion()">Generar</button>
+                                        </form>
+                                    </div>
+                                    <div id="ArmarCotizacion">
+                                        <form id="ArmarCotizaciones">
+                                            <div class="row">
+                                                <div id="proveedor">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-lg-2">
+                                                    <label>Servicio</label>
+                                                </div>
+                                                <div class="col-lg-10">
+                                                    <div id="servicios">
+
+                                                        <select class="form-control"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-2">
+                                                    <label from="Proveedor">Seleccione una cantidad</label>
+                                                </div>
+                                                <div class="col-lg-10">
+                                                    <input type="number" class="form-control" required="required" id="cantidad" name="cantida" placeholder="que cantidad desea cotizar"/>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="CodCabCotizacion" id="CodCabCotizacion" />
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <button class="btn btn-success" onclick="GuardarDetalleCotizacion()">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div id="Listad"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div class="container-fluid">
+                <div class="container-footer">
+                    <div class="row">
+                        <div class="col-lg-4"><img class="logo_footer" src="images/logo-autonoma.png"></div>
+                        <div class="col-lg-4"><img class="logo_footer" src="images/Logo.jpg"></div>
+                        <div class="col-lg-4"><img class="logo_footer" src="images/logo_gobernacion.png"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

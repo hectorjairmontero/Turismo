@@ -66,7 +66,7 @@ class Visual
             {
                 if ($key == $id)
                 {
-                    $html            = '<a href="javascript:' . $function . '(' . $Temp[$key] . ')"><img src="' . $image . '"></a>';
+                    @$html            = '<a href="javascript:' . $function . '(' . $Temp . ')"><img src="' . $image . '"></a>';
                     $Datos[$i][$key] = $html;
                 }
             }
