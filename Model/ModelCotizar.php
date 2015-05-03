@@ -38,6 +38,24 @@ class ModelCotizar
         return $P->id_cotizacion_servicio;
     }
 
+    public function actualizarEstadoCotizacion($id_cotizacion)
+    {
+        $P         = atable::Make('cotizacion');
+        $P->Load("id_cotizacion=$id_cotizacion");
+        $P->estado = 'A';
+        $P->Save();
+    }
+
+    public function ActualizarDetalleCotizacion($id_cotizacion_servicio, $cantidad, $precio)
+    {
+        $P           = atable::Make('cotizacion_servicio');
+        $P->Load('id_cotizacion_servicio=' . $id_cotizacion_servicio);
+        $P->cantidad = $cantidad;
+        $P->precio   = $precio;
+        $P->Save();
+        return $P->id_cotizacion;
+    }
+
     public function CabCotizacion($fecha_inicio, $descripcion, $id_cliente, $fecha_cotizacion = 'now()')
     {
         $P                   = atable::Make('cotizacion');
@@ -65,8 +83,10 @@ class ModelCotizar
                 FROM
                   `cotizacion`
                   INNER JOIN `cliente` ON (`cotizacion`.`id_cliente` = `cliente`.`id_cliente`)
-                    order by `cotizacion`.`id_cotizacion` DESC';
-        $Datos = $con->TablaDatos($sql, array());
+                WHERE
+                  `cotizacion`.`Estado` = ?                    
+                order by `cotizacion`.`id_cotizacion` DESC';
+        $Datos = $con->TablaDatos($sql, array('P'));
         return $Datos;
     }
 
@@ -94,18 +114,18 @@ class ModelCotizar
     {
         $con   = App::$base;
         $sql   = 'SELECT 
-                concat(\'<input type="hidden" name="ids[]" value="\',`cotizacion_servicio`.`id_cotizacion_servicio`	,\'">
-                <input type="text" name="proveedor[\',`cotizacion_servicio`.`id_cotizacion_servicio`,\']" value="\',`proveedor`.`Nombre`							,\'">\') as "Proveedor",
-                concat(\'<input type="text" name="servicios[\',`cotizacion_servicio`.`id_cotizacion_servicio`,\']" value="\',`servicios`.`Nombre`							,\'">\') as "Servicio",
-                concat(\'<input type="text" name="cantidad[\',`cotizacion_servicio`.`id_cotizacion_servicio`,\']" value="\',`cotizacion_servicio`.`cantidad`				,\'">\') as "cantidad",
-                concat(\'<input type="text" name="Valor[\',`cotizacion_servicio`.`id_cotizacion_servicio`,\']" value="\',`servicios`.`Valor`								,\'">\') as "Valor",
-                ( `cotizacion_servicio`.`cantidad`*`servicios`.`Valor`) as "total"
-                FROM
+                concat(\'<input type="hidden" name="ids[]" value="\', `cotizacion_servicio`.`id_cotizacion_servicio`, \'">\') AS `Proveedor`,
+                `servicios`.`Nombre` AS `Servicio`,
+                concat(\'<input type="text" name="cantidad[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', `cotizacion_servicio`.`cantidad`, \'">\') AS `cantidad`,
+                concat(\'<input type="text" name="Valor[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', `servicios`.`Valor`, \'">\') AS `Valor`,
+                (`cotizacion_servicio`.`cantidad` * `servicios`.`Valor`) AS `total`
+              FROM
                 `cotizacion_servicio`
                 INNER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
                 INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+                INNER JOIN `cotizacion` ON (`cotizacion_servicio`.`id_cotizacion` = `cotizacion`.`id_cotizacion`)
               WHERE
-                `cotizacion_servicio`.`id_cotizacion` = ?';
+                `cotizacion_servicio`.`id_cotizacion` = ? ';
         $Datos = $con->TablaDatos($sql, array($id_cotizacion));
         return $Datos;
     }

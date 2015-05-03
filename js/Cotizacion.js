@@ -7,8 +7,8 @@ function GuardarCambios()
         data: data,
         success: function (res)
         {
-            $('#Contenido').html(res);
-            $('#myModal').modal('show');
+             $('#cotizaciones').load('Ajax/AjaxVerCotizaciones.php');
+            $('#myModal').modal('hide');
         }
     });
 }

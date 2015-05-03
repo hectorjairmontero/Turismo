@@ -4,6 +4,8 @@ include_once '../Controller/Servicios.php';
 
 class Reserva
 {
+    
+
     public function Reservar($id_paquete,$id_cliente,$valor,$Fecha_pedido,$Fecha_reserva,$Estado,$Pago)
     {
         $Reservar = new ModelReserva();
@@ -37,11 +39,3 @@ class Reserva
         return $Res;
     }
 }
-$Y=new Reserva();
-$id=$Y->Reservar('1', 1, 1, 'now()', 'now()', 'cotizacion', 1);
-$X=(json_encode($Y->VerCotizacion($id),$id));
-
-echo '<pre>';
-echo $X;
-echo '</pre>';
-print_r(json_decode($X));

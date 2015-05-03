@@ -4,7 +4,19 @@ include_once '../Model/ModelCotizar.php';
 
 class Cotizar
 {
-    
+
+    public function ActualizarCotizaciones($Datos)
+    {
+        $Cotizacion = new ModelCotizar();
+        foreach ($Datos['ids'] as $Temp)
+        {   
+            $cant=($Datos['cantidad'][$Temp]);
+            $Valor=($Datos['Valor'][$Temp]);
+            $Res = $Cotizacion->ActualizarDetalleCotizacion($Temp, $cant, $Valor);
+        }
+        $Cotizacion->actualizarEstadoCotizacion($Res);
+    }
+
     public function VerCabCotizacion()
     {
         $Cotizacion = new ModelCotizar();
@@ -40,6 +52,7 @@ class Cotizar
         $this->actualizarPrecio($id);
         return $id;
     }
+
     public function VerCotizacionEdit($id_cotizacion)
     {
         $Datos = new ModelCotizar();
