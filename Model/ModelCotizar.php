@@ -6,6 +6,19 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelCotizar
 {
 
+    public function VerTotalCotizacion($id_cotizacion)
+    {
+        $con = App::$base;
+        $sql = 'SELECT SUM((
+                `cotizacion_servicio`.`Precio`*`cotizacion_servicio`.`cantidad`)) as "Total"
+              FROM
+                `cotizacion_servicio`
+              WHERE
+                `cotizacion_servicio`.`id_cotizacion` = ?';
+        $Res = $con->Record($sql, array($id_cotizacion));
+        return $Res['Total'];
+    }
+
     public function TotalCotizacion($id_cotizacion)
     {
         $con   = App::$base;
@@ -30,6 +43,7 @@ class ModelCotizar
 
     public function DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion)
     {
+
         $P                = atable::Make('cotizacion_servicio');
         $P->id_cotizacion = $id_cotizacion;
         $P->id_servicio   = $id_servicio;
@@ -38,11 +52,12 @@ class ModelCotizar
         return $P->id_cotizacion_servicio;
     }
 
-    public function actualizarEstadoCotizacion($id_cotizacion)
+    public function actualizarEstadoCotizacion($id_cotizacion, $Precio)
     {
         $P         = atable::Make('cotizacion');
         $P->Load("id_cotizacion=$id_cotizacion");
         $P->estado = 'A';
+        $P->precio = $Precio;
         $P->Save();
     }
 
@@ -56,13 +71,15 @@ class ModelCotizar
         return $P->id_cotizacion;
     }
 
-    public function CabCotizacion($fecha_inicio, $descripcion, $id_cliente, $fecha_cotizacion = 'now()')
+    public function CabCotizacion($fecha_inicio, $descripcion, $id_cliente, $fecha_cotizacion = '')
     {
+        $fecha_cotizacion    = date("Y-m-d");
         $P                   = atable::Make('cotizacion');
         $P->id_cliente       = $id_cliente;
         $P->fecha_cotizacion = $fecha_cotizacion;
         $P->fecha_inicio     = $fecha_inicio;
         $P->descripcion      = $descripcion;
+        $P->estado           = 'P';
         $P->Save();
         return $P->id_cotizacion;
     }
@@ -79,7 +96,7 @@ class ModelCotizar
                   `cotizacion`.`Fecha_cotizacion`,
                   `cotizacion`.`Fecha_inicio`,
                   `cotizacion`.`Descripcion`,
-                  `cotizacion`.`precio`
+                  Format(`cotizacion`.`precio`,0) as "precio"
                 FROM
                   `cotizacion`
                   INNER JOIN `cliente` ON (`cotizacion`.`id_cliente` = `cliente`.`id_cliente`)
@@ -114,10 +131,12 @@ class ModelCotizar
     {
         $con   = App::$base;
         $sql   = 'SELECT 
-                concat(\'<input type="hidden" name="ids[]" value="\', `cotizacion_servicio`.`id_cotizacion_servicio`, \'">\') AS `Proveedor`,
-                `servicios`.`Nombre` AS `Servicio`,
-                concat(\'<input type="text" name="cantidad[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', `cotizacion_servicio`.`cantidad`, \'">\') AS `cantidad`,
-                concat(\'<input type="text" name="Valor[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', `servicios`.`Valor`, \'">\') AS `Valor`,
+                `proveedor`.`Nombre` as "Proveedor",
+                concat(\'<input type="hidden" name="ids[]" value="\', `cotizacion_servicio`.`id_cotizacion_servicio`, \'">\',
+                `servicios`.`Nombre`) AS `Servicio`,
+                
+                concat(\'<input type="text"  required="required" class="form-control money" name="cantidad[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', FORMAT(`cotizacion_servicio`.`cantidad`,0), \'">\') AS `cantidad`,
+                concat(\'<input type="text"  required="required" class="form-control money" name="Valor[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', FORMAT(`servicios`.`Valor`,0), \'">\') AS `Valor`,
                 (`cotizacion_servicio`.`cantidad` * `servicios`.`Valor`) AS `total`
               FROM
                 `cotizacion_servicio`
@@ -128,6 +147,28 @@ class ModelCotizar
                 `cotizacion_servicio`.`id_cotizacion` = ? ';
         $Datos = $con->TablaDatos($sql, array($id_cotizacion));
         return $Datos;
+    }
+
+    public function UsuarioCotizacion($id_cotizacion)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                `cliente`.`id_cliente`,
+                `cliente`.`Nombres`,
+                `cliente`.`Apellidos`,
+                `cliente`.`TipoID`,
+                `cliente`.`Numero_Id`,
+                `cliente`.`Email`,
+                `cliente`.`Telefono`,
+                `cotizacion`.`Fecha_cotizacion`,
+                `cotizacion`.`precio`
+          FROM
+            `cotizacion`
+            INNER JOIN `cliente` ON (`cotizacion`.`id_cliente` = `cliente`.`id_cliente`)
+          WHERE
+            `cotizacion`.`id_cotizacion` = ?';
+        $Res = $con->Record($sql, array($id_cotizacion));
+        return $Res;
     }
 
 }

@@ -5,4 +5,4 @@ $Cotizar = new Cotizar();
 $Render = new Visual();
 $Res = $Cotizar->VerCabCotizacion();
 $Res=$Render->FunctionTable($Res,0,'VerDetalle','images/lapiz.png');
-echo $Render->Tabla($Res,'',array('#','Ver','Nombre','Apellido','Email','Telefono','Fecha de pedido','Fecha para viaje','Descripción'),'table','',TRUE);
+echo $Render->Tabla($Res,'',array('#','Ver','Nombre','Apellido','Email','Telefono','Fecha de pedido','Fecha para viaje','Descripción','Valor estimado'),'table','',TRUE);

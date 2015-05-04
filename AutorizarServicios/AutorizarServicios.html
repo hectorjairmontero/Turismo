@@ -17,19 +17,10 @@
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-        <script type="text/javascript" src="js/Function.js"></script>
         <script type="text/javascript" src="js/MenuAdmin.js"></script>
-        <script type="text/javascript" src="js/Cotizacion.js"></script>
+        <script type="text/javascript" src="js/VerServicios.js"></script>
         <!-- !js-->
-        <style >
-            .modal-dialog {
-                width: 100%;
-            }
-            .modal-content {
-                width: 100%;
-            }
-        </style>
+
     </head>
     <body>
 
@@ -45,10 +36,14 @@
         <div class="container-fluid">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Cotizaciones
+                    Servicios
                 </div>
                 <div class="panel-body">
-                    <div id="cotizaciones">
+                    <div id="Servicios">
+                    </div>
+                    <hr/>
+                    <div id="ListServicios">
+
                     </div>
                 </div>
             </div>
@@ -59,17 +54,17 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <div id="Title"></div>
+                        <div id="Title"><center><h1>Se modificará el servicio</h1></center></div>
                     </div>
                     <div class="modal-body">
-                        <form id="Actualizando">
-                            <div id="Contenido">
+                        <center>
+                            <div id="info_paquete">
+                                <button class="btn btn-success" onclick="CambiarEstado('Auto')">Autorizar servicio</button>
+                                <button class="btn btn-danger" onclick="CambiarEstado('Cancel')">Cancelar servicio</button>
                             </div>
-                        </form>
+                        </center>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">cancelar</button>
-                        <button type="button" class="btn btn-primary" onclick="GuardarCambios()">Guardar cambios</button>
                     </div>
                 </div>
             </div>

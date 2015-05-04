@@ -1,20 +1,33 @@
 <?php
 
 include_once '../Model/ModelCotizar.php';
+include_once '../Controller/Correo.php';
 
 class Cotizar
 {
 
-    public function ActualizarCotizaciones($Datos)
+    public function VerTotal($id_cotizacion)
     {
         $Cotizacion = new ModelCotizar();
+        $Res        = $Cotizacion->VerTotalCotizacion($id_cotizacion);
+        return $Res;
+    }
+
+    public function ActualizarCotizaciones($Datos)
+    {
+        $Correo     = new Correo();
+        $Cotizacion = new ModelCotizar();
+        $Total      = 0;
         foreach ($Datos['ids'] as $Temp)
-        {   
-            $cant=($Datos['cantidad'][$Temp]);
-            $Valor=($Datos['Valor'][$Temp]);
-            $Res = $Cotizacion->ActualizarDetalleCotizacion($Temp, $cant, $Valor);
+        {
+            $cant = ($Datos['cantidad'][$Temp]);
+            $Res  = $Cotizacion->ActualizarDetalleCotizacion($Temp, $cant, $Datos['Valor'][$Temp]);
         }
-        $Cotizacion->actualizarEstadoCotizacion($Res);
+        $Total   = $this->VerTotal($Res);
+        $Cotizacion->actualizarEstadoCotizacion($Res, $Total);
+        $Cliente = $Cotizacion->UsuarioCotizacion($Res);
+        $Tabla=$Cotizacion->VerCotizacion($Res);
+        $Correo->EnviarCorreo($Cliente['Email'], $Cliente['Nombres'], $Cliente['Apellidos'], $Cliente['Fecha_cotizacion'], $Total,$Tabla);
     }
 
     public function VerCabCotizacion()
@@ -49,7 +62,7 @@ class Cotizar
     {
         $Cab = new ModelCotizar();
         $id  = $Cab->DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion);
-        $this->actualizarPrecio($id);
+        $this->actualizarPrecio($id_cotizacion);
         return $id;
     }
 

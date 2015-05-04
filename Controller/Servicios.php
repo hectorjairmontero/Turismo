@@ -4,7 +4,11 @@ include_once '../Model/ModelServicios.php';
 
 class Servicios
 {
-
+    public function CambiarEstadoServicio($est,$servicio)
+    {
+        $Paquete = new ModelServicios();
+        $Paquete->CambiarEstadoServicio($est,$servicio);        
+    }
     public function Eliminar($id_servicio_paquete)
     {
         $Paquete = new ModelServicios();
@@ -78,6 +82,18 @@ class Servicios
             $id_proveedor = $Res['id_proveedor'];
         }
         $Datos = $Paquete->VerServiciosProveedor($id_proveedor);
+        return $Datos;
+    }
+    public function VerServiciosProveedorAdmin($id_proveedor, $Cod_proveedor = '')
+    {
+        $Paquete = new ModelServicios();
+        if ($Cod_proveedor != '')
+        {
+            $Proveedor    = new Proveedor();
+            $Res          = $Proveedor->InfoProveedor($Cod_proveedor);
+            $id_proveedor = $Res['id_proveedor'];
+        }
+        $Datos = $Paquete->VerServiciosProveedorAdmin($id_proveedor);
         return $Datos;
     }
 

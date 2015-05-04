@@ -24,7 +24,8 @@ function registrarse()
         {
 
             cod = JSON.parse(cod);
-            usuariovalido(cod.id_cliente);
+            var id=JSON.parse(cod.id);
+            usuariovalido(id.id_cliente);
         }
     });
 }

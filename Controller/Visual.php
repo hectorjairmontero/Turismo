@@ -3,7 +3,7 @@
 class Visual
 {
 
-    public function GenerarLinkRegistro($Datos, $id, $img,$url)
+    public function GenerarLinkRegistro($Datos, $id, $img, $url)
     {
         $Res = array();
         for ($i = 0; $i < count($Datos); $i++)
@@ -14,11 +14,11 @@ class Visual
             {
                 if ($key == $id)
                 {
-                    $Temp2[$key] = '<a href="'.$url.'='.$Temp.'"><img src="'.$img.'"></a>';
+                    $Temp2[$key] = '<a href="' . $url . '=' . $Temp . '"><img src="' . $img . '"></a>';
                 }
                 else
                 {
-                    $Temp2[$key] =$Temp;
+                    $Temp2[$key] = $Temp;
                 }
             }
             $Res[] = $Temp2;

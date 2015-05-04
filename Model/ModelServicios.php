@@ -5,7 +5,14 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 
 class ModelServicios
 {
-
+    public function CambiarEstadoServicio($est,$id_servicio)
+    {
+        $S = atable::Make('servicios');
+        $S->Load('id_servicios =' . $id_servicio);
+        $S->estado=$est;
+        $S->disponibilidad=$est;
+        $S->Save();
+    }
     public function Eliminar($id_servicio_paquete)
     {
         $S = atable::Make('servicios_paquete');
@@ -25,8 +32,9 @@ class ModelServicios
                 INNER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
                 INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
               WHERE
-                `servicios_paquete`.`id_servicios_paquete` = ?';
-        $Res = $con->Record($sql, array($id_servicio_paquete));
+                `servicios_paquete`.`id_servicios_paquete` = ?
+                and `servicios`.`Disponibilidad`=?';
+        $Res = $con->Record($sql, array($id_servicio_paquete,'S'));
         return $Res;
     }
 
@@ -114,12 +122,29 @@ class ModelServicios
         $con = App::$base;
         $sql = 'SELECT 
                 `servicios`.`id_servicios`,
-                concat(`servicios`.`Nombre`," - $",
-                `servicios`.`Valor`) as "nombre - precio",
-                `servicios`.`Estado`,
+                concat(`servicios`.`Nombre`," - $", `servicios`.`Valor` ) as "nombre - precio",
+                `servicios`.`Estado`, 
                 `servicios`.`Disponibilidad`
-              FROM
-                `servicios`
+                FROM
+                 `servicios`
+                where 
+                `servicios`.`fk_Proveedor`=?
+                and
+                `servicios`.`Disponibilidad`=?
+                order by `servicios`.`id_servicios` DESC';
+        $Res = $con->Records($sql, array($id_proveedor,'S'));
+        return $Res;
+    }
+    public function VerServiciosProveedoradmin($id_proveedor)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                `servicios`.`id_servicios`,
+                concat(`servicios`.`Nombre`," - $", `servicios`.`Valor` ) as "nombre - precio",
+                `servicios`.`Estado`, 
+                `servicios`.`Disponibilidad`
+                FROM
+                 `servicios`
                 where 
                 `servicios`.`fk_Proveedor`=?
                 order by `servicios`.`id_servicios` DESC';
@@ -143,6 +168,7 @@ class ModelServicios
           FROM
             `paquete`
             where `paquete`.`Estado`=?
+            
 			order by `paquete`.`id_paquete` DESC';
         $Res = $con->Records($sql, array('S'));
         return $Res;
@@ -253,8 +279,9 @@ class ModelServicios
             INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
             INNER JOIN `paquete` ON (`servicios_paquete`.`fk_paquete` = `paquete`.`id_paquete`)
           WHERE
-            `servicios_paquete`.`id_servicios_paquete` = ?';
-        $Res = $con->Record($sql, array($id_servicio_paquete));
+            `servicios_paquete`.`id_servicios_paquete` = ?
+            and and `servicios`.`Disponibilidad`=?';
+        $Res = $con->Record($sql, array($id_servicio_paquete,'S'));
         return $Res;
     }
 
