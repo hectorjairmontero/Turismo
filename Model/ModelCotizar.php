@@ -6,7 +6,52 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelCotizar
 {
 
+    public function VerCabCotizaciones($id_cotizacion)
+    {
+        $Datos=array();
+        $C = atable::Make('cotizacion');
+        $C->Load("id_cotizacion = $id_cotizacion");
+        $Datos['id_cotizacion']=$C->id_cotizacion;
+        $Datos['fecha_inicio']=$C->fecha_inicio;
+        $Datos['fecha_cotizacion']=$C->fecha_cotizacion;
+        $Datos['id_cliente']=$C->id_cliente;
+        $Datos['precio']=$C->precio;
+        return $Datos;
+    }
+
+    public function VerCabCotizacionClienteAprobadas($id_cliente)
+    {
+        $con   = App::$base;
+        $sql   = 'SELECT 
+            `cotizacion`.`id_cotizacion`,
+            `cotizacion`.`Fecha_cotizacion`,
+            `cotizacion`.`Fecha_inicio`,
+            `cotizacion`.`Descripcion`,
+            FORMAT(`cotizacion`.`precio`,0) as `precio`
+          FROM
+            `cotizacion`
+          WHERE
+            `cotizacion`.`Estado` = ?
+              and
+              `cotizacion`.`id_cliente`=?';
+        $Datos = $con->TablaDatos($sql, array('A', $id_cliente));
+        return $Datos;
+    }
+
     public function VerTotalCotizacion($id_cotizacion)
+    {
+        $con = App::$base;
+        $sql = 'SELECT SUM((
+                `cotizacion_servicio`.`Precio`*`cotizacion_servicio`.`cantidad`)) as "Total"
+              FROM
+                `cotizacion_servicio`
+              WHERE
+                `cotizacion_servicio`.`id_cotizacion` = ?';
+        $Res = $con->Record($sql, array($id_cotizacion));
+        return $Res['Total'];
+    }
+
+    public function VerTotalCotizacionAprobada($id_cotizacion)
     {
         $con = App::$base;
         $sql = 'SELECT SUM((
@@ -41,15 +86,37 @@ class ModelCotizar
         $P->Save();
     }
 
-    public function DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion)
+    public function DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion, $Precio = NULL)
     {
 
         $P                = atable::Make('cotizacion_servicio');
         $P->id_cotizacion = $id_cotizacion;
         $P->id_servicio   = $id_servicio;
         $P->cantidad      = $cantidad;
+        $P->precio        = $Precio;
         $P->Save();
         return $P->id_cotizacion_servicio;
+    }
+
+    public function DeleteDetalleCotizacion($id_cotizacion)
+    {
+
+        $P   = atable::Make('cotizacion_servicio');
+        $con = App::$base;
+        $sql = 'DELETE FROM `cotizacion_servicio`
+                WHERE `cotizacion_servicio`.`id_cotizacion`=?';
+
+        $con->dosql($sql, array($id_cotizacion));
+    }
+
+    public function DeleteCotizacion($id_cotizacion)
+    {
+
+        $con = App::$base;
+        $sql = 'DELETE FROM `cotizacion`
+                WHERE `cotizacion`.`id_cotizacion` = ?';
+
+        $con->dosql($sql, array($id_cotizacion));
     }
 
     public function actualizarEstadoCotizacion($id_cotizacion, $Precio)
@@ -117,6 +184,26 @@ class ModelCotizar
                 `servicios`.`Valor`,
                 ( `cotizacion_servicio`.`cantidad`*
                 `servicios`.`Valor`) as "total"
+              FROM
+                `cotizacion_servicio`
+                INNER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
+                INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+              WHERE
+                `cotizacion_servicio`.`id_cotizacion` = ?';
+        $Datos = $con->TablaDatos($sql, array($id_cotizacion));
+        return $Datos;
+    }
+
+    public function VerCotizacionAprobadas($id_cotizacion)
+    {
+        $con   = App::$base;
+        $sql   = 'SELECT 
+                `proveedor`.`Nombre` as "Proveedor",
+                `servicios`.`Nombre` as "Servicio",
+                FORMAT(`cotizacion_servicio`.`cantidad`,0),
+                FORMAT(`cotizacion_servicio`.`Precio`,0),
+                FORMAT(( `cotizacion_servicio`.`cantidad`*
+                `cotizacion_servicio`.`Precio`),0) as "total"
               FROM
                 `cotizacion_servicio`
                 INNER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)

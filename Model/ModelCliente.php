@@ -4,11 +4,28 @@ include_once 'BaseDatos/conexion.php';
 include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_table.php';
 
 class ModelCliente
-{
+{   
+    public function BuscarUsuarioNombreDocumento($NombreoDocumento)
+    {
+        $con = App::$base;
+        $sql="SELECT 
+                `cliente`.`id_cliente` AS `id`,
+                UPPER(CONCAT(`cliente`.`Nombres`,' ', `cliente`.`Apellidos`)) AS `value`
+              FROM
+                `cliente`
+              WHERE
+                `cliente`.`Numero_Id` LIKE '%$NombreoDocumento%' or 
+                `cliente`.`Nombres` LIKE '%$NombreoDocumento%' or 
+                `cliente`.`Apellidos` LIKE '%$NombreoDocumento%'"
+                . "order by `cliente`.`Nombres`";
+        $res = $con->Records($sql,array());
+        return $res;
+    }
 
     public function RegistrarClientes($Nombres, $Apellidos, $TipoID, $Numero_Id, $Email,$Telefono)
     {
         $C            = atable::Make('cliente');
+        $C->Load("Numero_Id = $Numero_Id");
         $C->nombres   = $Nombres;
         $C->apellidos = $Apellidos;
         $C->tipoid    = $TipoID;

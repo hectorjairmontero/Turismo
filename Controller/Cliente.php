@@ -14,5 +14,10 @@ class Cliente
         $Datos = $Cliente->buscarusuariodocumento($Documento);
         return $Datos;
     }
-    
+    public function BuscarUsuarioNombreDocumento($NombreoDocumento)
+    {
+        $Cliente = new ModelCliente();
+        $Datos = $Cliente->BuscarUsuarioNombreDocumento($NombreoDocumento);
+        return $Datos;
+    }
 }

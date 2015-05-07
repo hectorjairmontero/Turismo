@@ -6,10 +6,10 @@ class Reserva
 {
     
 
-    public function Reservar($id_paquete,$id_cliente,$valor,$Fecha_pedido,$Fecha_reserva,$Estado,$Pago)
+    public function Reservar($id_paquete,$id_cliente,$valor,$Fecha_pedido,$Fecha_reserva,$Estado,$Pago,$cab_cotizacion=NULL)
     {
         $Reservar = new ModelReserva();
-        $id=$Reservar->Reserva($id_paquete, $id_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago);
+        $id=$Reservar->Reserva($id_paquete, $id_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago,$cab_cotizacion);
         return $id;
     }
     public function VerCotizacion($id_cotizacion)

@@ -4,8 +4,29 @@ include_once '../Model/ModelCotizar.php';
 include_once '../Controller/Correo.php';
 
 class Cotizar
-{
-
+{   
+    public function VerCabCotizaciones($id_cotizacion)
+    {
+        $Cotizaion = new ModelCotizar();
+        $Res = $Cotizaion->VerCabCotizaciones($id_cotizacion);
+        return $Res;
+    }
+    public function GenerarReservaCotizacion($id_cotizacion)
+    {
+        
+    }
+    public function EliminarCotizacion($id_cotizacion)
+    {
+        $Cotizaion = new ModelCotizar();
+        $Cotizaion->DeleteCotizacion($id_cotizacion);
+        $Cotizaion->DeleteDetalleCotizacion($id_cotizacion);
+    }
+    public function VerCabCotizacionClienteAprobadas($id_cliente)
+    {
+        $Cotizacion = new ModelCotizar();
+        $Res        = $Cotizacion->VerCabCotizacionClienteAprobadas($id_cliente);
+        return $Res;
+    }
     public function VerTotal($id_cotizacion)
     {
         $Cotizacion = new ModelCotizar();
@@ -58,10 +79,10 @@ class Cotizar
         return $id;
     }
 
-    public function DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion)
+    public function DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion,$Precio=NULL)
     {
         $Cab = new ModelCotizar();
-        $id  = $Cab->DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion);
+        $id  = $Cab->DetalleCotizacion($id_servicio, $cantidad, $id_cotizacion,$Precio);
         $this->actualizarPrecio($id_cotizacion);
         return $id;
     }
@@ -77,6 +98,12 @@ class Cotizar
     {
         $Datos = new ModelCotizar();
         $Res   = $Datos->VerCotizacion($id_cotizacion);
+        return $Res;
+    }
+    public function VerCotizacionAprobadas($id_cotizacion)
+    {
+        $Datos = new ModelCotizar();
+        $Res   = $Datos->VerCotizacionAprobadas($id_cotizacion);
         return $Res;
     }
 

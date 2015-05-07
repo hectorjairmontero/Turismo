@@ -16,3 +16,6 @@ Rewriterule ^Ver_paquetesProveedor.html$ ver_paquetes/Listado.html
 Rewriterule ^NuevoPaquete.html$ armar_paquetes/NuevoPaquete.html
 Rewriterule ^AutorizarCliente.html$ AutorizarCotizacion/AutorizarCliente.html
 Rewriterule ^AutorizarServicios.html$ AutorizarServicios/AutorizarServicios.html
+Rewriterule ^AprobarCotizacion.html$ Cliente/AprobarCotizacion.html
+Rewriterule ^GenerarReserva.html$ Cliente/GenerarReserva.html
+

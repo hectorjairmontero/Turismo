@@ -6,7 +6,7 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelReserva
 {
 
-    public function Reserva($Fk_paquete, $fk_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago)
+    public function Reserva($Fk_paquete, $fk_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago,$cab_cotizacion=NULL)
     {
         $R = atable::Make('reserva');
         $R->fk_paquete=$Fk_paquete;
@@ -16,6 +16,7 @@ class ModelReserva
         $R->fecha_reserva=$Fecha_reserva; 
         $R->estado=$Estado; 
         $R->pago=$Pago;
+        $R->fk_cab_cotizacion=$cab_cotizacion;
         $R->Save();
         return $R->id_reserva;
     }
