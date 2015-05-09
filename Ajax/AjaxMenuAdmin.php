@@ -22,7 +22,7 @@
             <li><a href="AutorizarCliente.html">Autorizar cotizacion</a></li>
             <li><a href="AprobarCotizacion.html">Aprobar cotizacion</a></li>
             <li><a href="GenerarReserva.html">Generar reserva</a></li>
-            <li><a href="#">Verificar pagos</a></li>
+            <li><a href="Reservas.html">Ver reservas</a></li>
         </ul>
     </li>
 

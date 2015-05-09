@@ -18,4 +18,5 @@ Rewriterule ^AutorizarCliente.html$ AutorizarCotizacion/AutorizarCliente.html
 Rewriterule ^AutorizarServicios.html$ AutorizarServicios/AutorizarServicios.html
 Rewriterule ^AprobarCotizacion.html$ Cliente/AprobarCotizacion.html
 Rewriterule ^GenerarReserva.html$ Cliente/GenerarReserva.html
+Rewriterule ^Reservas.html$ Cliente/Reservas.html
 

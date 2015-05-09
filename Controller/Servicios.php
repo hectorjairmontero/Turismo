@@ -84,6 +84,19 @@ class Servicios
         $Datos = $Paquete->VerServiciosProveedor($id_proveedor);
         return $Datos;
     }
+    public function VerServiciosProveedorSoap($id_proveedor, $Cod_proveedor = '')
+    {
+        $Paquete = new ModelServicios();
+        if ($Cod_proveedor != '')
+        {
+            $Proveedor    = new Proveedor();
+            $Res          = $Proveedor->InfoProveedor($Cod_proveedor);
+            $id_proveedor = $Res['id_proveedor'];
+        }
+        $Datos = $Paquete->VerServiciosProveedorSoap($id_proveedor);
+        return $Datos;
+    }
+    
     public function VerServiciosProveedorAdmin($id_proveedor, $Cod_proveedor = '')
     {
         $Paquete = new ModelServicios();

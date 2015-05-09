@@ -223,7 +223,7 @@ class ModelCotizar
                 `servicios`.`Nombre`) AS `Servicio`,
                 
                 concat(\'<input type="text"  required="required" class="form-control money" name="cantidad[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', FORMAT(`cotizacion_servicio`.`cantidad`,0), \'">\') AS `cantidad`,
-                concat(\'<input type="text"  required="required" class="form-control money" name="Valor[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', FORMAT(`servicios`.`Valor`,0), \'">\') AS `Valor`,
+                concat(\'<input type="text"  required="required" class="form-control money" name="Valor[\', `cotizacion_servicio`.`id_cotizacion_servicio`, \']" value="\', TRUNCATE(`servicios`.`Valor`,0), \'">\') AS `Valor`,
                 (`cotizacion_servicio`.`cantidad` * `servicios`.`Valor`) AS `total`
               FROM
                 `cotizacion_servicio`

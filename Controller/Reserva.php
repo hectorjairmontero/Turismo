@@ -5,7 +5,19 @@ include_once '../Controller/Servicios.php';
 class Reserva
 {
     
-
+    public function VerReservasHechas()
+    {
+        $Reservar = new ModelReserva();
+        return $Reservar->VerReservasHechas();
+    }
+    public function ReservarPaquete($id_paquete,$id_cliente,$Fecha_reserva,$Pago)
+    {
+        $Reservar = new ModelReserva();
+        $Servicios = new Servicios();
+        $Datos=$Servicios->VerDescripcionPaquete($id_paquete);
+        $id=$Reservar->ReservarPaquete($id_paquete,$id_cliente,$Datos['Valor'],'now()',$Fecha_reserva,'Confirmado',$Pago);
+        return $id;
+    }
     public function Reservar($id_paquete,$id_cliente,$valor,$Fecha_pedido,$Fecha_reserva,$Estado,$Pago,$cab_cotizacion=NULL)
     {
         $Reservar = new ModelReserva();

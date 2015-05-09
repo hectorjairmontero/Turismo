@@ -135,6 +135,22 @@ class ModelServicios
         $Res = $con->Records($sql, array($id_proveedor,'S'));
         return $Res;
     }
+    public function VerServiciosProveedorSoap($id_proveedor)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                `servicios`.`id_servicios`,
+                `servicios`.`Nombre`,`servicios`.`Valor`,
+                `servicios`.`Estado`, 
+                `servicios`.`Disponibilidad`
+                FROM
+                 `servicios`
+                where 
+                `servicios`.`fk_Proveedor`=?
+                order by `servicios`.`id_servicios` DESC';
+        $Res = $con->Records($sql, array($id_proveedor));
+        return $Res;
+    }
     public function VerServiciosProveedoradmin($id_proveedor)
     {
         $con = App::$base;
@@ -223,17 +239,19 @@ class ModelServicios
     {
         $con = App::$base;
         $sql = 'SELECT 
-            `paquete`.`id_paquete`,
-            `paquete`.`Nombre`,
-            `paquete`.`Valor`,
-            `paquete`.`Fecha_inicio`,
-            `paquete`.`Fecha_fin`,
-            `paquete`.`Descripcion`,
-            `paquete`.`Disponible`,
-            `paquete`.`Estado`,
-            `paquete`.`id_Muncipio`
-          FROM
-            `paquete`
+                `paquete`.`id_paquete`,
+                `paquete`.`Nombre`,
+                `paquete`.`Valor`,
+                `paquete`.`Fecha_inicio`,
+                `paquete`.`Fecha_fin`,
+                `paquete`.`Descripcion`,
+                `paquete`.`Disponible`,
+                `paquete`.`Estado`,
+                `municipio`.`nombreMunicipio`,
+                `paquete`.`urlFoto`
+              FROM
+                `paquete`
+                INNER JOIN `municipio` ON (`paquete`.`id_Muncipio` = `municipio`.`idmunicipio`)
             where `paquete`.`id_paquete`=?';
         $Res = $con->Record($sql, array($id_paquete));
         return $Res;

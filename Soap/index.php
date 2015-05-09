@@ -38,8 +38,7 @@ function GuardarServicios($cod_proveedor, $nombre_servicio, $valor)
 function VerServiciosProveedor($cod_proveedor)
 {
     $Ver = new Servicios();
-    $Fomato = new Visual();
-    $Res=$Ver->VerServiciosProveedor('', $cod_proveedor);
+    $Res=$Ver->VerServiciosProveedorSoap('', $cod_proveedor);
     return json_encode($Res);
 }
 

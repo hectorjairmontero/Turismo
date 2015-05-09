@@ -5,9 +5,6 @@ $cotizar = new Cotizar();
 $Render = new Visual();
 $id_cotizacion=$_POST['id'];
 $Res = $cotizar->VerCotizacionEdit($id_cotizacion);
-echo '<pre>';
-var_dump($Res);
-exit();
 $Res =$Render->FormatoNumerico($Res,4,'$',0,'.',',');
 $Total=$cotizar->Total($id_cotizacion);
 
