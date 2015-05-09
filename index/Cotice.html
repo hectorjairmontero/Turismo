@@ -42,7 +42,7 @@
                     </ul>
                 </div>
             </nav>
-            <div class="panel panel-default">
+            <div class="panel panel-default" >
                 <div class="panel-body" id="panel1">
                     <div class="row">
                         <div class="col-lg-12">
@@ -66,135 +66,140 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-                                    <form id="RegistroUsuario">
-                                        <div class="col-lg-4">
-                                            <label from="Nombre">Nombre</label>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control" name="Nombre" id="Nombre"/>
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <label from="Apellidos">Apellidos</label>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control" name="Apellidos" id="Apellidos"/>
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <label from="tipoid">Tipo de documento</label>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <select class="form-control" name="tipoid" id="tipoid">
-                                                <option value="Tarjeta de indentidad">Tarjeta de indentidad</option>
-                                                <option value="Cedula de ciudadania">Cedula de ciudadania</option>
-                                                <option value="Cedula de extranjeria">Cedula de extranjeria</option>
-                                                <option value="Pasaporte">Pasaporte</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <label from="Numeroid">Numero de identificación</label>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <input type="number" class="form-control"  name="Numeroid" id="Numeroid"/>
-                                        </div>
-
-
-                                        <div class="col-lg-4">
-                                            <label from="Email">Correo electronico</label>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control" name="email" id="email"/>
-                                        </div>
-
-
-                                        <div class="col-lg-4">
-                                            <label from="Telefono">Telefono</label>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <input type="tel" class="form-control" name="Telefono" id="Telefono"/>
-                                        </div>
-                                        <center>
-                                            <div class="row">
-                                                <button class="btn btn-success" onclick="registrarse()">Registrarse</button>
-                                            </div>
-                                        </center>
-
-
-                                    </form>
-                                    <form id="LogUsuario" >
-                                        <h1 align="center">Si ya estas registrado</h1>
-                                        <div class="row">
+                                    <div  id="Cotizar">
+                                        <form id="RegistroUsuario">
                                             <div class="col-lg-4">
-                                                <label from="Telefono">Numero de documento</label>
+                                                <label from="Nombre">Nombre</label>
                                             </div>
                                             <div class="col-lg-8">
-                                                <input type="text" value="1061716139" placeholder="Ingrese su numero de documento para confirmar" class="form-control" name="Numero_cedula" id="Numero_cedula"/>
+                                                <input type="text" class="form-control" name="Nombre" id="Nombre"/>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <label from="Apellidos">Apellidos</label>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" name="Apellidos" id="Apellidos"/>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <label from="tipoid">Tipo de documento</label>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <select class="form-control" name="tipoid" id="tipoid">
+                                                    <option value="Tarjeta de indentidad">Tarjeta de indentidad</option>
+                                                    <option value="Cedula de ciudadania">Cedula de ciudadania</option>
+                                                    <option value="Cedula de extranjeria">Cedula de extranjeria</option>
+                                                    <option value="Pasaporte">Pasaporte</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <label from="Numeroid">Numero de identificación</label>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <input type="number" class="form-control"  name="Numeroid" id="Numeroid"/>
+                                            </div>
+
+
+                                            <div class="col-lg-4">
+                                                <label from="Email">Correo electronico</label>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" name="email" id="email"/>
+                                            </div>
+
+
+                                            <div class="col-lg-4">
+                                                <label from="Telefono">Telefono</label>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <input type="tel" class="form-control" name="Telefono" id="Telefono"/>
                                             </div>
                                             <center>
                                                 <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <button class="btn btn-primary" onclick="validarusuario()">Iniciar sesión</button>
-                                                    </div>
+                                                    <center><button class="btn btn-success" onclick="registrarse()">Registrarse</button></center>
                                                 </div>
                                             </center>
-                                        </div>
-                                    </form>
-                                    <div id="DescripcionCotizacion">
-                                        <form id="FormDescripcionCotizacion">
-                                            <div class="col-lg-2">
-                                                <label>Servicio</label>
-                                            </div>
-                                            <div class="col-lg-10">
-                                                <input class="form-control" type="date" name="FechaInicio" id="FechaInicio" placeholder="Ingrese la fecha en la que desea realziar su viaje"/>
-                                            </div>
 
-                                            <div class="col-lg-2">
-                                                <label>Descripcion</label>
-                                            </div>
-                                            <div class="col-lg-10">
-                                                <textarea class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" placeholder="Ingrese una breve descripcion de su cotización"></textarea>
-                                            </div>
-                                            <input type="hidden" id="codusuario" name="codusuario">
-                                            <button class="btn btn-primary" onclick="GuardarCotizacion()">Generar</button>
+
                                         </form>
-                                    </div>
-                                    <div id="ArmarCotizacion">
-                                        <form id="ArmarCotizaciones">
+                                        <form id="LogUsuario" >
+                                            <h1 align="center">Si ya estas registrado</h1>
                                             <div class="row">
-                                                <div id="proveedor">
+                                                <div class="col-lg-4">
+                                                    <label from="Telefono">Numero de documento</label>
                                                 </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" value="1061716139" placeholder="Ingrese su numero de documento para confirmar" class="form-control" name="Numero_cedula" id="Numero_cedula"/>
+                                                </div>
+                                                <center>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <button class="btn btn-primary" onclick="validarusuario()">Iniciar sesión</button>
+                                                        </div>
+                                                    </div>
+                                                </center>
                                             </div>
-
-                                            <div class="row">
-
+                                        </form>
+                                        <div id="DescripcionCotizacion">
+                                            <form id="FormDescripcionCotizacion">
                                                 <div class="col-lg-2">
                                                     <label>Servicio</label>
                                                 </div>
                                                 <div class="col-lg-10">
-                                                    <div id="servicios">
-
-                                                        <select class="form-control"></select>
-                                                    </div>
+                                                    <input class="form-control" type="date" name="FechaInicio" id="FechaInicio" placeholder="Ingrese la fecha en la que desea realziar su viaje"/>
                                                 </div>
-                                            </div>
 
-                                            <div class="row">
                                                 <div class="col-lg-2">
-                                                    <label from="Proveedor">Seleccione una cantidad</label>
+                                                    <label>Descripcion</label>
                                                 </div>
                                                 <div class="col-lg-10">
-                                                    <input type="number" class="form-control" required="required" id="cantidad" name="cantida" placeholder="que cantidad desea cotizar"/>
+                                                    <textarea class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" placeholder="Ingrese una breve descripcion de su cotización"></textarea>
                                                 </div>
-                                            </div>
-                                            <input type="hidden" name="CodCabCotizacion" id="CodCabCotizacion" />
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <button class="btn btn-success" onclick="GuardarDetalleCotizacion()">Guardar</button>
+                                                <input type="hidden" id="codusuario" name="codusuario">
+                                                <center><button class="btn btn-primary" onclick="GuardarCotizacion()">Generar</button></center>
+                                            </form>
+                                        </div>
+                                        <div id="ArmarCotizacion">
+                                            <form id="ArmarCotizaciones">
+                                                <div class="row">
+                                                    <div id="proveedor">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </form>
-                                        <div id="Listad"></div>
+
+                                                <div class="row">
+
+                                                    <div class="col-lg-2">
+                                                        <label>Servicio</label>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <div id="servicios">
+
+                                                            <select class="form-control"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <label from="Proveedor">Seleccione una cantidad</label>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <input type="number" class="form-control" required="required" id="cantidad" name="cantida" placeholder="que cantidad desea cotizar"/>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="CodCabCotizacion" id="CodCabCotizacion" />
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <center>
+                                                            <button class="btn btn-success" onclick="GuardarDetalleCotizacion()">Guardar producto</button>
+                                                            <button class="btn btn-warning" onclick="">Enviar cotizacion</button>
+                                                        </center>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div id="Listad"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

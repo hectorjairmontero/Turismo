@@ -95,13 +95,17 @@ function validarusuario()
         }
     });
 }
+function recargarpagina()
+{
+    $('#Cotizar').html('Se ha enviado su cotizacion. En breve un asesor se contactara con usted.');
+}
 $(function ()
 {
     $('#LogUsuario').submit(false);
     $('#RegistroUsuario').submit(false);
     $('#ArmarCotizacion').submit(false);
     $('#DescripcionCotizacion').submit(false);
-
+    
     $('#ArmarCotizacion').hide();
     $('#DescripcionCotizacion').hide();
 

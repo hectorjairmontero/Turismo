@@ -48,14 +48,17 @@ class Visual
 
     public function FormatoNumerico($ArrayDatos, $indice, $Signo = '', $Precicion = 2, $Miles = '.', $Decimal = ',')//Primero debe ser pasado a formatoselect
     {
-        $Res = array();
-        foreach ($ArrayDatos as $Datos)
+        if (count($ArrayDatos) > 0)
         {
-            $Number         = $Datos[$indice];
-            $Datos[$indice] = $Signo . number_format($Number, $Precicion, $Miles, $Decimal);
-            $Res[]          = $Datos;
+            $Res = array();
+            foreach ($ArrayDatos as $Datos)
+            {
+                $Number         = $Datos[$indice];
+                $Datos[$indice] = $Signo . number_format($Number, $Precicion, $Miles, $Decimal);
+                $Res[]          = $Datos;
+            }
+            return $Res;
         }
-        return $Res;
     }
 
     public function FunctionTable($Datos, $id, $function, $image)

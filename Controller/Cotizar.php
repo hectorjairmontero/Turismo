@@ -19,7 +19,6 @@ class Cotizar
     {
         $Cotizaion = new ModelCotizar();
         $Cotizaion->DeleteCotizacion($id_cotizacion);
-        $Cotizaion->DeleteDetalleCotizacion($id_cotizacion);
     }
     public function VerCabCotizacionClienteAprobadas($id_cliente)
     {

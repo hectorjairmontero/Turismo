@@ -6,7 +6,105 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelReserva
 {
 
+    public function ReservasPaquetes($id_reserva)
+    {
+        $con = App::$base;
+         $sql = 'SELECT 
+                `servicios`.`Nombre` AS `servicio`,
+                `proveedor`.`Nombre` AS `proveedor`,
+                `proveedor`.`Direccion`,
+                `proveedor`.`Telefono`,
+                `servicios_paquete`.`cantidad_servicios` AS `cantidad`,
+                `servicios_paquete`.`valor_unitario_servicio` AS `valor`
+              FROM
+                `servicios`
+                INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+                INNER JOIN `servicios_paquete` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
+                INNER JOIN `paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+                INNER JOIN `reserva` ON (`paquete`.`id_paquete` = `reserva`.`Fk_paquete`)
+                where 
+                `reserva`.`Id_reserva`=?';
+        $Res = $con->TablaDatos($sql, array($id_reserva));
+        return $Res;
+    }
+
+    function ReservaHecha($id_reserva)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                    `servicios`.`Nombre` as servicio,
+                      `proveedor`.`Nombre` as proveedor,
+                      `proveedor`.`Direccion`,
+                      `proveedor`.`Telefono`,
+                      `cotizacion_servicio`.`cantidad` as cantidad,
+                      `cotizacion_servicio`.`Precio` as valor
+
+                    FROM
+                      `cotizacion_servicio`
+                      INNER JOIN `cotizacion` ON (`cotizacion_servicio`.`id_cotizacion` = `cotizacion`.`id_cotizacion`)
+                      INNER JOIN `reserva` ON (`cotizacion`.`id_cotizacion` = `reserva`.`fk_cab_cotizacion`)
+                      INNER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
+                      INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+                where 
+                `reserva`.`Id_reserva`=?';
+        $Res = $con->Records($sql, array($id_reserva));
+        return $Res;
+    }
+    public function ReservasCotizacion($id_reserva)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                    `servicios`.`Nombre` as servicio,
+                      `proveedor`.`Nombre` as proveedor,
+                      `proveedor`.`Direccion`,
+                      `proveedor`.`Telefono`,
+                      `cotizacion_servicio`.`cantidad` as cantidad,
+                      `cotizacion_servicio`.`Precio` as valor
+
+                    FROM
+                      `cotizacion_servicio`
+                      INNER JOIN `cotizacion` ON (`cotizacion_servicio`.`id_cotizacion` = `cotizacion`.`id_cotizacion`)
+                      INNER JOIN `reserva` ON (`cotizacion`.`id_cotizacion` = `reserva`.`fk_cab_cotizacion`)
+                      INNER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
+                      INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+                where 
+                `reserva`.`Id_reserva`=?';
+        $Res = $con->TablaDatos($sql, array($id_reserva));
+        return $Res;
+    }
+
     public function VerReservasHechas()
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                `reserva`.`Id_reserva`,
+                CONCAT(`cliente`.`Nombres`," ", `cliente`.`Apellidos`) AS `Nombre`,
+                `cliente`.`Email`,
+                `cliente`.`Telefono`,
+                `reserva`.`valor`,
+                date(`reserva`.`Fecha_reserva`),
+                `reserva`.`Estado`,
+                (
+                      case `reserva`.`Pago` 
+                  when "N" THEN "No ha cancelado"
+                  when "S" THEN "Pago"
+                  end
+                ) as Pago,
+                (
+                      case `reserva`.`tipo` 
+                  when "P" THEN "Paquete"
+                  when "C" THEN "Cotizacion"
+                  end
+                ) as Tipo  
+
+              FROM
+                `reserva`
+                INNER JOIN `cliente` ON (`reserva`.`fk_cliente` = `cliente`.`id_cliente`)
+                 order BY `reserva`.`Fecha_reserva` ASC, Pago ASC, `reserva`.`valor` DESC';
+        $Res = $con->TablaDatos($sql, array());
+        return $Res;
+    }
+    public function VerReservasHecha($id_reserva)
     {
         $con = App::$base;
         $sql = 'SELECT 
@@ -32,8 +130,9 @@ class ModelReserva
 
               FROM
                 `reserva`
-                INNER JOIN `cliente` ON (`reserva`.`fk_cliente` = `cliente`.`id_cliente`)';
-        $Res = $con->TablaDatos($sql, array());
+                INNER JOIN `cliente` ON (`reserva`.`fk_cliente` = `cliente`.`id_cliente`)
+                where `reserva`.`Id_reserva`=?';
+        $Res = $con->Record($sql, array($id_reserva));
         return $Res;
     }
 
@@ -79,7 +178,7 @@ class ModelReserva
         $R->Load('Id_reserva=' . $Id_reserva);
         if (!is_null($R->id_reserva))
         {
-            $R->Pago   = 'S';
+            $R->pago   = 'S';
             $R->estado = 'Confirmado';
             $R->Save();
         }

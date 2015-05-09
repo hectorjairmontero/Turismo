@@ -97,26 +97,12 @@ class ModelCotizar
         $P->Save();
         return $P->id_cotizacion_servicio;
     }
-
-    public function DeleteDetalleCotizacion($id_cotizacion)
-    {
-
-        $P   = atable::Make('cotizacion_servicio');
-        $con = App::$base;
-        $sql = 'DELETE FROM `cotizacion_servicio`
-                WHERE `cotizacion_servicio`.`id_cotizacion`=?';
-
-        $con->dosql($sql, array($id_cotizacion));
-    }
-
     public function DeleteCotizacion($id_cotizacion)
     {
-
-        $con = App::$base;
-        $sql = 'DELETE FROM `cotizacion`
-                WHERE `cotizacion`.`id_cotizacion` = ?';
-
-        $con->dosql($sql, array($id_cotizacion));
+        $P         = atable::Make('cotizacion');
+        $P->Load("id_cotizacion=$id_cotizacion");
+        $P->estado = 'R';
+        $P->Save();
     }
 
     public function actualizarEstadoCotizacion($id_cotizacion, $Precio)
