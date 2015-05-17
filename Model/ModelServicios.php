@@ -102,6 +102,7 @@ class ModelServicios
         $con = App::$base;
         $sql = 'SELECT 
             `reserva`.`Id_reserva`,
+            `reserva`.`Id_reserva` as imp,
             CONCAT(IFNULL(`proveedor`.`Nombre`, ""), IFNULL(`proveedor1`.`Nombre`, "")) AS `nombre`,
             `reserva`.`valor`,
           CASE `reserva`.`tipo`

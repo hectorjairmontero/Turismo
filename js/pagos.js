@@ -1,3 +1,7 @@
+function imprimir(asd)
+{
+    window.print();
+}
 function Detalle(cod)
 {
     $.ajax({
