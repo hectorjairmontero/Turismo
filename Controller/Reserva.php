@@ -11,10 +11,11 @@ class Reserva
         $Reservar = new ModelReserva();
         return $Reservar->VerReservasHechas();
     }
+
     public function PagarReserva($id_reserva)
     {
         $Reservar = new ModelReserva();
-        $id=$Reservar->Pagar($id_reserva);
+        $id       = $Reservar->Pagar($id_reserva);
     }
 
     public function ReservarPaquete($id_paquete, $id_cliente, $Fecha_reserva, $Pago)
@@ -97,10 +98,54 @@ class Reserva
         $Res = (array('Cab' => $Cab, 'Detalle' => $Detalle));
         return ($Res);
     }
-    public function VerReservasPagasProveedores($FechaInicio='',$FechaFin='')
+
+    public function VerReservasPagasProveedores($FechaInicio = '', $FechaFin = '')
     {
         $Reservas = new ModelServicios();
-        $Datos = $Reservas->VerReservasPagasProveedores($FechaInicio,$FechaFin);
+        $Datos    = $Reservas->VerReservasPagasProveedores($FechaInicio, $FechaFin);
+        return $Datos;
+    }
+
+    private function VerDetalleReservaCotizacion($id_reserva)
+    {
+        $Reservas = new ModelServicios();
+        $Datos    = $Reservas->VerDetalleReservaCotizacion($id_reserva);
+        return $Datos;
+    }
+
+    private function VerDetalleReservaPaquete($id_reserva)
+    {
+        $Reservas = new ModelServicios();
+        $Datos    = $Reservas->VerDetalleReservaPaquete($id_reserva);
+        return $Datos;
+    }
+
+    private function tipo($id_reserva)
+    {
+        $Reservas = new ModelServicios();
+        $Datos    = $Reservas->tipo($id_reserva);
+        return $Datos;
+    }
+
+    public function VerdetalleReserva($id_reserva)
+    {
+        $tipo  = $this->tipo($id_reserva);
+        $Datos = '';
+        if ($tipo == 'C')
+        {
+            $Datos = $this->VerDetalleReservaCotizacion($id_reserva);
+        }
+        else
+        {
+            $Datos = $this->VerDetalleReservaPaquete($id_reserva);
+        }
+        return $Datos;
+    }
+
+    public function DatosReserva($id_reserva)
+    {
+        $Reservas = new ModelServicios();
+        $Datos    = $Reservas->DatosReserva($id_reserva);
         return $Datos;
     }
 

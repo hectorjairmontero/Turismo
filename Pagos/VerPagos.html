@@ -18,6 +18,7 @@
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/MenuAdmin.js"></script>
+        <script type="text/javascript" src="js/pagos.js"></script>
         <!-- !js-->
 
     </head>
@@ -38,7 +39,38 @@
                     Pagos
                 </div>
                 <div class="panel-body">
-                    Contenido
+                    <div class="container-fluid">
+                        <form id="Fechas">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <label>Fecha de inicio</label>    
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="FechaInicio" id="FechaInicio"class="form-control"/>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <label>Fecha de Fin</label>    
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="FechaFin" id="FechaFin" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <center>
+                                    <button type="button" class="btn btn-success" onclick="Buscar()">Buscar pagos</button>
+                                </center>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div id="Resultados">
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

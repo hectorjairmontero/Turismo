@@ -5,42 +5,123 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 
 class ModelServicios
 {
-    public function CambiarEstadoServicio($est,$id_servicio)
+
+    public function DatosReserva($id_reserva)
     {
-        $S = atable::Make('servicios');
+        $con = App::$base;
+        $sql = 'SELECT 
+            `reserva`.`Id_reserva`,
+            `reserva`.`valor`,
+            `reserva`.`Fecha_pedido`,
+            `reserva`.`Fecha_reserva`,
+            concat(IFNULL(`proveedor1`.`Nombre`, ""), IFNULL(`proveedor`.`Nombre`, "")) AS `Nombre`
+          FROM
+            `reserva`
+            LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+            LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+            LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+            LEFT OUTER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
+            LEFT OUTER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+            LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion`.`id_cotizacion` = `cotizacion_servicio`.`id_cotizacion`)
+            LEFT OUTER JOIN `servicios` `servicios1` ON (`cotizacion_servicio`.`id_servicio` = `servicios1`.`id_servicios`)
+            LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios1`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+          WHERE
+            `reserva`.`Id_reserva` = ? GROUP BY  1';
+        
+        $Res = $con->Record($sql, array($id_reserva));
+        return $Res;
+    }
+
+    public function tipo($id_reserva)
+    {
+        $S = atable::Make('reserva');
+        $S->Load("`reserva`.`Id_reserva`= $id_reserva");
+        return $S->tipo;
+    }
+
+    public function VerDetalleReservaCotizacion($id_reserva)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            `cotizacion`.`Descripcion`,
+            `servicios`.`Nombre`,
+            `reserva`.`Fecha_reserva`,
+            `cotizacion_servicio`.`cantidad`,
+            `cotizacion_servicio`.`Precio`,
+            (`cotizacion_servicio`.`cantidad` * `cotizacion_servicio`.`Precio`) AS `total`
+          FROM
+            `reserva`
+            INNER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+            INNER JOIN `cotizacion_servicio` ON (`cotizacion_servicio`.`id_cotizacion` = `cotizacion`.`id_cotizacion`)
+            INNER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
+            where
+            `reserva`.`Id_reserva` =?';
+        $Res = $con->TablaDatos($sql, array($id_reserva));
+        return $Res;
+    }
+
+    public function VerDetalleReservaPaquete($id_reserva)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            `paquete`.`Nombre` as paquete,
+            `servicios`.`Nombre`,
+            `reserva`.`Fecha_reserva`,
+            `servicios_paquete`.`cantidad_servicios`,
+            `servicios_paquete`.`valor_unitario_servicio`,
+            (`servicios_paquete`.`cantidad_servicios` * `servicios_paquete`.`valor_unitario_servicio`) AS `total`
+          FROM
+            `servicios`
+            INNER JOIN `servicios_paquete` ON (`servicios`.`id_servicios` = `servicios_paquete`.`fk_servicio`)
+            INNER JOIN `paquete` ON (`servicios_paquete`.`fk_paquete` = `paquete`.`id_paquete`)
+            INNER JOIN `reserva` ON (`paquete`.`id_paquete` = `reserva`.`Fk_paquete`)
+          WHERE
+            `reserva`.`Id_reserva` = ?';
+        $Res = $con->TablaDatos($sql, array($id_reserva));
+        return $Res;
+    }
+
+    public function CambiarEstadoServicio($est, $id_servicio)
+    {
+        $S                 = atable::Make('servicios');
         $S->Load('id_servicios =' . $id_servicio);
-        $S->estado=$est;
-        $S->disponibilidad=$est;
+        $S->estado         = $est;
+        $S->disponibilidad = $est;
         $S->Save();
     }
+
     public function Eliminar($id_servicio_paquete)
     {
         $S = atable::Make('servicios_paquete');
         $S->Load('id_servicios_paquete =' . $id_servicio_paquete);
         $S->Delete();
     }
-    public function VerReservasPagasProveedores($FechaInicio='',$FechaFin='')
+
+    public function VerReservasPagasProveedores($FechaInicio = '', $FechaFin = '')
     {
-           $con = App::$base;
+        $con = App::$base;
         $sql = 'SELECT 
-                `reserva`.`Id_reserva`,
-                CONCAT(IFNULL(`proveedor`.`Nombre`, ""), IFNULL(`proveedor1`.`Nombre`, "")) AS `Proveedor`,
-                `reserva`.`valor`
-              FROM
-                `reserva`
-                LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
-                LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion_servicio`.`id_cotizacion` = `cotizacion`.`id_cotizacion`)
-                LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
-                LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
-                LEFT OUTER JOIN `servicios` `servicios1` ON (`servicios_paquete`.`fk_servicio` = `servicios1`.`id_servicios`)
-                LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios1`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
-                LEFT OUTER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
-                LEFT OUTER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
-              WHERE
-                `reserva`.`Estado` = ? AND 
-                `reserva`.`Fecha_reserva` BETWEEN ? AND ?
-              GROUP BY 1';
-        $Res = $con->TablaDatos($sql, array('Confirmado',$FechaInicio,$FechaFin));
+            `reserva`.`Id_reserva`,
+            CONCAT(IFNULL(`proveedor`.`Nombre`, ""), IFNULL(`proveedor1`.`Nombre`, "")) AS `nombre`,
+            `reserva`.`valor`,
+          CASE `reserva`.`tipo`
+          WHEN "C" THEN "Cotizacion"
+          WHEN "P" THEN "Paquete"
+          END as "Tipo"
+          FROM
+            `reserva`
+            LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+            LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion_servicio`.`id_cotizacion` = `cotizacion`.`id_cotizacion`)
+            LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+            LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+            LEFT OUTER JOIN `servicios` `servicios1` ON (`servicios_paquete`.`fk_servicio` = `servicios1`.`id_servicios`)
+            LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios1`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+            LEFT OUTER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
+            LEFT OUTER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+          WHERE
+            `reserva`.`Estado` = ?
+          GROUP BY 1';
+        $Res = $con->TablaDatos($sql, array('Confirmado', $FechaInicio, $FechaFin));
         return $Res;
     }
 
@@ -58,7 +139,7 @@ class ModelServicios
               WHERE
                 `servicios_paquete`.`id_servicios_paquete` = ?
                 and `servicios`.`Disponibilidad`=?';
-        $Res = $con->Record($sql, array($id_servicio_paquete,'S'));
+        $Res = $con->Record($sql, array($id_servicio_paquete, 'S'));
         return $Res;
     }
 
@@ -156,9 +237,10 @@ class ModelServicios
                 and
                 `servicios`.`Disponibilidad`=?
                 order by `servicios`.`id_servicios` DESC';
-        $Res = $con->Records($sql, array($id_proveedor,'S'));
+        $Res = $con->Records($sql, array($id_proveedor, 'S'));
         return $Res;
     }
+
     public function VerServiciosProveedorSoap($id_proveedor)
     {
         $con = App::$base;
@@ -175,6 +257,7 @@ class ModelServicios
         $Res = $con->Records($sql, array($id_proveedor));
         return $Res;
     }
+
     public function VerServiciosProveedoradmin($id_proveedor)
     {
         $con = App::$base;
@@ -323,7 +406,7 @@ class ModelServicios
           WHERE
             `servicios_paquete`.`id_servicios_paquete` = ?
             and and `servicios`.`Disponibilidad`=?';
-        $Res = $con->Record($sql, array($id_servicio_paquete,'S'));
+        $Res = $con->Record($sql, array($id_servicio_paquete, 'S'));
         return $Res;
     }
 
