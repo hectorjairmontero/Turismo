@@ -1,4 +1,10 @@
 var CodUsuario;
+
+function CotizacionFinalizada()
+{
+    alert('Se ha enviado la cotización, un agente se contactará muy pronto con usted.');
+     location.reload();
+}
 function buscarservicios()
 {
     var datos = $('#id_proveedores').val();
@@ -108,5 +114,6 @@ $(function ()
     
     $('#ArmarCotizacion').hide();
     $('#DescripcionCotizacion').hide();
+    $('#FechaInicio').datepicker({dateFormat: 'yy-mm-dd'});
 
 });

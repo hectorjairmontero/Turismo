@@ -19,6 +19,30 @@ class ModelServicios
         $S->Load('id_servicios_paquete =' . $id_servicio_paquete);
         $S->Delete();
     }
+    public function VerReservasPagasProveedores($FechaInicio='',$FechaFin='')
+    {
+           $con = App::$base;
+        $sql = 'SELECT 
+                `reserva`.`Id_reserva`,
+                CONCAT(IFNULL(`proveedor`.`Nombre`, ""), IFNULL(`proveedor1`.`Nombre`, "")) AS `Proveedor`,
+                `reserva`.`valor`
+              FROM
+                `reserva`
+                LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+                LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion_servicio`.`id_cotizacion` = `cotizacion`.`id_cotizacion`)
+                LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+                LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+                LEFT OUTER JOIN `servicios` `servicios1` ON (`servicios_paquete`.`fk_servicio` = `servicios1`.`id_servicios`)
+                LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios1`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+                LEFT OUTER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
+                LEFT OUTER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+              WHERE
+                `reserva`.`Estado` = ? AND 
+                `reserva`.`Fecha_reserva` BETWEEN ? AND ?
+              GROUP BY 1';
+        $Res = $con->TablaDatos($sql, array('Confirmado',$FechaInicio,$FechaFin));
+        return $Res;
+    }
 
     public function VerServicioPaquete($id_servicio_paquete)
     {

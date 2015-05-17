@@ -1,5 +1,7 @@
-function Pagar(cod)
+function generarelpago()
 {
+    var cod = $('#cod').val();
+    $('#myModal').modal('hide');
     $.ajax({
         url: 'Ajax/AjaxPagarCliente.php',
         type: 'post',
@@ -10,6 +12,10 @@ function Pagar(cod)
             Cargar();
         }
     });
+}
+function Pagar(cod)
+{
+    $('#myModal').modal('show');
 }
 function editar(cod)
 {
@@ -30,4 +36,7 @@ function Cargar()
 $(function ()
 {
     Cargar();
+});
+$('#confirm-delete').on('show.bs.modal', function (e) {
+    $(this).find('.danger').attr('href', $(e.relatedTarget).data('href'));
 });
