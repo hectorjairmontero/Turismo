@@ -1,4 +1,4 @@
-Ôªø# SQL Manager 2011 for MySQL 5.1.0.2
+# SQL Manager 2011 for MySQL 5.1.0.2
 # ---------------------------------------
 # Host     : localhost
 # Port     : 3306
@@ -11,6 +11,8 @@
 /*!40101 SET NAMES latin1 */;
 
 SET FOREIGN_KEY_CHECKS=0;
+
+DROP DATABASE IF EXISTS `siit`;
 
 CREATE DATABASE `siit`
     CHARACTER SET 'utf8'
@@ -32,7 +34,7 @@ CREATE TABLE `cliente` (
   `Telefono` VARCHAR(20) COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id_cliente`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=10 AVG_ROW_LENGTH=8192 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=12 AVG_ROW_LENGTH=8192 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -47,12 +49,12 @@ CREATE TABLE `cotizacion` (
   `Fecha_inicio` DATE DEFAULT NULL,
   `Descripcion` TEXT COLLATE utf8_general_ci,
   `precio` DOUBLE(15,3) DEFAULT NULL,
-  `Estado` VARCHAR(20) COLLATE utf8_general_ci DEFAULT 'P' COMMENT 'P=Pendiente\r\nA=Aprobado',
+  `Estado` VARCHAR(20) COLLATE utf8_general_ci DEFAULT 'P' COMMENT 'P=Pendiente\r\nA=Aprobado\r\nR=Reservado',
   PRIMARY KEY (`id_cotizacion`),
   KEY `id_usuario` (`id_cliente`),
   CONSTRAINT `cotizacion_fk1` FOREIGN KEY (`id_cliente`) REFERENCES cliente (`id_cliente`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=18 AVG_ROW_LENGTH=1820 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=16 AVG_ROW_LENGTH=1170 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -68,7 +70,7 @@ CREATE TABLE `cotizacion_servicio` (
   `Precio` DOUBLE(15,3) DEFAULT NULL,
   PRIMARY KEY (`id_cotizacion_servicio`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=29 AVG_ROW_LENGTH=1260 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=13 AVG_ROW_LENGTH=1489 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -120,7 +122,7 @@ CREATE TABLE `paquete` (
   KEY `id_Muncipio` (`id_Muncipio`),
   CONSTRAINT `paquete_fk1` FOREIGN KEY (`id_Muncipio`) REFERENCES municipio (`idmunicipio`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=65 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=2 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -143,7 +145,7 @@ CREATE TABLE `proveedor` (
   UNIQUE KEY `Codigo` (`Codigo`),
   UNIQUE KEY `Codigo_2` (`Codigo`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=12 AVG_ROW_LENGTH=5461 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=2 AVG_ROW_LENGTH=5461 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -161,12 +163,13 @@ CREATE TABLE `reserva` (
   `Fecha_reserva` DATE NOT NULL COMMENT 'para cuando estaria tomando el paquete',
   `Estado` ENUM('Cotizacion','Confirmado','No confirmado') NOT NULL COMMENT 'Aqui miramos si el cliente solo queria cotizar, si cotizo pero aun no confirma su compra y si confirma su compra del paquete',
   `Pago` CHAR(20) COLLATE latin1_swedish_ci DEFAULT 'N' COMMENT 'S= si ha pagado\r\nN= no ha pagado',
+  `tipo` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'P' COMMENT 'P=Paquete\r\nC=Cotizacion',
   PRIMARY KEY (`Id_reserva`),
   KEY `Fk_paquete` (`Fk_paquete`),
   KEY `fk_cliente` (`fk_cliente`),
   CONSTRAINT `reserva_fk1` FOREIGN KEY (`fk_cliente`) REFERENCES cliente (`id_cliente`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=16 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=4 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT='Este es el sistema para que los clientes puedan hacer o reservas, cotizaciones y saber sus estados'
 ;
 
@@ -219,7 +222,7 @@ CREATE TABLE `servicios` (
   CONSTRAINT `servicios_fk1` FOREIGN KEY (`fk_Proveedor`) REFERENCES proveedor (`id_proveedor`),
   CONSTRAINT `servicios_fk2` FOREIGN KEY (`fk_sitio`) REFERENCES sitios (`id_sitios`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=10 AVG_ROW_LENGTH=8192 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=7 AVG_ROW_LENGTH=8192 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -241,56 +244,59 @@ CREATE TABLE `servicios_paquete` (
   CONSTRAINT `servicios_paquete_fk1` FOREIGN KEY (`fk_paquete`) REFERENCES paquete (`id_paquete`),
   CONSTRAINT `servicios_paquete_fk2` FOREIGN KEY (`fk_servicio`) REFERENCES servicios (`id_servicios`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=9 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=3 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
 #
-# Data for the `cliente` table  (LIMIT -494,500)
+# Data for the `cliente` table  (LIMIT -496,500)
 #
 
 INSERT INTO `cliente` (`id_cliente`, `Nombres`, `Apellidos`, `TipoID`, `Numero_Id`, `Email`, `Telefono`) VALUES 
-  (1,'daniel','ante','','1061714365','dantethepersa@hotmail.com','8'),
-  (2,'hector','montero','','1061737123','hector.javier@gmail.com','9'),
-  (3,'Camilo ernesto','Ruiz vidal','Cedula de ciudadania','1061716139','milo9022@hotmail.com','8365678'),
-  (8,'1','1','Tarjeta de indentidad','1','1','1'),
-  (9,'daniel','ante','Cedula de ciudadania','32','DAN@HOT','345');
+  (3,'camilo ernesto ruiz vidal','','Cedula de ciudadania','1061716139','milo9022@hotmail.com','3186234042'),
+  (10,'juliana andrea ruiz vidal','','Cedula de ciudadania','1061699111','andreita1234@hotmail.com','3186234042'),
+  (11,'jaime andres sanchez','','Tarjeta de indentidad','123456','andres123@hotmail.com','8374894');
 COMMIT;
 
 #
-# Data for the `cotizacion` table  (LIMIT -490,500)
+# Data for the `cotizacion` table  (LIMIT -484,500)
 #
 
 INSERT INTO `cotizacion` (`id_cotizacion`, `id_cliente`, `Fecha_cotizacion`, `Fecha_inicio`, `Descripcion`, `precio`, `Estado`) VALUES 
-  (8,3,'2015-05-04','2015-12-31','3333',NULL,'P'),
-  (9,3,'2015-05-04','2015-12-31','3333',NULL,'P'),
-  (10,3,'2015-05-04','2015-12-01','eee',NULL,'P'),
-  (11,3,'2015-05-04','2015-12-31','33',NULL,'P'),
-  (12,3,'2015-05-04','2015-12-31','222',NULL,'P'),
-  (13,3,'2015-05-04','2015-12-31','ww',NULL,'P'),
-  (14,3,'2015-05-04','2015-12-31','22',NULL,'P'),
-  (16,3,'2015-05-07','0000-00-00','',NULL,'P'),
-  (17,3,'2015-05-07','0000-00-00','',NULL,'P');
+  (1,3,'2015-05-09','2015-12-31','222',NULL,'P'),
+  (2,3,'2015-05-09','2015-12-31','222',240000.000,'R'),
+  (3,3,'2015-05-09','2015-12-31','wwww',1760000.000,'R'),
+  (4,3,'2015-05-09','0000-00-00','',NULL,'P'),
+  (5,3,'2015-05-17','2015-05-17','una breve descripcion',160000.000,'P'),
+  (6,3,'2015-05-17','2015-05-28','s',1760000.000,'P'),
+  (7,3,'2015-05-17','2015-05-17','periodo 1',800000.000,'P'),
+  (8,3,'2015-05-17','2015-05-03','breve descripcion',160000.000,'P'),
+  (9,3,'2015-05-17','2015-05-03','breve descripcion',NULL,'P'),
+  (10,3,'2015-05-17','2015-05-03','breve descripcion',NULL,'P'),
+  (11,3,'2015-05-17','2015-05-11','www',160000.000,'P'),
+  (12,3,'2015-05-17','2015-05-11','www',NULL,'P'),
+  (13,3,'2015-05-17','2015-05-11','www',NULL,'P'),
+  (14,3,'2015-05-17','2015-05-11','www',NULL,'P'),
+  (15,3,'2015-05-17','2015-05-21','w',285000.000,'R');
 COMMIT;
 
 #
-# Data for the `cotizacion_servicio` table  (LIMIT -486,500)
+# Data for the `cotizacion_servicio` table  (LIMIT -487,500)
 #
 
 INSERT INTO `cotizacion_servicio` (`id_cotizacion_servicio`, `id_servicio`, `cantidad`, `id_cotizacion`, `Precio`) VALUES 
-  (2,2,4,1,50000.000),
-  (3,2,4,1,50000.000),
-  (4,2,4,1,50000.000),
-  (5,2,4,1,50000.000),
-  (6,2,4,1,50000.000),
-  (7,2,4,1,50000.000),
-  (8,2,4,1,50000.000),
-  (23,2,48000,1,NULL),
-  (24,2,2,1,NULL),
-  (25,2,1,1,NULL),
-  (26,2,2,1,49000.000),
-  (27,NULL,0,1,0.000),
-  (28,2,2,1,49999.000);
+  (1,NULL,0,2,NULL),
+  (2,6,3,2,80000.000),
+  (3,6,22,3,80000.000),
+  (4,NULL,0,4,NULL),
+  (5,6,2,5,NULL),
+  (6,NULL,0,6,NULL),
+  (7,6,22,6,NULL),
+  (8,6,10,7,NULL),
+  (9,6,2,8,NULL),
+  (10,6,2,11,NULL),
+  (11,6,3,15,70000.000),
+  (12,3,1,15,40000.000);
 COMMIT;
 
 #
@@ -301,34 +307,34 @@ INSERT INTO `departamento` (`iddepartamento`, `nombre`) VALUES
   (1,'AMAZONAS'),
   (2,'ANTIOQUIA'),
   (3,'ARAUCA'),
-  (4,'ATL√ÅNTICO'),
-  (5,'BOL√çVAR'),
-  (6,'BOYAC√Å'),
+  (4,'ATL¡NTICO'),
+  (5,'BOLÕVAR'),
+  (6,'BOYAC¡'),
   (7,'CALDAS'),
-  (8,'CAQUET√Å'),
+  (8,'CAQUET¡'),
   (9,'CASANARE'),
   (10,'CAUCA'),
   (11,'CESAR'),
-  (12,'CHOC√ì'),
-  (13,'C√ìRDOBA'),
+  (12,'CHOC”'),
+  (13,'C”RDOBA'),
   (14,'CUNDINAMARCA'),
-  (15,'GUAIN√çA'),
+  (15,'GUAINÕA'),
   (16,'GUAVIARE'),
   (17,'HUILA'),
   (18,'LA GUAJIRA'),
   (19,'MAGDALENA'),
   (20,'META'),
-  (21,'NARI√ëO'),
+  (21,'NARI—O'),
   (22,'NORTE DE SANTANDER'),
   (23,'PUTUMAYO'),
-  (24,'QUIND√çO'),
+  (24,'QUINDÕO'),
   (25,'RISARALDA'),
-  (26,'SAN ANDR√âS Y ROVIDENCIA'),
+  (26,'SAN ANDR…S Y ROVIDENCIA'),
   (27,'SANTANDER'),
   (28,'SUCRE'),
   (29,'TOLIMA'),
   (30,'VALLE DEL CAUCA'),
-  (31,'VAUP√âS'),
+  (31,'VAUP…S'),
   (32,'VICHADA');
 COMMIT;
 
@@ -340,153 +346,71 @@ INSERT INTO `municipio` (`idmunicipio`, `departamento_iddepartamento`, `nombreMu
   (1,10,'Almaguer'),
   (2,10,'Argelia'),
   (3,10,'Balboa'),
-  (4,10,'Bol√≠var'),
+  (4,10,'BolÌvar'),
   (5,10,'Buenos Aires'),
-  (6,10,'Cajib√≠o'),
+  (6,10,'CajibÌo'),
   (7,10,'Caldono'),
   (8,10,'Caloto'),
   (9,10,'Corinto'),
   (10,10,'El Tambo'),
   (11,10,'Florencia'),
   (12,10,'Guapi'),
-  (13,10,'Inz√°'),
-  (14,10,'Jambal√≥'),
+  (13,10,'Inz·'),
+  (14,10,'JambalÛ'),
   (15,10,'La Sierra'),
   (16,10,'La Vega'),
-  (17,10,'L√≥pez de Micay'),
+  (17,10,'LÛpez de Micay'),
   (18,10,'Mercaderes'),
   (19,10,'Miranda'),
   (20,10,'Morales'),
   (21,10,'Padilla'),
-  (22,10,'P√°ez'),
-  (23,10,'Pat√≠a (El Bordo)'),
+  (22,10,'P·ez'),
+  (23,10,'PatÌa (El Bordo)'),
   (24,10,'Piamonte'),
-  (25,10,'Piendam√≥'),
-  (26,10,'Popay√°n'),
+  (25,10,'PiendamÛ'),
+  (26,10,'Popay·n'),
   (27,10,'Puerto Tejada'),
-  (28,10,'Purac√©'),
+  (28,10,'PuracÈ'),
   (29,10,'Rosas'),
-  (30,10,'San Sebasti√°n'),
+  (30,10,'San Sebasti·n'),
   (31,10,'Santa Rosa'),
   (32,10,'Santander de Quilichao'),
   (33,10,'Silvia'),
-  (34,10,'Sotar√°'),
-  (35,10,'Su√°rez'),
+  (34,10,'Sotar·'),
+  (35,10,'Su·rez'),
   (36,10,'Sucre'),
-  (37,10,'Timb√≠o'),
-  (38,10,'Timbiqu√≠'),
-  (39,10,'Torib√≠o'),
-  (40,10,'Totor√≥'),
+  (37,10,'TimbÌo'),
+  (38,10,'TimbiquÌ'),
+  (39,10,'ToribÌo'),
+  (40,10,'TotorÛ'),
   (41,10,'Villa Rica'),
-  (42,10,'Guachen√©');
+  (42,10,'GuachenÈ');
 COMMIT;
 
 #
-# Data for the `paquete` table  (LIMIT -435,500)
+# Data for the `paquete` table  (LIMIT -498,500)
 #
 
 INSERT INTO `paquete` (`id_paquete`, `Nombre`, `Valor`, `Fecha_inicio`, `Fecha_fin`, `Disponible`, `Estado`, `Descripcion`, `urlFoto`, `id_Muncipio`) VALUES 
-  (1,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (2,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (3,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (4,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (5,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (6,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (7,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (8,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (9,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (10,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (11,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (12,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (13,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (14,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (15,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (16,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (17,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (18,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (19,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (20,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (21,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (22,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (23,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (24,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (25,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (26,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (27,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (28,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (29,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (30,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (31,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (32,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (33,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (34,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (35,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (36,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (37,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (38,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (39,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (40,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (41,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (42,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (43,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (44,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (45,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (46,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (47,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (48,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (49,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (50,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (51,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (52,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (53,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (54,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (55,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (56,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (57,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (58,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (59,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (60,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (61,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (62,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26),
-  (63,'Prueba de paquete 1',64644,'2015-05-02','2015-05-28','S','S',NULL,'images/other/default.jpg',26),
-  (64,'Prueba de paquete 2',1,'2015-05-02','2015-05-28','S','S','Prueba de que se cambio','images/other/default.jpg',26);
+  (1,'Restaurante familiar',290000,'2015-05-08','2015-05-15','S','S','Cena para 5 personas en uno de nuestros mejores restaurantes','images/other/default.jpg',26);
 COMMIT;
 
 #
-# Data for the `proveedor` table  (LIMIT -491,500)
+# Data for the `proveedor` table  (LIMIT -498,500)
 #
 
 INSERT INTO `proveedor` (`id_proveedor`, `Nombre`, `Direccion`, `Telefono`, `Email`, `Nit`, `Descripcion`, `Estado`, `Codigo`) VALUES 
-  (1,'restaurante','abc','8333333','restaurante@hotmail.com','123456','Descripcion de prueba 12312345678901234567890','A','PSIIT0001'),
-  (2,'hotel1','acb','82222222','hotel@hotmail.com','1234567','descripcion 2','A','PSIIT0002'),
-  (3,'finca1','cba','82111111','finca@hotmail.com','123456789','descripcion 3','A','PSIIT0003'),
-  (4,'milo','milo','9292','milo@hotmmail','n22','Descripcion 4','A','PSIIT0005'),
-  (5,'milo2','milo','9292','milo@hotmmail','n23','123','A','PSIIT0006'),
-  (7,'MILO90222','IOSDF','908','980','80','890','A','PSIIT0008'),
-  (10,'Juliana  Ruiz','Mi casa','3147703682','andreita1234@hotmail.com','12312','DASASDA','A','PSIIT000011'),
-  (11,'nombre','direccion','8393939','proveedor@hotmail.com','938002','Descripcion','A','PSIIT000012');
+  (1,'Restaurante las estrellas','Cra 48 b numero 5-14','8365678','restaurante@hotmail.com','1234-1','restaurante de comidas exÛticas ','A','PSIIT0002');
 COMMIT;
 
 #
-# Data for the `reserva` table  (LIMIT -484,500)
+# Data for the `reserva` table  (LIMIT -496,500)
 #
 
-INSERT INTO `reserva` (`Id_reserva`, `Fk_paquete`, `fk_cab_cotizacion`, `fk_cliente`, `valor`, `Fecha_pedido`, `Fecha_reserva`, `Estado`, `Pago`) VALUES 
-  (1,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (2,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (3,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (4,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (5,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (6,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (7,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (8,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (9,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (10,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (11,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (12,1,NULL,1,1.000,'0000-00-00','0000-00-00','Cotizacion','1'),
-  (13,NULL,NULL,3,174000.000,'2015-05-04','2015-12-30','Cotizacion','N'),
-  (14,NULL,7,3,174000.000,'2015-05-04','2015-12-30','Cotizacion','N'),
-  (15,NULL,15,9,14450.000,'2015-05-04','2015-05-07','Cotizacion','N');
+INSERT INTO `reserva` (`Id_reserva`, `Fk_paquete`, `fk_cab_cotizacion`, `fk_cliente`, `valor`, `Fecha_pedido`, `Fecha_reserva`, `Estado`, `Pago`, `tipo`) VALUES 
+  (1,NULL,2,3,240000.000,'2015-05-09','2015-12-31','Confirmado','S','C'),
+  (2,1,NULL,11,290000.000,'0000-00-00','2015-05-01','Confirmado','S','P'),
+  (3,NULL,15,3,285000.000,'2015-05-17','2015-05-21','Cotizacion','N','C');
 COMMIT;
 
 #
@@ -504,23 +428,16 @@ COMMIT;
 #
 
 INSERT INTO `sitios` (`id_sitios`, `descripcion`, `id_sitio_tipo`) VALUES 
-  (1,'Popay√°n',1);
+  (1,'Popay·n',1);
 COMMIT;
 
 #
-# Data for the `servicios` table  (LIMIT -490,500)
+# Data for the `servicios` table  (LIMIT -497,500)
 #
 
 INSERT INTO `servicios` (`id_servicios`, `Nombre`, `fk_Proveedor`, `Valor`, `Estado`, `Disponibilidad`, `fk_sitio`, `fk_municipio`) VALUES 
-  (1,'Empanadas de pipiam',1,200,'S','S',1,1),
-  (2,'Suite por noche',2,50000,'S','S',1,1),
-  (3,'sda',1,22,'S','S',1,1),
-  (4,'sda',1,22,'S','S',1,1),
-  (5,'prueba de servicio',1,2012,'S','S',1,1),
-  (6,'prueba orden',1,29,'N','N',1,1),
-  (7,'prueba orden2',1,29,'S','S',1,1),
-  (8,'prueba orden24',1,29,'S','S',1,1),
-  (9,'29mil',1,29000,'S','S',1,1);
+  (3,'baby beef',1,45000,'S','S',NULL,NULL),
+  (6,'baby beef especial',1,80000,'S','S',NULL,NULL);
 COMMIT;
 
 #
@@ -528,8 +445,8 @@ COMMIT;
 #
 
 INSERT INTO `servicios_paquete` (`id_servicios_paquete`, `fk_paquete`, `fk_servicio`, `cantidad_servicios`, `valor_unitario_servicio`, `porcentaje_admin`, `Disponible`) VALUES 
-  (7,2,2,1,1.000,0.000,'S'),
-  (8,1,2,2,32322.000,0.000,'S');
+  (1,1,6,3,70000.000,0.000,'S'),
+  (2,1,3,2,40000.000,0.000,'S');
 COMMIT;
 
 
