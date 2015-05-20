@@ -38,4 +38,7 @@
             <li><a href="VerPagos.html">Ver Pagos</a></li>
         </ul>
     </li>
+    <ul class="nav pull-right">
+        <li><a href="./index.html">cerrar sesión</a></li>
+    </ul>
 </ul>
