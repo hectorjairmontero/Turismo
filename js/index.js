@@ -1,3 +1,9 @@
+function carousel()
+{
+    $('.carousel').carousel({
+        interval: 2000
+    })
+}
 function VerPaquetes()
 {
     $.ajax({
@@ -9,6 +15,7 @@ function VerPaquetes()
         }
     });
 }
-$(function(){
+$(function () {
+    carousel();
     VerPaquetes();
 });
