@@ -1,8 +1,20 @@
 body{
-    background: #ece7d4 url("../images/d8bb9e84e5170600e38a9b796e6922cf.jpg") no-repeat scroll center top;
+    background: #859FB0;
 }
 .panel {
     margin-bottom: 0px;
+}
+.thumbnail {
+  background-color: transparent;
+  border: 0px solid #000;
+}
+.thumbnail .caption {
+  position: absolute;
+  color: #FFF;
+}
+
+.price{
+    
 }
 .titulo{
     font: normal normal 45px 'Roboto Slab',sans-serif;
@@ -59,7 +71,6 @@ body{
     min-width: 190px;
 }
 #panel2{
-    background: linear-gradient(#EBEDF0, #F9FAFB);
     padding: 0;
 }
 #panel1{
@@ -78,7 +89,7 @@ body{
     //width: auto;
 }
 #footer{
-    background-color: #09683D;
+    background-color: #337BB1;
     text-align: center;
 }
 .page-header{
@@ -94,7 +105,7 @@ a.ReadMore{
     color: #F26D38;
 }
 .active{
-    background-color: #FF9F7B;
+    background-color: #7CAEF4;
 }
 .navbar-default {
     background-color: #962900;

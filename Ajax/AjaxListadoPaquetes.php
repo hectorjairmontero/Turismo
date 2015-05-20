@@ -17,7 +17,7 @@ foreach ($Res as $Temp)
                                 </div>
                                 <a href="#"><img src="' . $Temp['urlFoto'] . '" alt="..."></a>
                                 <div class="caption">
-                                    <h4 align="justify">' . substr($Temp['Descripcion'], 0, 300) . '...</h4>
+                                    <h4 class="price" align="right">$' . number_format($Temp['Valor'], 0,'.',',') . '</h4>
                                     <p><a href="#" class="ReadMore" role="button">Ver mas</a></p>
                                 </div>
                             </div>
