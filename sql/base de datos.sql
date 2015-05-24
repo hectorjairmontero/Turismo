@@ -1,18 +1,3 @@
-# SQL Manager 2011 for MySQL 5.1.0.2
-# ---------------------------------------
-# Host     : localhost
-# Port     : 3306
-# Database : siit
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES latin1 */;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-DROP DATABASE IF EXISTS `siit`;
 
 CREATE DATABASE `siit`
     CHARACTER SET 'utf8'
@@ -122,7 +107,7 @@ CREATE TABLE `paquete` (
   KEY `id_Muncipio` (`id_Muncipio`),
   CONSTRAINT `paquete_fk1` FOREIGN KEY (`id_Muncipio`) REFERENCES municipio (`idmunicipio`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=2 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=5 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT=''
 ;
 
@@ -169,7 +154,7 @@ CREATE TABLE `reserva` (
   KEY `fk_cliente` (`fk_cliente`),
   CONSTRAINT `reserva_fk1` FOREIGN KEY (`fk_cliente`) REFERENCES cliente (`id_cliente`)
 )ENGINE=InnoDB
-AUTO_INCREMENT=4 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
+AUTO_INCREMENT=9 AVG_ROW_LENGTH=16384 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 COMMENT='Este es el sistema para que los clientes puedan hacer o reservas, cotizaciones y saber sus estados'
 ;
 
@@ -253,7 +238,7 @@ COMMENT=''
 #
 
 INSERT INTO `cliente` (`id_cliente`, `Nombres`, `Apellidos`, `TipoID`, `Numero_Id`, `Email`, `Telefono`) VALUES 
-  (3,'camilo ernesto ruiz vidal','','Cedula de ciudadania','1061716139','milo9022@hotmail.com','3186234042'),
+  (3,'CAMILO ERNESTO RUIZ VIDAL    ','','Cedula de ciudadania','1061716139','milo9022@hotmail.com','3186234042'),
   (10,'juliana andrea ruiz vidal','','Cedula de ciudadania','1061699111','andreita1234@hotmail.com','3186234042'),
   (11,'jaime andres sanchez','','Tarjeta de indentidad','123456','andres123@hotmail.com','8374894');
 COMMIT;
@@ -392,7 +377,7 @@ COMMIT;
 #
 
 INSERT INTO `paquete` (`id_paquete`, `Nombre`, `Valor`, `Fecha_inicio`, `Fecha_fin`, `Disponible`, `Estado`, `Descripcion`, `urlFoto`, `id_Muncipio`) VALUES 
-  (1,'Restaurante familiar',290000,'2015-05-08','2015-05-15','S','S','Cena para 5 personas en uno de nuestros mejores restaurantes','images/other/default.jpg',26);
+  (1,'Restaurante familiar',80000,'2015-05-08','2015-05-15','S','S','Cena para 5 personas en uno de nuestros mejores restaurantes','images/other/default.jpg',26);
 COMMIT;
 
 #
@@ -400,17 +385,22 @@ COMMIT;
 #
 
 INSERT INTO `proveedor` (`id_proveedor`, `Nombre`, `Direccion`, `Telefono`, `Email`, `Nit`, `Descripcion`, `Estado`, `Codigo`) VALUES 
-  (1,'Restaurante las estrellas','Cra 48 b numero 5-14','8365678','restaurante@hotmail.com','1234-1','restaurante de comidas exóticas ','A','PSIIT0002');
+  (1,'Restaurante las estrellas','Cra 48 b numero 5-14','8365678','restaurante@hotmail.com','1234-1','restaurante de comidas exóticas ','N','PSIIT0002');
 COMMIT;
 
 #
-# Data for the `reserva` table  (LIMIT -496,500)
+# Data for the `reserva` table  (LIMIT -491,500)
 #
 
 INSERT INTO `reserva` (`Id_reserva`, `Fk_paquete`, `fk_cab_cotizacion`, `fk_cliente`, `valor`, `Fecha_pedido`, `Fecha_reserva`, `Estado`, `Pago`, `tipo`) VALUES 
   (1,NULL,2,3,240000.000,'2015-05-09','2015-12-31','Confirmado','S','C'),
   (2,1,NULL,11,290000.000,'0000-00-00','2015-05-01','Confirmado','S','P'),
-  (3,NULL,15,3,285000.000,'2015-05-17','2015-05-21','Cotizacion','N','C');
+  (3,NULL,15,3,285000.000,'2015-05-17','2015-05-21','Cotizacion','N','C'),
+  (4,1,NULL,3,80000.000,'0000-00-00','2015-05-25','Confirmado','N','P'),
+  (5,1,NULL,3,80000.000,'0000-00-00','2015-05-25','Confirmado','N','P'),
+  (6,1,NULL,3,80000.000,'0000-00-00','2015-05-24','Confirmado','N','P'),
+  (7,1,NULL,3,80000.000,'0000-00-00','2015-05-24','Confirmado','N','P'),
+  (8,1,NULL,3,80000.000,'0000-00-00','2015-05-24','Confirmado','N','P');
 COMMIT;
 
 #
@@ -441,16 +431,9 @@ INSERT INTO `servicios` (`id_servicios`, `Nombre`, `fk_Proveedor`, `Valor`, `Est
 COMMIT;
 
 #
-# Data for the `servicios_paquete` table  (LIMIT -497,500)
+# Data for the `servicios_paquete` table  (LIMIT -498,500)
 #
 
 INSERT INTO `servicios_paquete` (`id_servicios_paquete`, `fk_paquete`, `fk_servicio`, `cantidad_servicios`, `valor_unitario_servicio`, `porcentaje_admin`, `Disponible`) VALUES 
-  (1,1,6,3,70000.000,0.000,'S'),
-  (2,1,3,2,40000.000,0.000,'S');
+  (2,1,3,2,39000.000,0.000,'S');
 COMMIT;
-
-
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
