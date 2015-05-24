@@ -6,7 +6,17 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelServicios
 {
 
-    public function ValorTotalVentaPaqueteCotizacion($cod_proveedor,$FechaIncial, $FechaFinal)
+    public function ActualizarServiciosPaquetes($id, $cant, $valor)
+    {
+        $S = atable::Make('servicios_paquete');
+        $S->Load('id_servicios_paquete =' . $id);
+        $S->cantidad_servicios=$cant;
+        $S->valor_unitario_servicio=$valor;
+        $S->Save();
+        
+    }
+
+    public function ValorTotalVentaPaqueteCotizacion($cod_proveedor, $FechaIncial, $FechaFinal)
     {
         $con = App::$base;
         $sql = 'SELECT 
@@ -28,11 +38,11 @@ class ModelServicios
             (`proveedor1`.`Codigo` = ? OR  `proveedor1`.`Codigo` = ?)
             AND 
             `reserva`.`Pago` = ? GROUP BY reserva.Id_reserva';
-        $Res = $con->Record($sql, array($FechaIncial, $FechaFinal,$cod_proveedor,$cod_proveedor,'S'));
+        $Res = $con->Record($sql, array($FechaIncial, $FechaFinal, $cod_proveedor, $cod_proveedor, 'S'));
         return $Res;
     }
-    
-    public function ValorTotalVentaServicio($cod_proveedor,$id_servicio,$FechaIncial, $FechaFinal)
+
+    public function ValorTotalVentaServicio($cod_proveedor, $id_servicio, $FechaIncial, $FechaFinal)
     {
         $con = App::$base;
         $sql = 'SELECT (SUM(`servicios_paquete`.`valor_unitario_servicio`)+
@@ -56,10 +66,10 @@ class ModelServicios
             (`proveedor1`.`Codigo` = ? OR  `proveedor1`.`Codigo` = ?) 
             and
             `reserva`.`Pago` = ?';
-        $Res = $con->Record($sql, array($id_servicio,$id_servicio,$cod_proveedor,$cod_proveedor,'S'));
+        $Res = $con->Record($sql, array($id_servicio, $id_servicio, $cod_proveedor, $cod_proveedor, 'S'));
         return $Res;
     }
-    
+
     public function DatosReserva($id_reserva)
     {
         $con = App::$base;
@@ -334,8 +344,8 @@ class ModelServicios
         $con = App::$base;
         $sql = 'SELECT 
             `paquete`.`id_paquete`,
-            `paquete`.`id_paquete` as borrar,
             `paquete`.`Nombre`,
+            `paquete`.`id_paquete` as borrar,
             `paquete`.`Valor`,
             `paquete`.`Fecha_inicio`,
             `paquete`.`Fecha_fin`,
@@ -460,7 +470,7 @@ class ModelServicios
             INNER JOIN `paquete` ON (`servicios_paquete`.`fk_paquete` = `paquete`.`id_paquete`)
           WHERE
             `servicios_paquete`.`id_servicios_paquete` = ?
-            and and `servicios`.`Disponibilidad`=?';
+            and `servicios`.`Disponibilidad`=?';
         $Res = $con->Record($sql, array($id_servicio_paquete, 'S'));
         return $Res;
     }

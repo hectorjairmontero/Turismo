@@ -128,5 +128,28 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Se ha realizado el cambio</h4>
+                    </div>
+                    <div class="modal-body" id="ServiciosDatos">
+                        <label>Cantidad</label><input id="CantServicio" class="form-control">
+                        <label>Precio</label><input id="PrecioServicio" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                        <center>
+                            <button type="button" class="btn btn-success" onclick="GuardarCambios()" data-dismiss="modal">Aceptar</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </body>
 </html>

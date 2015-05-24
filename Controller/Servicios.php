@@ -4,6 +4,12 @@ include_once '../Model/ModelServicios.php';
 
 class Servicios
 {
+    public function ActualizarServiciosPaquetes($id,$cant,$valor)
+    {
+        $Paquete = new ModelServicios();
+        $Paquete->ActualizarServiciosPaquetes($id,$cant,$valor);
+    }
+
     public function CambiarEstadoServicio($est,$servicio)
     {
         $Paquete = new ModelServicios();
