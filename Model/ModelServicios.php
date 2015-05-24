@@ -349,12 +349,14 @@ class ModelServicios
             `paquete`.`Valor`,
             `paquete`.`Fecha_inicio`,
             `paquete`.`Fecha_fin`,
+  `municipio`.`nombreMunicipio`,
             `paquete`.`Descripcion`,
             `paquete`.`urlFoto`,
             `paquete`.`Disponible`,
             `paquete`.`Estado`
           FROM
             `paquete`
+              INNER JOIN `municipio` ON (`paquete`.`id_Muncipio` = `municipio`.`idmunicipio`)
             where `paquete`.`Estado`=?
             order by `paquete`.`id_paquete` DESC';
         $Res = $con->Records($sql, array('S'));

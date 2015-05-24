@@ -1,7 +1,7 @@
 function carousel()
 {
     $('.carousel').carousel({
-        interval: 2000
+        interval: 10000
     })
 }
 function VerPaquetes()
