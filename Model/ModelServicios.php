@@ -418,8 +418,8 @@ class ModelServicios
                 `paquete`.`Descripcion`,
                 `paquete`.`Disponible`,
                 `paquete`.`Estado`,
-                `municipio`.`nombreMunicipio` as id_Muncipio,
-                `municipio`.`idmunicipio`,
+                `municipio`.`nombreMunicipio` ,
+                `municipio`.`idmunicipio` as id_Muncipio,
                 `paquete`.`urlFoto`
               FROM
                 `paquete`

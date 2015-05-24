@@ -10,8 +10,8 @@ if ($_POST['idPaquetes'] != "0")
     $Res        = $servicios->VerDescripcionPaquete($id_paquete);
     $Ser        = $servicios->ServiciosXPaquete($id_paquete);
     $Ser        = $Render->FormatoTable($Ser);
-    $Ser        = $Render->FormatoNumerico($Ser,'1','$');
-    $Ser        = $Render->FormatoNumerico($Ser,'7','$');
+    $Ser        = $Render->FormatoNumerico($Ser, '1', '$');
+    $Ser        = $Render->FormatoNumerico($Ser, '7', '$');
     echo
     '<div class="row">
         <div class="col-lg-12" id="reserva">
@@ -35,7 +35,7 @@ if ($_POST['idPaquetes'] != "0")
                     <h4>Servicios y proveedores</h4>
                 </div>
     <div class="panel-body">';
-    echo $Render->Tabla($Ser, '1', array('#','servicio','Precio unitario','Proveedor','Direccion','Telefono','Email','Cantidad','Precio paquete'), 'table table-hover','',1);
+    echo $Render->Tabla($Ser, '1', array('#', 'servicio', 'Precio unitario', 'Proveedor', 'Direccion', 'Telefono', 'Email', 'Cantidad', 'Precio paquete'), 'table table-hover', '', 1);
     echo '</div>';
     echo '</div>';
     echo '</div>';

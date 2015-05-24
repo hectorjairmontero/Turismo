@@ -1,14 +1,25 @@
 function Reservar()
 {
-    var datos=$('#DatosCliente').serialize();
+
+    var datos = $('#DatosCliente').serialize();
     $.ajax({
-        url:'Ajax/AjaxGuardarReservaClientes.php',
-        type:'post',
-        data:datos,
-        success: function (Resultado) {
-            $('#Log').html(Resultado);
+        url: 'Ajax/AjaxGuardarReservaClientes.php',
+        type: 'post',
+        data: datos,
+        success: function (Resultado)
+        {
+            $.notify({
+                message: '<strong>Se ha guardado la reserva con éxito<strong>'
+            },
+            {
+                type: 'success'
+            });
+            inicio();
+            CargarPaquetes();
+            $('#Servicios').html('');
         }
     });
+
 }
 function CargarLista()
 {
@@ -39,7 +50,7 @@ function CargarPaquetes()
 function inicio()
 {
     $('#DatosCliente').submit(false);
-    $('#Fecha').datepicker({ dateFormat: 'yy-mm-dd' });
+    $('#Fecha').datepicker({dateFormat: 'yy-mm-dd'});
     $('#Nombres').autocomplete({
         source: 'Ajax/AjaxClientesAutocomplete.php',
         search: function (data)

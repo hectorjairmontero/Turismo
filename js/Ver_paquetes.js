@@ -1,3 +1,37 @@
+function Editar(id)
+{
+    $.ajax({
+        type: 'POST',
+        url: "Ajax/AjaxCambiarDatosServicios.php",
+        data: {
+            id: id
+        },
+        success: function (Resultado)
+        {
+            $('#ServiciosDatos').html(Resultado);
+            $('#myModal2').modal('show');
+        }
+    });
+}
+function GuardarCambios()
+{
+    var id = $('#id_servicio_paquete').val();
+    var cant = $('#CantServicio').val();
+    var valor = $('#PrecioServicio').val();
+    $.ajax({
+        type: 'POST',
+        url: "Ajax/AjaxGuardarDatosServicios.php",
+        data: {
+            id: id,
+            cant: cant,
+            valor: valor
+        },
+        success: function ()
+        {
+            CargarLista();
+        }
+    });
+}
 function Guardar()
 {
     var paquete = $('#idPaquetes').val();
@@ -15,7 +49,6 @@ function Guardar()
         },
         success: function (Resultado)
         {
-            alert(Resultado);
             CargarLista();
         }
     });
@@ -49,8 +82,8 @@ function CargarDatosid(id)
 {
     $.ajax({
         url: "Ajax/AjaxVerArmarPaquetes.php",
-        type:'POST',
-        data:{id:id},
+        type: 'POST',
+        data: {id: id},
         success: function (Resultado)
         {
             Resultado = JSON.parse(Resultado);
