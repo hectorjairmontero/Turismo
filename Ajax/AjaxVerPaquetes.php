@@ -4,11 +4,11 @@ include_once '../Controller/Visual.php';
 $Paquetes=new Servicios();
 $Render = new Visual();
 $Datos = $Render->FormatoSelect($Paquetes->VerPaquetes());
-$Datos = $Render->img($Datos , 6,'img-responsive');
-$Datos = $Render->EliminarRegistro($Datos , 7);
-$Datos = $Render->EliminarRegistro($Datos , 7);
+$Datos = $Render->img($Datos , 7,'img-responsive');
+$Datos = $Render->EliminarRegistro($Datos , 8);
+$Datos = $Render->EliminarRegistro($Datos , 8);
 $Datos = $Render->GenerarLinkRegistro($Datos , 0,'images/lapiz.png','ver_paquetes.html?id');
-
-$Datos = $Render->FormatoNumerico($Datos , 2,'$',0,'.',',');
-$enc=array('Ver','Nombre','Valor','Fecha inicio','Fecha fin','Descripcion','Foto');
+$Datos = $Render->FunctionTable($Datos, 1, 'Bloquear', 'images/x.png');
+$Datos = $Render->FormatoNumerico($Datos , 3,'$',0,'.',',');
+$enc=array('Ver','Eliminar','Nombre','Valor','Fecha inicio','Fecha fin','Descripcion','Foto');
 echo $Render->Tabla($Datos,'',$enc,"table table-striped");

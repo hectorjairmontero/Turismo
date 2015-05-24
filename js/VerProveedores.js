@@ -43,6 +43,24 @@ function Ver(id)
         }
     });
 }
+function Activar(id)
+{
+    alert(id);
+}
+function Quitar(id)
+{
+    $.ajax({
+        type: 'POST',
+        url: "Ajax/AjaxQuitarProveedor.php",
+        data: {
+            id: id
+        },
+        success: function ()
+        {
+            Restaurar();
+        }
+    });
+}
 function Restaurar()
 {
     $('#editar').hide();

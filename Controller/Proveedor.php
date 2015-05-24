@@ -4,11 +4,28 @@ include_once '../Model/ModelProveedor.php';
 
 class Proveedor
 {
-
+    public function BloquearProveedor($id_proveedor)
+    {
+        $Res   = new ModelProveedor();
+        $Datos = $Res->Retirar_Proveedor($id_proveedor);
+        return $Datos;
+    }
+    public function TotalServiciosReservaCotizacion($Cod_proveedor, $id_servicio,$FechaIncial, $FechaFinal)
+    {
+        $Ver   = new ModelServicios();
+        $Datos = $Ver->ValorTotalVentaServicio($cod_proveedor,$FechaIncial, $FechaFinal);
+        return $Datos;
+    }
     public function VerProveedores()
     {
         $Res   = new ModelProveedor();
         $Datos = $Res->VerProveedores();
+        return $Datos;
+    }
+    public function VerProveedoresActivosInactivos()
+    {
+        $Res   = new ModelProveedor();
+        $Datos = $Res->VerProveedoresActivosInactivos();
         return $Datos;
     }
 
@@ -69,6 +86,13 @@ class Proveedor
             $Total = $Total + $Temp['valor_neto'];
         }
         return $Total;
+    }
+
+    public function TotalReservaCotizacion($Cod_proveedor, $FechaIncial, $FechaFinal)
+    {
+        $Ver   = new ModelServicios();
+        $Datos = $Ver->ValorTotalVentaPaqueteCotizacion($cod_proveedor,$FechaIncial, $FechaFinal);
+        return $Datos;
     }
 
     public function EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal)

@@ -19,6 +19,7 @@ class ModelProveedor
         $P->load("id_proveedor = '$id_Proveedor'");
         $P->estado = 'N';
         $P->Save();
+        return $P->id_proveedor;
     }
 
     public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit, $Direccion, $Descripcion)
@@ -142,7 +143,40 @@ class ModelProveedor
             `proveedor`.`Telefono`,
             `proveedor`.`Email`,
             `proveedor`.`Nit`,
-            `proveedor`.`Estado`,
+            case 
+            when
+            `proveedor`.`Estado`="A" then "Activo"
+            when 
+            `proveedor`.`Estado`="N" then "Bloqueado"
+            end as Estado,
+            `proveedor`.`Codigo`,
+            `proveedor`.`Descripcion`
+          FROM
+            `proveedor`
+            where `proveedor`.`Estado`="A"';
+        $Res = $this->con->Records($sql, array());
+        return $Res;
+    }
+
+    public function VerProveedoresActivosInactivos()
+    {
+        $sql = 'SELECT 
+            `proveedor`.`id_proveedor`,
+            case when
+            `proveedor`.`Estado`="A" then "Activo"
+            when 
+            `proveedor`.`Estado`="N" then "Inactivo"
+            end as Estado,
+            case 
+                when
+                `proveedor`.`Estado`="A" then concat("<a href=\'javascript:Quitar(",`proveedor`.`id_proveedor`,")\'><img src=\'images/x.png\'></a>")
+                when
+                `proveedor`.`Estado`="N" then concat("<a href=\'javascript:Activar(",`proveedor`.`id_proveedor`,")\'><img src=\'images/check.png\'></a>")
+            end as bloquear,
+            `proveedor`.`Nombre`,
+            `proveedor`.`Telefono`,
+            `proveedor`.`Email`,
+            `proveedor`.`Nit`,
             `proveedor`.`Codigo`,
             `proveedor`.`Descripcion`
           FROM

@@ -6,6 +6,60 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 class ModelServicios
 {
 
+    public function ValorTotalVentaPaqueteCotizacion($cod_proveedor,$FechaIncial, $FechaFinal)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            SUM(`reserva`.`valor`) AS `total`
+          FROM
+            `reserva`
+            LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+            LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+            LEFT OUTER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
+            LEFT OUTER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+            LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+            LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion`.`id_cotizacion` = `cotizacion_servicio`.`id_cotizacion`)
+            LEFT OUTER JOIN `servicios` `servicios1` ON (`cotizacion_servicio`.`id_servicio` = `servicios1`.`id_servicios`)
+            LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios1`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+          WHERE
+          
+            date(`reserva`.`Fecha_reserva`) BETWEEN date(?) and date(?)
+            and
+            (`proveedor1`.`Codigo` = ? OR  `proveedor1`.`Codigo` = ?)
+            AND 
+            `reserva`.`Pago` = ? GROUP BY reserva.Id_reserva';
+        $Res = $con->Record($sql, array($FechaIncial, $FechaFinal,$cod_proveedor,$cod_proveedor,'S'));
+        return $Res;
+    }
+    
+    public function ValorTotalVentaServicio($cod_proveedor,$id_servicio,$FechaIncial, $FechaFinal)
+    {
+        $con = App::$base;
+        $sql = 'SELECT (SUM(`servicios_paquete`.`valor_unitario_servicio`)+
+                SUM(`cotizacion_servicio`.`Precio`)) as total
+              FROM
+                `reserva`
+                LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+                LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+                LEFT OUTER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
+                LEFT OUTER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+                LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+                LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion`.`id_cotizacion` = `cotizacion_servicio`.`id_cotizacion`)
+                LEFT OUTER JOIN `servicios` `servicios1` ON (`cotizacion_servicio`.`id_servicio` = `servicios1`.`id_servicios`)
+                LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios1`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+
+          WHERE
+          (`servicios_paquete`.`id_servicios_paquete`=?
+          OR
+            `cotizacion_servicio`.`id_cotizacion_servicio`=?)
+            and
+            (`proveedor1`.`Codigo` = ? OR  `proveedor1`.`Codigo` = ?) 
+            and
+            `reserva`.`Pago` = ?';
+        $Res = $con->Record($sql, array($id_servicio,$id_servicio,$cod_proveedor,$cod_proveedor,'S'));
+        return $Res;
+    }
+    
     public function DatosReserva($id_reserva)
     {
         $con = App::$base;
@@ -27,7 +81,6 @@ class ModelServicios
             LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios1`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
           WHERE
             `reserva`.`Id_reserva` = ? GROUP BY  1';
-        
         $Res = $con->Record($sql, array($id_reserva));
         return $Res;
     }
@@ -281,6 +334,7 @@ class ModelServicios
         $con = App::$base;
         $sql = 'SELECT 
             `paquete`.`id_paquete`,
+            `paquete`.`id_paquete` as borrar,
             `paquete`.`Nombre`,
             `paquete`.`Valor`,
             `paquete`.`Fecha_inicio`,
@@ -292,8 +346,7 @@ class ModelServicios
           FROM
             `paquete`
             where `paquete`.`Estado`=?
-            
-			order by `paquete`.`id_paquete` DESC';
+            order by `paquete`.`id_paquete` DESC';
         $Res = $con->Records($sql, array('S'));
         return $Res;
     }
@@ -355,7 +408,8 @@ class ModelServicios
                 `paquete`.`Descripcion`,
                 `paquete`.`Disponible`,
                 `paquete`.`Estado`,
-                `municipio`.`nombreMunicipio`,
+                `municipio`.`nombreMunicipio` as id_Muncipio,
+                `municipio`.`idmunicipio`,
                 `paquete`.`urlFoto`
               FROM
                 `paquete`
@@ -446,10 +500,10 @@ class ModelServicios
     public function AutorizarPaquetes($id_Paquete, $Estado)
     {
         $S = atable::Make('paquete');
-        $S->Load('id_paquete =' . $id_paquete);
+        $S->Load('id_paquete =' . $id_Paquete);
         if (!is_null($S->id_paquete))
         {
-            $S->disponibilidad = $Estado;
+            $S->estado = $Estado;
             $S->Save();
         }
         return $S->id_paquete;

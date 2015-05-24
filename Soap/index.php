@@ -10,23 +10,38 @@ function VerPaquetes()
     $Paquetes = new Servicios();
     return json_encode($Paquetes->VerPaquetes());
 }
+
 function VerPaquetesServicios()
 {
     $Paquetes = new Servicios();
     return json_encode($Paquetes->VerPaquetesConServicios());
 }
 
-function CuentasProveedorTotal($Cod_proveedor, $FechaIncial, $FechaFinal)
+function TotalReservaCotizacion($Cod_proveedor, $FechaIncial, $FechaFinal)
+{
+ 
+    $Cuentas = new Proveedor();
+    $Res = $Cuentas->TotalReservaCotizacion($Cod_proveedor, $FechaIncial, $FechaFinal);
+    return json_encode($Res);
+}
+function TotalValorServicios($Cod_proveedor, $id_servicio,$FechaIncial, $FechaFinal)
 {
     $Cuentas = new Proveedor();
-    $Res=$Cuentas->EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal);
+    $Res = $Cuentas->TotalServiciosReservaCotizacion($Cod_proveedor, $id_servicio,$FechaIncial, $FechaFinal);
     return json_encode($Res);
 }
 
-function CuentaEstadoPaquete($Cod_proveedor, $FechaIncial, $FechaFinal,$Paquete)
+function CuentasProveedorTotal($Cod_proveedor, $FechaIncial, $FechaFinal)
 {
     $Cuentas = new Proveedor();
-    return json_encode($Cuentas->EstadoCuentaPaquete($Cod_proveedor, $FechaIncial, $FechaFinal,$Paquete));
+    $Res     = $Cuentas->EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal);
+    return json_encode($Res);
+}
+
+function CuentaEstadoPaquete($Cod_proveedor, $FechaIncial, $FechaFinal, $Paquete)
+{
+    $Cuentas = new Proveedor();
+    return json_encode($Cuentas->EstadoCuentaPaquete($Cod_proveedor, $FechaIncial, $FechaFinal, $Paquete));
 }
 
 function GuardarServicios($cod_proveedor, $nombre_servicio, $valor)
@@ -35,10 +50,11 @@ function GuardarServicios($cod_proveedor, $nombre_servicio, $valor)
     $id      = $Guardar->NuevoServicio($cod_proveedor, $nombre_servicio, $valor);
     return $id;
 }
+
 function VerServiciosProveedor($cod_proveedor)
 {
     $Ver = new Servicios();
-    $Res=$Ver->VerServiciosProveedorSoap('', $cod_proveedor);
+    $Res = $Ver->VerServiciosProveedorSoap('', $cod_proveedor);
     return json_encode($Res);
 }
 
@@ -49,5 +65,7 @@ $server->register('VerServiciosProveedor');
 $server->register('VerPaquetesServicios');
 $server->register('CuentaEstadoPaquete');
 $server->register('CuentasProveedorTotal');
+$server->register('TotalReservaCotizacion');
+$server->register('TotalValorServicios');
 @$server->service($HTTP_RAW_POST_DATA);
 ?>

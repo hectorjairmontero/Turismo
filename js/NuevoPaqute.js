@@ -6,13 +6,15 @@ $("Formulario").submit(function (event) {
 function Guardar()
 {
     var datos = $('#Formulario').serialize();
+    console.log(datos);
     $.ajax({
         type: 'POST',
         url: "Ajax/AjaxGuardarPaquete.php",
         data: datos,
         success: function (Resultado)
         {
-             CargarPaquetes();
+            alert(Resultado);
+            CargarPaquetes();
         }
     });
 }
