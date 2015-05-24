@@ -1,9 +1,23 @@
 <?php
 
-include_once '../Model/ModelServicios.php';
+@include_once '../Model/ModelServicios.php';
+@include_once 'Model/ModelServicios.php';
 
 class Servicios
 {
+    
+    public function VerPaquete($id)
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->VerPaquete($id);
+        return $Datos;
+    }
+    public function CambiarImagen($id_paquete,$urlImagen)
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->CambiarImagen($id_paquete,$urlImagen);
+        return $Datos;
+    }
     public function ActualizarServiciosPaquetes($id,$cant,$valor)
     {
         $Paquete = new ModelServicios();

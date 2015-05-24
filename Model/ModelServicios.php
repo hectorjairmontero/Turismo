@@ -5,7 +5,34 @@ include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_tabl
 
 class ModelServicios
 {
-
+    public function VerPaquete($id_paquete)
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+                `paquete`.`id_paquete`,
+                `paquete`.`Nombre`,
+                `paquete`.`Valor`,
+                `paquete`.`Fecha_inicio`,
+                `paquete`.`Fecha_fin`,
+                `paquete`.`Disponible`,
+                `paquete`.`Estado`,
+                `paquete`.`Descripcion`,
+                `paquete`.`urlFoto`,
+                `paquete`.`id_Muncipio`
+              FROM
+                `paquete`
+                where `paquete`.`id_paquete`=?';
+        $Res = $con->Record($sql, array($id_paquete));
+        return $Res;
+    }
+    public function CambiarImagen($id_paquete,$urlImagen)
+    {
+        $S = atable::Make('paquete');
+        $S->Load('id_paquete =' . $id_paquete);
+        $S->urlfoto=$urlImagen;
+        $S->Save();
+        return $S->urlimagen;
+    }
     public function ActualizarServiciosPaquetes($id, $cant, $valor)
     {
         $S = atable::Make('servicios_paquete');
