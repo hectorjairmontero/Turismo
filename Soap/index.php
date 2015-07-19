@@ -2,6 +2,7 @@
 
 include_once '../Controller/Servicios.php';
 include_once '../Controller/Proveedor.php';
+include_once '../Controller/Reserva.php';
 include_once '../Controller/Visual.php';
 require_once "../Controller/Nusoap/nusoap.php";
 
@@ -57,9 +58,21 @@ function VerServiciosProveedor($cod_proveedor)
     $Res = $Ver->VerServiciosProveedorSoap('', $cod_proveedor);
     return json_encode($Res);
 }
-
+function VerReservasProveedor($cod_proveedor)   
+{
+    $Ver = new Reserva();
+    $Res = $Ver->VerReservasProveedor($cod_proveedor);
+    return json_encode($Res);
+}
+function CambiarDisponibilidadServicio($cod_proveedor,$id_servicio)
+{
+    $Ver = new Servicios();
+    return $Ver->CambiarDisponibilidadServicio($cod_proveedor,$id_servicio);    
+}
 $server = new soap_server();
 $server->register('GuardarServicios');
+$server->register('CambiarDisponibilidadServicio');
+$server->register('VerReservasProveedor');
 $server->register('VerPaquetes');
 $server->register('VerServiciosProveedor');
 $server->register('VerPaquetesServicios');

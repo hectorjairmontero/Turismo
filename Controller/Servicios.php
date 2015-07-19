@@ -3,9 +3,17 @@
 @include_once '../Model/ModelServicios.php';
 @include_once 'Model/ModelServicios.php';
 
+@include_once '../Controller/Proveedor.php';
+@include_once 'Controller/Proveedor.php';
+
 class Servicios
 {
-    
+    public function CambiarDisponibilidadServicio($cod_proveedor,$id_servicio)
+    {
+        $Paquete = new ModelServicios();
+        return $Paquete->CambiarDisponibilidadServicio($cod_proveedor,$id_servicio);
+    }
+
     public function VerPaquete($id)
     {
         $Paquete = new ModelServicios();

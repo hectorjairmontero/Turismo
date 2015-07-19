@@ -3,13 +3,11 @@
 include_once 'BaseDatos/conexion.php';
 include_once Config::$home_bin . Config::$ds . 'db' . Config::$ds . 'active_table.php';
 
-class ModelReserva
-{
+class ModelReserva {
 
-    public function ReservasPaquetes($id_reserva)
-    {
+    public function ReservasPaquetes($id_reserva) {
         $con = App::$base;
-         $sql = 'SELECT 
+        $sql = 'SELECT 
                 `servicios`.`Nombre` AS `servicio`,
                 `proveedor`.`Nombre` AS `proveedor`,
                 `proveedor`.`Direccion`,
@@ -28,8 +26,7 @@ class ModelReserva
         return $Res;
     }
 
-    function ReservaHecha($id_reserva)
-    {
+    function ReservaHecha($id_reserva) {
         $con = App::$base;
         $sql = 'SELECT 
                     `servicios`.`Nombre` as servicio,
@@ -50,8 +47,8 @@ class ModelReserva
         $Res = $con->Records($sql, array($id_reserva));
         return $Res;
     }
-    public function ReservasCotizacion($id_reserva)
-    {
+
+    public function ReservasCotizacion($id_reserva) {
         $con = App::$base;
         $sql = 'SELECT 
                     `servicios`.`Nombre` as servicio,
@@ -73,8 +70,7 @@ class ModelReserva
         return $Res;
     }
 
-    public function VerReservasHechas()
-    {
+    public function VerReservasHechas() {
         $con = App::$base;
         $sql = 'SELECT 
                 `reserva`.`Id_reserva`,
@@ -104,8 +100,8 @@ class ModelReserva
         $Res = $con->TablaDatos($sql, array());
         return $Res;
     }
-    public function VerReservasHecha($id_reserva)
-    {
+
+    public function VerReservasHecha($id_reserva) {
         $con = App::$base;
         $sql = 'SELECT 
                 `reserva`.`Id_reserva`,
@@ -136,57 +132,51 @@ class ModelReserva
         return $Res;
     }
 
-    public function ReservarPaquete($Fk_paquete, $fk_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago)
-    {
-        $R                = atable::Make('reserva');
-        $R->fk_paquete    = $Fk_paquete;
-        $R->fk_cliente    = $fk_cliente;
-        $R->valor         = $valor;
-        $R->fecha_pedido  = $Fecha_pedido;
+    public function ReservarPaquete($Fk_paquete, $fk_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago) {
+        $R = atable::Make('reserva');
+        $R->fk_paquete = $Fk_paquete;
+        $R->fk_cliente = $fk_cliente;
+        $R->valor = $valor;
+        $R->fecha_pedido = $Fecha_pedido;
         $R->fecha_reserva = $Fecha_reserva;
-        $R->estado        = $Estado;
-        $R->pago          = $Pago;
-        $R->tipo          = 'P';
+        $R->estado = $Estado;
+        $R->pago = $Pago;
+        $R->tipo = 'P';
         $R->Save();
         return $R->id_reserva;
     }
 
-    public function Reserva($Fk_paquete, $fk_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago, $cab_cotizacion = NULL)
-    {
+    public function Reserva($Fk_paquete, $fk_cliente, $valor, $Fecha_pedido, $Fecha_reserva, $Estado, $Pago, $cab_cotizacion = NULL) {
         $tipo = 'P';
-        if (!is_null($cab_cotizacion))
-        {
+        if (!is_null($cab_cotizacion)) {
             $tipo = 'C';
         }
-        $R                    = atable::Make('reserva');
-        $R->fk_paquete        = $Fk_paquete;
-        $R->fk_cliente        = $fk_cliente;
-        $R->valor             = $valor;
-        $R->fecha_pedido      = $Fecha_pedido;
-        $R->fecha_reserva     = $Fecha_reserva;
-        $R->estado            = $Estado;
-        $R->pago              = $Pago;
+        $R = atable::Make('reserva');
+        $R->fk_paquete = $Fk_paquete;
+        $R->fk_cliente = $fk_cliente;
+        $R->valor = $valor;
+        $R->fecha_pedido = $Fecha_pedido;
+        $R->fecha_reserva = $Fecha_reserva;
+        $R->estado = $Estado;
+        $R->pago = $Pago;
         $R->fk_cab_cotizacion = $cab_cotizacion;
-        $R->tipo              = $tipo;
+        $R->tipo = $tipo;
         $R->Save();
         return $R->id_reserva;
     }
 
-    public function Pagar($Id_reserva)
-    {
+    public function Pagar($Id_reserva) {
         $R = atable::Make('reserva');
         $R->Load('Id_reserva=' . $Id_reserva);
-        if (!is_null($R->id_reserva))
-        {
-            $R->pago   = 'S';
+        if (!is_null($R->id_reserva)) {
+            $R->pago = 'S';
             $R->estado = 'Confirmado';
             $R->Save();
         }
         return $R->id_reserva;
     }
 
-    public function ReservaPaga($Id_reserva)
-    {
+    public function ReservaPaga($Id_reserva) {
         $con = App::$base;
         $sql = 'SELECT 
             `reserva`.`Id_reserva`,
@@ -209,8 +199,7 @@ class ModelReserva
         return $Res;
     }
 
-    public function VerCotizacion($id_cotizacion)
-    {
+    public function VerCotizacion($id_cotizacion) {
         $con = App::$base;
         $sql = 'SELECT `reserva`.`Id_reserva`,
                   `reserva`.`valor` AS `valor_reserva`,
@@ -229,6 +218,30 @@ class ModelReserva
                   `reserva`.`Id_reserva`=? AND 
                   `reserva`.`Estado` = ?';
         $Res = $con->Records($sql, array($id_cotizacion, 'cotizacion'));
+        return $Res;
+    }
+
+    public function VerReservasProveedor($cod_proveedor) {
+        $con = App::$base;
+        $sql = 'SELECT 
+        CONCAT(IFNULL(`servicios`.`Nombre`, \'\'), IFNULL(`servicios1`.`Nombre`, \'\')) AS `nombre`,
+        CONCAT(IFNULL(`servicios`.`id_servicios`, \'\'), IFNULL(`servicios1`.`id_servicios`, \'\')) AS `id_servicios`,
+        CONCAT(IFNULL(`servicios_paquete`.`cantidad_servicios`, \'\'), IFNULL(`cotizacion_servicio`.`cantidad`, \'\')) AS `cantidad`,
+        CONCAT(IFNULL(`cotizacion_servicio`.`Precio`, \'\'), IFNULL(`servicios_paquete`.`valor_unitario_servicio`, \'\')) AS `valor`,
+        `reserva`.`Fecha_reserva`
+      FROM
+        `reserva`
+        LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+        LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion`.`id_cotizacion` = `cotizacion_servicio`.`id_cotizacion`)
+        LEFT OUTER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
+        LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+        LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+        LEFT OUTER JOIN `servicios` `servicios1` ON (`servicios_paquete`.`fk_servicio` = `servicios1`.`id_servicios`)
+        LEFT OUTER JOIN `proveedor` ON (`servicios1`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+        LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+      WHERE
+            `proveedor1`.`Codigo`=? or  `proveedor`.`Codigo`=?';
+        $Res = $con->Records($sql, array($cod_proveedor, $cod_proveedor));
         return $Res;
     }
 
