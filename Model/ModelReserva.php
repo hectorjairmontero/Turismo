@@ -228,7 +228,13 @@ class ModelReserva {
         CONCAT(IFNULL(`servicios`.`id_servicios`, \'\'), IFNULL(`servicios1`.`id_servicios`, \'\')) AS `id_servicios`,
         CONCAT(IFNULL(`servicios_paquete`.`cantidad_servicios`, \'\'), IFNULL(`cotizacion_servicio`.`cantidad`, \'\')) AS `cantidad`,
         CONCAT(IFNULL(`cotizacion_servicio`.`Precio`, \'\'), IFNULL(`servicios_paquete`.`valor_unitario_servicio`, \'\')) AS `valor`,
-        `reserva`.`Fecha_reserva`
+        `reserva`.`Fecha_reserva`,
+         `reserva`.`Fecha_reserva`,
+        concat(`cliente`.`Nombres`,
+        `cliente`.`Apellidos`) as cliente,
+        `cliente`.`Numero_Id`,
+        `cliente`.`Email`,
+        `cliente`.`Telefono`
       FROM
         `reserva`
         LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
@@ -239,6 +245,7 @@ class ModelReserva {
         LEFT OUTER JOIN `servicios` `servicios1` ON (`servicios_paquete`.`fk_servicio` = `servicios1`.`id_servicios`)
         LEFT OUTER JOIN `proveedor` ON (`servicios1`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
         LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+        INNER JOIN `cliente` ON (`reserva`.`fk_cliente` = `cliente`.`id_cliente`)
       WHERE
             `proveedor1`.`Codigo`=? or  `proveedor`.`Codigo`=?';
         $Res = $con->Records($sql, array($cod_proveedor, $cod_proveedor));
