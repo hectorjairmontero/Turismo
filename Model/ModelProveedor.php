@@ -21,6 +21,14 @@ class ModelProveedor
         $P->Save();
         return $P->id_proveedor;
     }
+    public function ActivarProveedor($id_Proveedor)
+    {
+        $P         = atable::Make('proveedor');
+        $P->load("id_proveedor = '$id_Proveedor'");
+        $P->estado = 'A';
+        $P->Save();
+        return $P->id_proveedor;
+    }
 
     public function RegistrarProveedor($Nombre, $Telefono, $Email, $Nit, $Direccion, $Descripcion)
     {
@@ -49,27 +57,52 @@ class ModelProveedor
         $P->Save();
         return $P->id_proveedor;
     }
-
+    public function ValorTotalEstadoCuenta($Cod_proveedor, $FechaIncial, $FechaFinal)
+    {
+        $sql = 'SELECT 
+            SUM(`reserva`.`valor`) as valor            
+          FROM
+            `reserva`
+                LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+                LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+                LEFT OUTER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
+                LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+                LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion`.`id_cotizacion` = `cotizacion_servicio`.`id_cotizacion`)
+                LEFT OUTER JOIN `servicios` `servicios1` ON (`cotizacion_servicio`.`id_servicio` = `servicios1`.`id_servicios`)
+                LEFT OUTER JOIN `cliente` ON (`reserva`.`fk_cliente` = `cliente`.`id_cliente`)
+                LEFT OUTER JOIN `proveedor` ON (`servicios1`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+                LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
+              WHERE
+                (date(`reserva`.`Fecha_pedido`) BETWEEN date(?) AND date(?)) AND 
+                ( `proveedor1`.`Codigo` = ? OR `proveedor`.`Codigo` = ?)';
+        $Res = $this->con->Record($sql, array($FechaIncial, $FechaFinal, $Cod_proveedor,$Cod_proveedor));
+        return $Res;
+    }
     public function EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal)
     {
         $sql = 'SELECT 
-                (`servicios_paquete`.`cantidad_servicios` * `servicios_paquete`.`valor_unitario_servicio` * (100 - `servicios_paquete`.`porcentaje_admin`) / 100) AS `ganancia`,
-                `servicios_paquete`.`valor_unitario_servicio`,
-                (`servicios_paquete`.`valor_unitario_servicio` * (100 - `servicios_paquete`.`porcentaje_admin`) / 100) AS `valor_neto`,
-                `servicios_paquete`.`cantidad_servicios`,
-                `servicios`.`Nombre` AS `servicio`,
-                concat(FORMAT(`servicios_paquete`.`porcentaje_admin`,2)) as "porcentaje_admin",
-                `paquete`.`Nombre` AS `paquete`
-              FROM
-                `paquete`
-                INNER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
-                INNER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
-                INNER JOIN `reserva` ON (`paquete`.`id_paquete` = `reserva`.`Fk_paquete`)
-                INNER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+            `reserva`.`Id_reserva`,
+            `reserva`.`Fecha_pedido`,
+            COALESCE(`servicios`.`Nombre`, `servicios1`.`Nombre`) AS `Nombre`,
+            COALESCE(`servicios_paquete`.`cantidad_servicios`,`cotizacion_servicio`.`cantidad`) as cantidad,
+            `cliente`.`Nombres`,
+            `cliente`.`Apellidos`,
+            `cliente`.`Numero_Id`            
+          FROM
+            `reserva`
+                LEFT OUTER JOIN `paquete` ON (`reserva`.`Fk_paquete` = `paquete`.`id_paquete`)
+                LEFT OUTER JOIN `servicios_paquete` ON (`paquete`.`id_paquete` = `servicios_paquete`.`fk_paquete`)
+                LEFT OUTER JOIN `servicios` ON (`servicios_paquete`.`fk_servicio` = `servicios`.`id_servicios`)
+                LEFT OUTER JOIN `cotizacion` ON (`reserva`.`fk_cab_cotizacion` = `cotizacion`.`id_cotizacion`)
+                LEFT OUTER JOIN `cotizacion_servicio` ON (`cotizacion`.`id_cotizacion` = `cotizacion_servicio`.`id_cotizacion`)
+                LEFT OUTER JOIN `servicios` `servicios1` ON (`cotizacion_servicio`.`id_servicio` = `servicios1`.`id_servicios`)
+                LEFT OUTER JOIN `cliente` ON (`reserva`.`fk_cliente` = `cliente`.`id_cliente`)
+                LEFT OUTER JOIN `proveedor` ON (`servicios1`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
+                LEFT OUTER JOIN `proveedor` `proveedor1` ON (`servicios`.`fk_Proveedor` = `proveedor1`.`id_proveedor`)
               WHERE
-                `reserva`.`Fecha_reserva` BETWEEN ? AND ? AND 
-                `proveedor`.`Codigo`=?';
-        $Res = $this->con->Records($sql, array($FechaIncial, $FechaFinal, $Cod_proveedor));
+                (date(`reserva`.`Fecha_pedido`) BETWEEN date(?) AND date(?)) AND 
+                ( `proveedor1`.`Codigo` = ? OR `proveedor`.`Codigo` = ?)';
+        $Res = $this->con->Records($sql, array($FechaIncial, $FechaFinal, $Cod_proveedor,$Cod_proveedor));
         return $Res;
     }
 

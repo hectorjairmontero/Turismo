@@ -22,7 +22,7 @@ foreach($Datos as $Temp)
 }
 $Datos=$Datos2;        
 $Datos = $Render->GenerarLinkRegistro($Datos , 0,'images/lapiz.png','ver_paquetes.html?id');
-$Datos = $Render->FunctionTable($Datos, 1, 'Bloquear', 'images/x.png');
+$Datos = $Render->FunctionTable($Datos, 2, 'Bloquear', 'images/x.png');
 $Datos = $Render->FormatoNumerico($Datos , 3,'$',0,'.',',');
-$enc=array('Ver','Eliminar','Nombre','Valor','Fecha inicio','Fecha fin','Municipio','Descripcion','Foto','Cambiar imagen');
+$enc=array('Ver','Nombre','Deshabilitar','Valor','Fecha inicio','Fecha fin','Municipio','Descripcion','Foto','Cambiar imagen');
 echo $Render->Tabla($Datos,'',$enc,"table table-striped");

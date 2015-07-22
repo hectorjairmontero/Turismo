@@ -10,10 +10,16 @@ class Proveedor
         $Datos = $Res->Retirar_Proveedor($id_proveedor);
         return $Datos;
     }
+    public function ActivarProveedor($id_proveedor)
+    {
+        $Res   = new ModelProveedor();
+        $Datos = $Res->ActivarProveedor($id_proveedor);
+        return $Datos;
+    }
     public function TotalServiciosReservaCotizacion($Cod_proveedor, $id_servicio,$FechaIncial, $FechaFinal)
     {
         $Ver   = new ModelServicios();
-        $Datos = $Ver->ValorTotalVentaServicio($cod_proveedor,$FechaIncial, $FechaFinal);
+        $Datos = $Ver->ValorTotalVentaServicio($Cod_proveedor,$FechaIncial, $FechaFinal);
         return $Datos;
     }
     public function VerProveedores()
@@ -83,7 +89,7 @@ class Proveedor
         $Total = 0;
         foreach ($Datos as $Temp)
         {
-            $Total = $Total + $Temp['valor_neto'];
+            $Total = $Total + ($Temp['valor_neto']*$Temp['cantidad_servicios']);
         }
         return $Total;
     }
@@ -91,15 +97,16 @@ class Proveedor
     public function TotalReservaCotizacion($Cod_proveedor, $FechaIncial, $FechaFinal)
     {
         $Ver   = new ModelServicios();
-        $Datos = $Ver->ValorTotalVentaPaqueteCotizacion($cod_proveedor,$FechaIncial, $FechaFinal);
+        $Datos = $Ver->ValorTotalVentaPaqueteCotizacion($Cod_proveedor,$FechaIncial, $FechaFinal);
         return $Datos;
     }
 
     public function EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal)
     {
         $Ver   = new ModelProveedor();
+        $Total=$Ver->ValorTotalEstadoCuenta($Cod_proveedor, $FechaIncial, $FechaFinal);
         $Datos = $Ver->EstadoCuentaTotal($Cod_proveedor, $FechaIncial, $FechaFinal);
-        $Res   = array('Datos' => $Datos, 'Total' => $this->Total($Datos));
+        $Res   = array('Datos' => $Datos, 'Total' => $Total['valor']);
         return $Res;
     }
 

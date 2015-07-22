@@ -345,6 +345,26 @@ class ModelServicios
         $Res = $con->TablaDatos($sql, array ());
         return $Res;
     }
+    public function VerProveedoresActivos()
+    {
+        $con = App::$base;
+        $sql = 'SELECT 
+            `proveedor`.`id_proveedor`,
+            `proveedor`.`Nombre`,
+            `proveedor`.`Direccion`,
+            `proveedor`.`Telefono`,
+            `proveedor`.`Email`,
+            `proveedor`.`Nit`,
+            `proveedor`.`Descripcion`,
+            `proveedor`.`Estado`,
+            `proveedor`.`Codigo`
+          FROM
+            `proveedor`
+            where `proveedor`.`Estado`="A"
+            Order By Nombre';
+        $Res = $con->TablaDatos($sql, array ());
+        return $Res;
+    }
 
     public function VerMunicipios()
     {

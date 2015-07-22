@@ -78,6 +78,12 @@ class Servicios
         $Datos   = $Paquete->VerProveedores();
         return $Datos;
     }
+    public function VerProveedoresActivos()
+    {
+        $Paquete = new ModelServicios();
+        $Datos   = $Paquete->VerProveedoresActivos();
+        return $Datos;
+    }
 
     public function VerMunicipios()
     {

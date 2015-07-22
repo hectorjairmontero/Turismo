@@ -45,7 +45,17 @@ function Ver(id)
 }
 function Activar(id)
 {
-    alert(id);
+    $.ajax({
+        type: 'POST',
+        url: "Ajax/AjaxActivarProveedor.php",
+        data: {
+            id: id
+        },
+        success: function ()
+        {
+            Restaurar();
+        }
+    });
 }
 function Quitar(id)
 {
