@@ -27,8 +27,23 @@ function Buscar()
         }
     });
 }
+function buscarservicios()
+{
+    Buscar();
+}
+function selectProveedor()
+{
+    $.ajax({
+        url: 'Ajax/AjaxVerServiciosProveedor.php',
+        success: function (Resultados)
+        {
+            $('#selectProveedor').html(Resultados);
+        }
+    });
+}
 $(function ()
 {
+    selectProveedor();
     $('#Fechas').submit(false);
     $('#FechaInicio').datepicker({dateFormat: 'yy-mm-dd'});
     $('#FechaFin').datepicker({dateFormat: 'yy-mm-dd'});

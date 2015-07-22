@@ -83,9 +83,9 @@ class Reserva {
         return ($Res);
     }
 
-    public function VerReservasPagasProveedores($FechaInicio = '', $FechaFin = '') {
+    public function VerReservasPagasProveedores($FechaInicio = '', $FechaFin = '',$Proveedor='') {
         $Reservas = new ModelServicios();
-        $Datos = $Reservas->VerReservasPagasProveedores($FechaInicio, $FechaFin);
+        $Datos = $Reservas->VerReservasPagasProveedores($FechaInicio, $FechaFin,$Proveedor);
         return $Datos;
     }
 

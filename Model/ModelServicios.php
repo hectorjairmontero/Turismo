@@ -227,13 +227,14 @@ class ModelServicios
         $S->Delete();
     }
 
-    public function VerReservasPagasProveedores($FechaInicio = '', $FechaFin = '')
+    public function VerReservasPagasProveedores($FechaInicio = '', $FechaFin = '',$Proveedor='')
     {
         $con = App::$base;
         $sql = 'SELECT 
             `reserva`.`Id_reserva`,
             `reserva`.`Id_reserva` as imp,
             CONCAT(IFNULL(`proveedor`.`Nombre`, ""), IFNULL(`proveedor1`.`Nombre`, "")) AS `nombre`,
+            `reserva`.`Fecha_pedido`,
             `reserva`.`valor`,
           CASE `reserva`.`tipo`
           WHEN "C" THEN "Cotizacion"
@@ -250,9 +251,15 @@ class ModelServicios
             LEFT OUTER JOIN `servicios` ON (`cotizacion_servicio`.`id_servicio` = `servicios`.`id_servicios`)
             LEFT OUTER JOIN `proveedor` ON (`servicios`.`fk_Proveedor` = `proveedor`.`id_proveedor`)
           WHERE
-            `reserva`.`Estado` = ?
-          GROUP BY 1';
-        $Res = $con->TablaDatos($sql, array ('Confirmado', $FechaInicio, $FechaFin));
+          `reserva`.`Estado` = ? and
+            date(`reserva`.`Fecha_pedido`) BETWEEN date(?) and date(?)
+            ';
+        if($Proveedor!='')
+        {
+            $sql.=' and (`proveedor`.`id_proveedor`=? or `proveedor1`.`id_proveedor`=?)';
+        }
+         $sql.=' GROUP BY 1';
+        $Res = $con->TablaDatos($sql, array ('Confirmado', $FechaInicio, $FechaFin ,$Proveedor, $Proveedor));
         return $Res;
     }
 
